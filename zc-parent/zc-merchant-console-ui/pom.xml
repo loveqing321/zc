@@ -11,5 +11,109 @@
 
     <artifactId>zc-merchant-console-ui</artifactId>
 
+    <properties>
+        <node.version>v6.11.3</node.version>
+        <npm.version>3.10.10</npm.version>
+    </properties>
 
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <properties>
+                <buildScript>buildDev</buildScript>
+            </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+        <profile>
+            <id>pro</id>
+            <properties>
+                <buildScript>buildPro</buildScript>
+            </properties>
+        </profile>
+    </profiles>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>com.github.eirslett</groupId>
+                <artifactId>frontend-maven-plugin</artifactId>
+                <version>1.6</version>
+                <configuration>
+                    <workingDirectory>vue</workingDirectory>
+                    <installDirectory>.tmp</installDirectory>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>npm build</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>npm</goal>
+                        </goals>
+                        <configuration>
+                            <arguments>run ${buildScript}</arguments>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <tasks>
+                                <delete dir="${basedir}/../zc-merchant-console/src/main/resources/public/static/css" />
+                                <delete dir="${basedir}/../zc-merchant-console/src/main/resources/public/static/js" />
+                            </tasks>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- 将打包后的前端资源拷贝到web项目中 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>copy-resources</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${basedir}/../zc-merchant-console/src/main/resources/public</outputDirectory>
+                            <nonFilteredFileExtensions>
+                                <nonFilteredFileExtension>otf</nonFilteredFileExtension>
+                                <nonFilteredFileExtension>eot</nonFilteredFileExtension>
+                                <nonFilteredFileExtension>svg</nonFilteredFileExtension>
+                                <nonFilteredFileExtension>ttf</nonFilteredFileExtension>
+                                <nonFilteredFileExtension>woff</nonFilteredFileExtension>
+                                <nonFilteredFileExtension>woff.bak</nonFilteredFileExtension>
+                                <nonFilteredFileExtension>woff2</nonFilteredFileExtension>
+                            </nonFilteredFileExtensions>
+                            <resources>
+                                <resource>
+                                    <directory>${basedir}/vue/dist</directory>
+                                    <excludes>
+                                        <exclude>src/**</exclude>
+                                        <exclude>target/**</exclude>
+                                        <exclude>pom.xml</exclude>
+                                        <exclude>.DS_Store</exclude>
+                                    </excludes>
+                                    <filtering>true</filtering>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 </project>
