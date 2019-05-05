@@ -11,6 +11,7 @@
         <module>zc-common</module>
         <module>zc-manager-console</module>
         <module>zc-merchant-console</module>
+        <module>zc-tenant-service</module>
     </modules>
 
     <packaging>pom</packaging>
