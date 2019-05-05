@@ -1,0 +1,66 @@
+html, body {
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  height: 100%;
+}
+body {
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  font-family: Helvetica Neue,Helvetica,PingFang SC,Hiragino Sans GB,Microsoft YaHei,Arial,sans-serif;
+}
+div {
+  outline: none;
+}
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.app {
+  height: 100%;
+}
+.el-header {
+  padding-top: 16px !important;
+}
+.el-main {
+  padding: 0 20px !important;
+}
+.clearfix:after {
+  visibility: hidden;
+  display: block;
+  font-size: 0;
+  content: " ";
+  clear: both;
+  height: 0;
+}
+.expand-column {
+  overflow: hidden;
+}
+.el-dialog {
+  .el-dialog__header {
+    background-image: linear-gradient(0deg, #efefef 0%,#fff 100%) !important;
+    border-bottom: 1px solid #dadada !important;
+    .el-dialog__title {
+      font-size: 16px !important;
+    }
+  }
+}
+.el-table {
+  .el-table__header-wrapper {
+    .el-table__header {
+      tr > th {
+        background-color: #f0f3f7;
+      }
+    }
+  }
+}
+.el-message-box {
+  vertical-align: baseline !important;
+}
+
+.el-tabs__content {
+  height: calc(100% - 39px);
+  box-sizing: border-box;
+  overflow: hidden;
+}
