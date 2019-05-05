@@ -12,6 +12,8 @@
         <module>zc-manager-console</module>
         <module>zc-merchant-console</module>
         <module>zc-tenant-service</module>
+        <module>zc-manager-console-ui</module>
+        <module>zc-merchant-console-ui</module>
     </modules>
 
     <packaging>pom</packaging>
