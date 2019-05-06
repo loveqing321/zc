@@ -1,14 +1,7 @@
 <template lang="pug">
   .navbar(mode='horizontal')
     .app-title
-      | 某某平台 - UI
-    ul.header-menu
-      li.header-menu-item(
-        v-for="item, index in headerMenus"
-        :class="{'active': index==selectedMenu}"
-        @click="handleClickMenu(item, index)"
-      )
-        | {{ item.title }}
+      | 51租车 - 管理中心
     el-dropdown.avatar-container
       .avatar-wrapper
         | {{ userName || '未登录'}}
@@ -26,19 +19,7 @@ export default {
   name: 'Navbar',
   data () {
     return {
-      headerMenus: [
-        {
-          title: '驾驶舱',
-          route: 'dashboard'
-        }
-      ],
-      selectedMenu: 0,
       userName: null
-    }
-  },
-  watch: {
-    '$route' (to) {
-      this.initSelectedMenu(to)
     }
   },
   created () {
@@ -54,19 +35,10 @@ export default {
         name: item.route
       })
     },
-    initSelectedMenu (route) {
-      for (let i = 0; i < this.headerMenus.length; i++) {
-        if (this.headerMenus[i].route === route.name) {
-          this.selectedMenu = i
-          break
-        }
-      }
-    },
     async getUserInfo () {
     }
   },
   mounted () {
-    this.initSelectedMenu(this.$route)
   }
 }
 </script>
@@ -82,7 +54,7 @@ export default {
     font-size: 18px;
     font-weight: 700;
     line-height: 50px;
-    margin: 0 50px;
+    margin: 0 30px;
     color: #ffffff;
     float: left;
   }

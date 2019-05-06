@@ -70,7 +70,6 @@ class HttpRequest {
       if (error.response) {
         // 如果设置了转发地址，并且返回状态为未认证，则转发到SSO
         if (error.response.status === STATUS_CODE.UNAUTHORIZED && env.redirectURL) {
-          // window.location.href = 'http://sso.hellobike.cn/?redirect_url=' + encodeURIComponent(env.redirectURL)
         } else {
           console.error(error.response)
         }
