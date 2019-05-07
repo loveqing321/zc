@@ -190,9 +190,12 @@ export default new Router({
           path: '/message',
           name: 'message',
           hidden: true,
-          component: require(`@/components/modules/dashboard`),
+          component: require(`@/components/modules/message`),
           meta: {
-            desc: '消息中心'
+            desc: '消息中心',
+            breadcrumb: [
+              {name: 'dashboard'}
+            ]
           }
         }
       ]
