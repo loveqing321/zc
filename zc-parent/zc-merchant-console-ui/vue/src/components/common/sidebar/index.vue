@@ -14,10 +14,10 @@
       :default-active='$route.name'
       mode='vertical'
       unique-opened=''
+      :default-openeds='openedSubs'
       background-color='#2f323f'
       text-color='#fff'
       active-text-color='#ffd04b'
-      @open="handleSubMenuOpen"
     )
       sidebar-item(:routes='routes')
 </template>
@@ -33,7 +33,7 @@ export default {
   },
   data () {
     return {
-      openIndex: null
+      openedSubs: []
     }
   },
   computed: {
@@ -54,14 +54,7 @@ export default {
     },
     closeSidebar () {
       this.changeSidebarStatus(false)
-      if (this.openIndex) {
-        this.$refs.menu.close(this.openIndex)
-        this.openIndex = 0
-      }
-    },
-    handleSubMenuOpen (index) {
-      console.log(index)
-      this.openIndex = index
+      this.openedSubs = []
     }
   }
 }
