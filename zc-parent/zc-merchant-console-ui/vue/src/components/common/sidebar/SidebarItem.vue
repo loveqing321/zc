@@ -7,7 +7,7 @@
         :key='item.path'
       )
         template(slot='title')
-          i(v-if='item.icon' :class='item.icon')
+          i.menu-icon(v-if='item.icon' :class='item.icon')
           span
             | {{ item.meta.desc }}
         sidebar-item.menu-indent(
@@ -20,7 +20,7 @@
         :key='item.path'
       )
         el-menu-item(:index="item.name")
-          i(v-if='item.icon' :class='item.icon')
+          i.menu-icon(v-if='item.icon' :class='item.icon')
           | {{ (item.meta && item.meta.desc) || item.name }}
 </template>
 
@@ -59,14 +59,26 @@ export default {
 }
 .hideSidebar .menu-indent{
   display: block;
-  text-indent: 10px;
 }
 a, a:focus, a:hover {
   cursor: pointer;
   color: inherit;
   text-decoration: none;
 }
-.menu-indent .el-menu-item {
-  padding-left: 48px !important;
+.menu-indent {
+  .el-menu-item {
+    padding-left: 50px !important;
+    background-color: #3f4454 !important;
+  }
+  .el-menu-item:hover {
+    background-color: #262832 !important;
+  }
+}
+.menu-icon {
+  width: 50px;
+  height: 40px;
+  line-height: 40px;
+  text-align: center;
+  vertical-align: middle;
 }
 </style>

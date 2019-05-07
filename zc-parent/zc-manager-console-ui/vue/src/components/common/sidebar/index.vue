@@ -10,12 +10,14 @@
         span.close-menu
           i(class="fa fa-chevron-left" style="cursor: pointer;" @click="closeSidebar")
     el-menu(
+      ref="menu"
       :default-active='$route.name'
       mode='vertical'
       unique-opened=''
       background-color='#2f323f'
       text-color='#fff'
       active-text-color='#ffd04b'
+      @open="handleSubMenuOpen"
     )
       sidebar-item(:routes='routes')
 </template>
@@ -28,6 +30,11 @@ export default {
   name: 'Sidebar',
   components: {
     SidebarItem
+  },
+  data () {
+    return {
+      openIndex: null
+    }
   },
   computed: {
     ...mapState('app', [
@@ -47,6 +54,14 @@ export default {
     },
     closeSidebar () {
       this.changeSidebarStatus(false)
+      if (this.openIndex) {
+        this.$refs.menu.close(this.openIndex)
+        this.openIndex = 0
+      }
+    },
+    handleSubMenuOpen (index) {
+      console.log(index)
+      this.openIndex = index
     }
   }
 }

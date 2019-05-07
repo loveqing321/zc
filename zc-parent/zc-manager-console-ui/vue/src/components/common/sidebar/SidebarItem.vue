@@ -59,15 +59,20 @@ export default {
 }
 .hideSidebar .menu-indent{
   display: block;
-  text-indent: 10px;
 }
 a, a:focus, a:hover {
   cursor: pointer;
   color: inherit;
   text-decoration: none;
 }
-.menu-indent .el-menu-item {
-  padding-left: 50px !important;
+.menu-indent {
+  .el-menu-item {
+    padding-left: 50px !important;
+    background-color: #3f4454 !important;
+  }
+  .el-menu-item:hover {
+    background-color: #262832 !important;
+  }
 }
 .menu-icon {
   width: 50px;

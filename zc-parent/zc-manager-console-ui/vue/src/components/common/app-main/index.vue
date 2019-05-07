@@ -4,8 +4,7 @@
       sidebar
     .router-wrapper
       keep-alive
-        router-view(v-if="$route.meta.keepAlive")
-      router-view(v-if="!$route.meta.keepAlive")
+        router-view
 </template>
 
 <script>
@@ -31,17 +30,17 @@ export default {
   position: relative;
   &.hideSidebar {
     .sidebar-wrapper {
-      transform: translate(-150px, 0);
+      transform: translate(-151px, 0);
       .sidebar-container {
-        transform: translate(150px, 0);
+        transform: translate(151px, 0);
       }
     }
     .router-wrapper {
-      margin-left: 40px;
+      margin-left: 50px;
     }
   }
   .sidebar-wrapper {
-    width: 200px;
+    width: 201px;
     position: absolute;
     top: 0;
     bottom: 0;
@@ -52,7 +51,7 @@ export default {
   }
   .router-wrapper {
     transition: all 0.28s ease-out;
-    margin-left: 200px;
+    margin-left: 201px;
     height: 100%;
     overflow-y: scroll;
   }

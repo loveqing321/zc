@@ -1,20 +1,14 @@
 <template lang="pug">
   .app
-    main-page
+    router-view
 </template>
 
 <script>
-import MainPage from './components/Main'
-
 export default {
-  name: 'App',
-  components: {
-    MainPage
-  }
+  name: 'App'
 }
 </script>
 
 <style lang="less">
-@import 'normalize.css/normalize.css';
 @import 'style.less';
 </style>

@@ -213,6 +213,7 @@ export default {
         },
         series: []
       }
+      return baseOpts
     },
 
     // 获取所有数据
@@ -249,6 +250,7 @@ export default {
         },
         series: []
       }
+      return baseOpts
     },
 
     // 获取按调用量和调用耗时统计的top5接口
@@ -287,6 +289,7 @@ export default {
         },
         series: []
       }
+      return baseOpts
     }
   },
   mounted () {
