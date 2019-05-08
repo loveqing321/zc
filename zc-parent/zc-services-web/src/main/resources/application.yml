@@ -1,0 +1,28 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    name: test
+    url: jdbc:mysql://182.92.179.160:3306/dale?useUnicode=true&characterEncoding=UTF-8&useSSL=false
+    username: root
+    password: bluesky
+    driver-class-name: com.mysql.jdbc.Driver
+  redis:
+    # Connection URL, will override host, port and password (user will be ignored), e.g. redis://user:password@example.com:6379
+    url: redis://localhost:6379
+    database: 0
+    # 链接或者读取超时
+    timeout: 2s
+  cache:
+    type: ehcache
+    ehcache:
+      config: classpath:ehcache.xml
+
+mybatis:
+  mapper-locations: classpath*:mybatis/mapper/*.xml
+
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  pageSizeZero: true

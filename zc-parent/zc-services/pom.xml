@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>zc-parent</artifactId>
+        <groupId>top.zuche</groupId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>zc-services</artifactId>
+    <packaging>pom</packaging>
+    <modules>
+        <module>zc-system-service</module>
+        <module>zc-basic-service</module>
+        <module>zc-order-service</module>
+        <module>zc-payment-service</module>
+        <module>zc-report-service</module>
+    </modules>
+
+    <dependencies>
+        <!-- 接口包 -->
+        <dependency>
+            <groupId>top.zuche</groupId>
+            <artifactId>zc-services-api</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
+</project>
