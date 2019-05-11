@@ -18,3 +18,8 @@ spring:
     type: ehcache
     ehcache:
       config: classpath:ehcache.xml
+  dubbo:
+    application:
+      name: merchant-console-comsumer
+    registry:
+      address: zookeeper://127.0.0.1:2181

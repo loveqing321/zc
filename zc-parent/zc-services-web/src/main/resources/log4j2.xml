@@ -28,5 +28,8 @@
         <Root level="info">
             <AppenderRef ref="Console"/>
         </Root>
+        <logger name="top.zuche.services.system.mapper" level="debug" additivity="false">
+            <AppenderRef ref="Console"/>
+        </logger>
     </Loggers>
 </Configuration>

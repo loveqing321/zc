@@ -4,9 +4,9 @@ server:
 spring:
   datasource:
     name: test
-    url: jdbc:mysql://182.92.179.160:3306/dale?useUnicode=true&characterEncoding=UTF-8&useSSL=false
+    url: jdbc:mysql://127.0.0.1:3306/zc?useUnicode=true&characterEncoding=UTF-8&useSSL=false
     username: root
-    password: bluesky
+    password: 123456
     driver-class-name: com.mysql.jdbc.Driver
   redis:
     # Connection URL, will override host, port and password (user will be ignored), e.g. redis://user:password@example.com:6379
@@ -20,7 +20,7 @@ spring:
       config: classpath:ehcache.xml
   dubbo:
     application:
-      name: dubbo-provider
+      name: services-provider
     registry:
       address: zookeeper://127.0.0.1:2181
     protocol:
