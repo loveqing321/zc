@@ -1,0 +1,17 @@
+package ${basePackage}.${module}.dto;
+
+import lombok.Getter;
+import lombok.Setter;
+
+import java.io.Serializable;
+
+/**
+* @author lzx
+* @date 2018/12/19 2:04 PM
+*/
+@Getter
+@Setter
+public class ${DTO} implements Serializable {
+
+    private Long id;
+}

@@ -1,0 +1,40 @@
+package com.dale.car.admin.${module}.converter;
+
+import com.dale.car.admin.${module}.dto.${DTO};
+import com.dale.car.admin.${module}.model.${Entity};
+import com.dale.car.common.exception.InvalidObjectException;
+
+import lombok.NonNull;
+import lombok.extern.slf4j.Slf4j;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+/**
+* @author lzx
+* @date 2018/12/19 2:09 PM
+*/
+@Slf4j
+public class ModelConverter {
+
+    // DTO转Entity
+    public static ${Entity} dto2Entity(@NonNull ${DTO} dto) throws InvalidObjectException {
+        ${Entity} entity = new ${Entity}();
+        entity.setId(dto.getId());
+
+        return entity;
+    }
+
+    // Entity转DTO
+    public static ${DTO} entity2Dto(@NonNull ${Entity} entity) {
+        ${DTO} dto = new ${DTO}();
+        dto.setId(entity.getId());
+
+        return dto;
+    }
+
+    // Entity转DTO
+    public static List<${DTO}> entity2Dto(@NonNull List<${Entity}> entities) {
+        return entities.stream().map(ModelConverter::entity2Dto).collect(Collectors.toList());
+    }
+}

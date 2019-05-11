@@ -1,0 +1,89 @@
+package ${basePackage}.${module}.service.impl;
+
+import ${basePackage}.${module}.mapper.${subModule}Mapper;
+import ${basePackage}.${module}.service.${subModule}Service;
+import ${basePackage}.${module}.model.${subModule};
+import ${basePackage}.${module}.model.${subModule}Example;
+import ${basePackage}.${module}.dto.${DTO};
+import ${basePackage}.${module}.dto.${Query};
+import ${basePackage}.${module}.converter.ModelConverter;
+import com.dale.car.common.dto.PageDTO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import com.dale.car.common.exception.InvalidObjectException;
+
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import java.util.Date;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.stream.Collectors;
+
+/**
+* ${subModule}服务实现
+*
+* @author lzx
+* @date 2018/12/16 5:11 PM
+*/
+@Service
+@Transactional(readOnly = true)
+public class ${subModule}ServiceImpl implements ${subModule}Service {
+
+    @Autowired
+    private ${subModule}Mapper mapper;
+
+    @Override
+    @Transactional
+    public long add(${DTO} dto) throws InvalidObjectException {
+        ${Entity} entity = ModelConverter.dto2Entity(dto);
+        entity.setCreateTime(new Date());
+        mapper.insert(entity);
+        return entity.getId();
+    }
+
+    @Override
+    @Transactional
+    public int deleteById(long id) {
+        return mapper.deleteByPrimaryKey(id);
+    }
+
+    @Override
+    @Transactional
+    public int updateById(${DTO} dto) throws InvalidObjectException {
+        ${Entity} entity = ModelConverter.dto2Entity(dto);
+        entity.setUpdateTime(new Date());
+        return mapper.updateByPrimaryKeySelective(entity);
+    }
+
+    // 根据ID查询实体
+    @Override
+    public ${DTO} queryById(long id) {
+        ${Entity} entity = mapper.selectByPrimaryKey(id);
+        if (entity == null) return null;
+        return ModelConverter.entity2Dto(entity);
+    }
+
+    // 根据查询条件查询所有实体
+    @Override
+    public List<${DTO}> queryAll(${Query} query) {
+        // 从Query对象，构建Example
+        ${subModule}Example example = new ${subModule}Example();
+        List<${Entity}> entities = mapper.selectByExample(example);
+        return ModelConverter.entity2Dto(entities);
+    }
+
+    // 根据查询条件查询所有实体
+    @Override
+    public PageDTO<${DTO}> queryByPage(${Query} query) {
+        PageHelper.startPage(query.getPageNum(), query.getPageSize());
+        // 从Query对象，构建Example
+        Page<${Entity}> page = mapper.selectByPage(query);
+        if (page.getTotal() == 0) {
+            return new PageDTO<${DTO}>(0, new ArrayList(0));
+        }
+        List<${Entity}> result = page.getResult();
+        List<${DTO}> dtos = result.stream().map(entity -> ModelConverter.entity2Dto(entity)).collect(Collectors.toList());
+        return new PageDTO<>(page.getTotal(), dtos);
+    }
+}

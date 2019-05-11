@@ -1,7 +1,8 @@
 import axios from 'axios'
 // import qs from 'qs'
 import { Message } from 'element-ui'
-import { getToken } from './util'
+import { getToken, clearToken, getCsrfToken } from './util'
+import router from '@/router'
 import env from './env'
 
 /**
@@ -15,15 +16,23 @@ import env from './env'
  */
 const STATUS_CODE = {
   // 成功
-  SUCCESS: 200,
+  SUCCESS: 0,
   // 用户未认证
-  UNAUTHORIZED: 401,
+  UNAUTHORIZED: [100, 200],
   // 用户未授权
-  FORBIDDEN: 403,
-  // 页面没找到
-  NOT_FOUND: 404,
+  FORBIDDEN: [200, 300],
   // 后端异常
-  ERROR: 1
+  ERROR: [400, 500],
+
+  // 一些明细Code
+  // 会话失效
+  EXPIRED_TOKEN: 108,
+  // 用户未登录
+  TOKEN_NOT_FOUND: 109,
+
+  // Http状态码
+  // 页面没找到
+  NOT_FOUND: 404
 }
 
 // axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
@@ -38,9 +47,16 @@ class HttpRequest {
   request (options) {
     const conf = {}
     const token = getToken()
+    const csrfToken = getCsrfToken()
     if (token) {
       conf.headers = {}
       conf.headers.token = token
+    }
+    if (csrfToken) {
+      if (!conf.headers) {
+        conf.headers = {}
+      }
+      conf.headers['X-XSRF-TOKEN'] = csrfToken
     }
     // 创建请求实例
     let instance = axios.create(conf)
@@ -64,14 +80,28 @@ class HttpRequest {
       if (code === STATUS_CODE.SUCCESS) {
         return data
       }
-      Message({ type: 'error', message: data || 'error' })
-      return Promise.reject(new Error(data || 'error'))
+      if (code === STATUS_CODE.EXPIRED_TOKEN || code === STATUS_CODE.TOKEN_NOT_FOUND) {
+        let msg = (code === STATUS_CODE.EXPIRED_TOKEN ? '会话失效，请重新登录' : '请先登录')
+        clearToken()
+        Message({ type: 'warning', message: msg })
+        router.push({
+          name: 'login'
+        })
+      } else if (code >= STATUS_CODE.FORBIDDEN[0] && code < STATUS_CODE.FORBIDDEN[1]) { // 未认证
+        router.push({
+          name: '403'
+        })
+      }
+      return Promise.reject(body)
     }, error => {
       if (error.response) {
         // 如果设置了转发地址，并且返回状态为未认证，则转发到SSO
-        if (error.response.status === STATUS_CODE.UNAUTHORIZED && env.redirectURL) {
+        if (error.response.status === STATUS_CODE.NOT_FOUND) {
+          router.push({
+            name: '404'
+          })
         } else {
-          console.error(error.response)
+          Message({ type: 'error', message: '请求出错，状态码：' + error.response.status })
         }
       }
       return Promise.reject(error)

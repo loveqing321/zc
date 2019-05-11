@@ -21,7 +21,7 @@
 
 <script>
 import { clearToken } from '@/libs/util'
-import env from '@/libs/env'
+import { mapMutations, mapState } from 'vuex'
 
 export default {
   name: 'Navbar',
@@ -32,20 +32,27 @@ export default {
       message: 1
     }
   },
-  created () {
-    this.getUserInfo()
+  computed: {
+    ...mapState('app', [
+      'userInfo'
+    ])
   },
   methods: {
+    ...mapMutations('app', [
+      'changeSidebarStatus',
+      'setUserInfo'
+    ]),
     logout () {
       clearToken()
-      window.location.href = env.baseURL
+      this.setUserInfo({})
+      this.$router.push({
+        name: 'login'
+      })
     },
     handleClickMenu (item) {
       this.$router.push({
         name: item.route
       })
-    },
-    async getUserInfo () {
     },
     handleFullScreen () {
       if (this.fullscreen) {
@@ -72,6 +79,13 @@ export default {
         }
       }
       this.fullscreen = !this.fullscreen
+    }
+  },
+  created () {
+    if (!this.userInfo) {
+      this.$router.push({
+        name: 'login'
+      })
     }
   },
   mounted () {

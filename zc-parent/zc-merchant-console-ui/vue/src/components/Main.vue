@@ -24,10 +24,12 @@ export default {
   methods: {
   },
   created () {
+    // 获取用户信息
+
+    // 获取
 
   },
   mounted () {
-
   }
 }
 </script>

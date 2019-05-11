@@ -7,6 +7,7 @@ export default new Router({
   routes: [
     {
       path: '/',
+      name: 'Home',
       redirect: '/dashboard'
     },
     {
@@ -202,14 +203,17 @@ export default new Router({
     },
     {
       path: '/login',
+      name: 'login',
       component: require(`@/components/Login.vue`)
     },
     {
       path: '/403',
+      name: '403',
       component: require(`@/components/app/error/403.vue`)
     },
     {
       path: '/404',
+      name: '404',
       component: require(`@/components/app/error/404.vue`)
     },
     {

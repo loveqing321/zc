@@ -11,30 +11,30 @@ public interface EhCacheNames {
     /**
      * 10分钟缓存名称
      */
-    String CACHE_10MIN = "cache:10m";
+    String CACHE_10MIN = "cache_10m";
 
     /**
      * 15分钟缓存名称
      */
-    String CACHE_15MIN = "cache:15m";
+    String CACHE_15MIN = "cache_15m";
 
     /**
      * 20分钟缓存名称
      */
-    String CACHE_20MIN = "cache:20m";
+    String CACHE_20MIN = "cache_20m";
 
     /**
      * 30分钟缓存名称
      */
-    String CACHE_30MIN = "cache:30m";
+    String CACHE_30MIN = "cache_30m";
 
     /**
      * 60分钟缓存名称
      */
-    String CACHE_60MIN = "cache:60m";
+    String CACHE_60MIN = "cache_60m";
 
     /**
      * 180分钟缓存名称
      */
-    String CACHE_180MIN = "cache:180m";
+    String CACHE_180MIN = "cache_180m";
 }

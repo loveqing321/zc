@@ -1,0 +1,44 @@
+import axios from '@/libs/http'
+
+// 保存
+export const save = (obj) => {
+  return axios.request({
+    url: '/api/v1/${module}/${subModuleLower}/save',
+    method: 'post',
+    data: obj
+  })
+}
+
+// 删除
+export const del = ({ id }) => {
+  return axios.request({
+    url: '/api/v1/${module}/${subModuleLower}/del',
+    method: 'get',
+    params: {
+      id
+    }
+  })
+}
+
+// 根据ID查询
+export const queryById = ({ id }) => {
+  return axios.request({
+    url: '/api/v1/${module}/${subModuleLower}/queryById',
+    method: 'get',
+    params: {
+      id
+    }
+  })
+}
+
+// 分页查询
+export const queryByPage = ({ pageNum, pageSize }) => {
+  return axios.request({
+    url: '/api/v1/${module}/${subModuleLower}/queryByPage',
+    method: 'post',
+    data: {
+      pageNum,
+      pageSize
+    }
+  })
+}

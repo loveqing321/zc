@@ -1,0 +1,33 @@
+package ${basePackage}.${module}.service;
+
+import ${basePackage}.${module}.dto.${DTO};
+import ${basePackage}.${module}.dto.${Query};
+import com.dale.car.common.dto.PageDTO;
+import com.dale.car.common.exception.InvalidObjectException;
+
+import java.util.List;
+
+/**
+* ${subModule}服务接口
+*
+* @author lzx
+* @date 2018/12/16 5:11 PM
+*/
+public interface ${subModule}Service {
+
+    long add(${DTO} dto) throws InvalidObjectException;
+
+    int deleteById(long id);
+
+    int updateById(${DTO} dto) throws InvalidObjectException;
+
+    // 根据ID查询实体
+    ${DTO} queryById(long id);
+
+    // 根据查询条件查询所有实体
+    List<${DTO}> queryAll(${Query} query);
+
+    // 根据查询条件分页查询实体
+    PageDTO<${DTO}> queryByPage(${Query} query);
+
+}

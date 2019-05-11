@@ -18,6 +18,14 @@ spring:
     type: ehcache
     ehcache:
       config: classpath:ehcache.xml
+  dubbo:
+    application:
+      name: dubbo-provider
+    registry:
+      address: zookeeper://127.0.0.1:2181
+    protocol:
+      name: dubbo
+      port: 20880
 
 mybatis:
   mapper-locations: classpath*:mybatis/mapper/*.xml
