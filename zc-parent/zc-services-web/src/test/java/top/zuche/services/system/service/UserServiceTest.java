@@ -7,6 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 import top.zuche.services.api.dto.UserDTO;
+import top.zuche.services.api.exception.ServiceException;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -25,7 +26,7 @@ public class UserServiceTest {
     private UserService userService;
 
     @Test
-    public void addUser() {
+    public void addUser() throws ServiceException {
         UserDTO user = new UserDTO();
         user.setMerchantId(1);
         user.setUsername("13333201150");
@@ -38,7 +39,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void batchAddUser() {
+    public void batchAddUser() throws ServiceException {
         List<UserDTO> users = new ArrayList<>();
         UserDTO user1 = new UserDTO();
         user1.setMerchantId(1);
@@ -62,21 +63,21 @@ public class UserServiceTest {
     }
 
     @Test
-    public void queryUserByUsername() {
+    public void queryUserByUsername() throws ServiceException {
         UserDTO user = userService.queryUserByUsername("13333201150");
         Assert.assertNotNull(user);
         Assert.assertEquals("13333201150", user.getUsername());
     }
 
     @Test
-    public void queryUserWithRolesByUsername() {
+    public void queryUserWithRolesByUsername() throws ServiceException {
         UserDTO user = userService.queryUserWithRolesByUsername("13333201150");
         Assert.assertNotNull(user);
         Assert.assertEquals("13333201150", user.getUsername());
     }
 
     @Test
-    public void updateUserByPrimaryKey() {
+    public void updateUserByPrimaryKey() throws ServiceException {
         UserDTO user = new UserDTO();
         user.setId(13);
         user.setMerchantId(1);
@@ -89,7 +90,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void updateUserByUsername() {
+    public void updateUserByUsername() throws ServiceException {
         UserDTO user = new UserDTO();
         user.setId(13);
         user.setMerchantId(1);
@@ -102,12 +103,12 @@ public class UserServiceTest {
     }
 
     @Test
-    public void deleteByPrimaryKey() {
+    public void deleteByPrimaryKey() throws ServiceException {
         userService.deleteByPrimaryKey(13);
     }
 
     @Test
-    public void deleteByUsername() {
+    public void deleteByUsername() throws ServiceException {
         userService.deleteByUsername("13333201150");
     }
 }

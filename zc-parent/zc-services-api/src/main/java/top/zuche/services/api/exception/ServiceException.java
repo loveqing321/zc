@@ -6,7 +6,7 @@ package top.zuche.services.api.exception;
  * @author lzx
  * @date 2019/5/8 下午1:34
  */
-public class ServiceException extends RuntimeException {
+public class ServiceException extends Exception {
 
     public ServiceException() {
     }

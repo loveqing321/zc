@@ -34,7 +34,7 @@ public class UserService extends BaseService<UserEntity, UserDTO> implements Use
 
     @Override
     @Transactional
-    public void addUser(UserDTO user) {
+    public void addUser(UserDTO user) throws ServiceException {
         if (!StringUtils.hasText(user.getUsername())) {
             throw new ServiceException(Constants.ServiceMessage.EMPTY_USER_NAME);
         }
@@ -46,7 +46,7 @@ public class UserService extends BaseService<UserEntity, UserDTO> implements Use
 
     @Override
     @Transactional
-    public void batchAddUser(List<UserDTO> users) {
+    public void batchAddUser(List<UserDTO> users) throws ServiceException {
         if (users == null || users.isEmpty()) return;
         int expected = users.size();
         List<UserEntity> entities = new ArrayList<>(expected);
@@ -59,7 +59,7 @@ public class UserService extends BaseService<UserEntity, UserDTO> implements Use
 
     @Override
     @Transactional
-    public int updateUserByPrimaryKey(UserDTO user) {
+    public int updateUserByPrimaryKey(UserDTO user) throws ServiceException {
         if (user.getId() == null) {
             throw new ServiceException(Constants.ServiceMessage.LOSE_USE_ID);
         }
@@ -72,7 +72,7 @@ public class UserService extends BaseService<UserEntity, UserDTO> implements Use
 
     @Override
     @Transactional
-    public int updateUserByUsername(UserDTO user) {
+    public int updateUserByUsername(UserDTO user) throws ServiceException {
         if (user.getUsername() == null) {
             throw new ServiceException(Constants.ServiceMessage.LOSE_USE_NAME);
         }
@@ -85,7 +85,7 @@ public class UserService extends BaseService<UserEntity, UserDTO> implements Use
 
     @Override
     @Transactional
-    public int deleteByPrimaryKey(int id) {
+    public int deleteByPrimaryKey(int id) throws ServiceException {
         int len = userMapper.deleteByPrimaryKey(id);
         if (len != 1) {
             throw new ServiceException(Constants.ServiceMessage.UN_EXISTS_USER_ID);
@@ -94,7 +94,10 @@ public class UserService extends BaseService<UserEntity, UserDTO> implements Use
     }
 
     @Override
-    public int deleteByUsername(String username) {
+    public int deleteByUsername(String username) throws ServiceException {
+        if (!StringUtils.hasText(username)) {
+            throw new ServiceException(Constants.ServiceMessage.EMPTY_USER_NAME);
+        }
         int len = userMapper.deleteByUsername(username);
         if (len != 1) {
             throw new ServiceException(Constants.ServiceMessage.UN_EXISTS_USER_NAME);
@@ -109,9 +112,9 @@ public class UserService extends BaseService<UserEntity, UserDTO> implements Use
      * @return
      */
     @Override
-    public UserDTO queryUserByUsername(String username) {
-        if (log.isDebugEnabled()) {
-            log.debug("Query user by user name {}", username);
+    public UserDTO queryUserByUsername(String username) throws ServiceException {
+        if (!StringUtils.hasText(username)) {
+            throw new ServiceException(Constants.ServiceMessage.EMPTY_USER_NAME);
         }
         UserEntity entity = userMapper.selectUserByUsername(username);
         return entity == null ? null : entity2Dto(entity);
@@ -124,7 +127,10 @@ public class UserService extends BaseService<UserEntity, UserDTO> implements Use
      * @return
      */
     @Override
-    public UserDTO queryUserWithRolesByUsername(String username) {
+    public UserDTO queryUserWithRolesByUsername(String username) throws ServiceException {
+        if (!StringUtils.hasText(username)) {
+            throw new ServiceException(Constants.ServiceMessage.EMPTY_USER_NAME);
+        }
         UserEntity entity = userMapper.selectUserWithRolesByUsername(username);
         return entity == null ? null : entity2Dto(entity);
     }
