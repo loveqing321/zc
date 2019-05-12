@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="top.zuche.services.system.mapper.UserMapper">
 
-    <resultMap id="userResultMap" type="top.zuche.services.api.dto.UserDTO">
+    <resultMap id="userResultMap" type="top.zuche.services.system.entity.UserEntity">
         <id column="id" property="id" jdbcType="INTEGER"/>
         <result column="merchant_id" property="merchantId" jdbcType="INTEGER"/>
         <result column="username" property="username" jdbcType="VARCHAR"/>
@@ -21,7 +21,7 @@
         <result column="is_deleted" property="isDeleted" jdbcType="INTEGER"/>
     </resultMap>
 
-    <resultMap id="userResultMapWithRoles" type="top.zuche.services.api.dto.UserDTO">
+    <resultMap id="userResultMapWithRoles" type="top.zuche.services.system.entity.UserEntity">
         <id column="id" property="id" jdbcType="INTEGER"/>
         <result column="merchant_id" property="merchantId" jdbcType="INTEGER"/>
         <result column="username" property="username" jdbcType="VARCHAR"/>
@@ -39,7 +39,7 @@
         <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP"/>
         <result column="is_deleted" property="isDeleted" jdbcType="INTEGER"/>
 
-        <collection property="roles" ofType="top.zuche.services.api.dto.RoleDTO">
+        <collection property="roles" ofType="top.zuche.services.system.entity.RoleEntity">
             <id column="role_id" property="id" jdbcType="INTEGER"/>
             <result column="role_name" property="roleName" jdbcType="VARCHAR"/>
             <result column="role_create_user" property="createUser" jdbcType="INTEGER"/>
@@ -62,7 +62,7 @@
       r.modify_user as role_modify_user, r.modify_time as role_modify_time, r.is_deleted as role_is_deleted
     </sql>
 
-    <insert id="insertUser" useGeneratedKeys="true" keyProperty="id" parameterType="top.zuche.services.api.dto.UserDTO" >
+    <insert id="insertUser" useGeneratedKeys="true" keyProperty="id" parameterType="top.zuche.services.system.entity.UserEntity" >
         insert ignore into t_sys_user
         <trim prefix="(" suffix=")" suffixOverrides="," >
             <if test="merchantId != null" >
@@ -165,7 +165,7 @@
         where username = #{username, jdbcType=VARCHAR}
     </delete>
 
-    <update id="updateUserByPrimaryKey" parameterType="top.zuche.services.api.dto.UserDTO" >
+    <update id="updateUserByPrimaryKey" parameterType="top.zuche.services.system.entity.UserEntity" >
         update t_sys_user
         <set>
             <if test="merchantId != null" >
@@ -209,7 +209,7 @@
         where id = #{id, jdbcType=INTEGER}
     </update>
 
-    <update id="updateUserByUsername" parameterType="top.zuche.services.api.dto.UserDTO" >
+    <update id="updateUserByUsername" parameterType="top.zuche.services.system.entity.UserEntity" >
         update t_sys_user
         <set>
             <if test="merchantId != null" >

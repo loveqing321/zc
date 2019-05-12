@@ -5,13 +5,16 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
+import top.zuche.common.base.BaseService;
 import top.zuche.services.api.dto.UserDTO;
 import top.zuche.services.api.exception.ServiceException;
 import top.zuche.services.api.service.UserRpcService;
 import top.zuche.services.system.Constants;
+import top.zuche.services.system.entity.UserEntity;
 import top.zuche.services.system.mapper.UserMapper;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -23,7 +26,7 @@ import java.util.List;
 @Service(interfaceClass = UserRpcService.class)
 @Component("userService")
 @Slf4j
-public class UserService implements UserRpcService {
+public class UserService extends BaseService<UserEntity, UserDTO> implements UserRpcService {
 
     @Resource
     private UserMapper userMapper;
@@ -34,7 +37,7 @@ public class UserService implements UserRpcService {
         if (!StringUtils.hasText(user.getUsername())) {
             throw new ServiceException(Constants.ServiceMessage.EMPTY_USER_NAME);
         }
-        int count = userMapper.insertUser(user);
+        int count = userMapper.insertUser(dto2Entity(user));
         if (count == 0) {
             throw new ServiceException(Constants.ServiceMessage.EXISTS_USER_NAME);
         }
@@ -43,8 +46,11 @@ public class UserService implements UserRpcService {
     @Override
     @Transactional
     public void batchAddUser(List<UserDTO> users) {
+        if (users == null || users.isEmpty()) return;
         int expected = users.size();
-        int actual = userMapper.batchInsertUser(users);
+        List<UserEntity> entities = new ArrayList<>(expected);
+        users.forEach(dto -> { entities.add(dto2Entity(dto)); });
+        int actual = userMapper.batchInsertUser(entities);
         if (expected != actual) {
             throw new ServiceException(Constants.ServiceMessage.EXISTS_USER_NAME);
         }
@@ -56,7 +62,7 @@ public class UserService implements UserRpcService {
         if (user.getId() == null) {
             throw new ServiceException(Constants.ServiceMessage.LOSE_USE_ID);
         }
-        int len = userMapper.updateUserByPrimaryKey(user);
+        int len = userMapper.updateUserByPrimaryKey(dto2Entity(user));
         if (len != 1) {
             throw new ServiceException(Constants.ServiceMessage.UPDATE_USER_FAIL);
         }
@@ -69,7 +75,7 @@ public class UserService implements UserRpcService {
         if (user.getUsername() == null) {
             throw new ServiceException(Constants.ServiceMessage.LOSE_USE_NAME);
         }
-        int len = userMapper.updateUserByUsername(user);
+        int len = userMapper.updateUserByUsername(dto2Entity(user));
         if (len != 1) {
             throw new ServiceException(Constants.ServiceMessage.UPDATE_USER_FAIL);
         }
@@ -103,7 +109,8 @@ public class UserService implements UserRpcService {
      */
     @Override
     public UserDTO queryUserByUsername(String username) {
-        return userMapper.selectUserByUsername(username);
+        UserEntity entity = userMapper.selectUserByUsername(username);
+        return entity == null ? null : entity2Dto(entity);
     }
 
     /**
@@ -114,6 +121,7 @@ public class UserService implements UserRpcService {
      */
     @Override
     public UserDTO queryUserWithRolesByUsername(String username) {
-        return userMapper.selectUserWithRolesByUsername(username);
+        UserEntity entity = userMapper.selectUserWithRolesByUsername(username);
+        return entity == null ? null : entity2Dto(entity);
     }
 }

@@ -1,19 +1,18 @@
-package top.zuche.services.api.dto;
+package top.zuche.services.system.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import top.zuche.common.base.BaseEntity;
 
 import java.io.Serializable;
 
 /**
- * 角色DTO
- *
  * @author lzx
- * @date 2019/5/11 上午10:56
+ * @date 2019/5/12 上午8:22
  */
 @Getter
 @Setter
-public class RoleDTO implements Serializable {
+public class RoleEntity extends BaseEntity implements Serializable {
 
     // 角色ID
     private Integer id;

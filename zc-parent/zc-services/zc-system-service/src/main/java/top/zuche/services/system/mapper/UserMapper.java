@@ -2,6 +2,7 @@ package top.zuche.services.system.mapper;
 
 import org.apache.ibatis.annotations.Param;
 import top.zuche.services.api.dto.UserDTO;
+import top.zuche.services.system.entity.UserEntity;
 
 import java.util.List;
 
@@ -16,18 +17,18 @@ public interface UserMapper {
     /**
      * 插入用户信息
      *
-     * @param user
+     * @param entity
      * @return
      */
-    int insertUser(UserDTO user);
+    int insertUser(UserEntity entity);
 
     /**
      * 批量插入
      *
-     * @param users
+     * @param entities
      * @return
      */
-    int batchInsertUser(List<UserDTO> users);
+    int batchInsertUser(List<UserEntity> entities);
 
     /**
      * 根据主键删除
@@ -48,18 +49,18 @@ public interface UserMapper {
     /**
      * 按照主键更新
      *
-     * @param user
+     * @param entity
      * @return
      */
-    int updateUserByPrimaryKey(UserDTO user);
+    int updateUserByPrimaryKey(UserEntity entity);
 
     /**
      * 按照username更新
      *
-     * @param user
+     * @param entity
      * @return
      */
-    int updateUserByUsername(UserDTO user);
+    int updateUserByUsername(UserEntity entity);
 
     /**
      * 根据用户名查找用户信息
@@ -67,7 +68,7 @@ public interface UserMapper {
      * @param username
      * @return
      */
-    UserDTO selectUserByUsername(@Param("username") String username);
+    UserEntity selectUserByUsername(@Param("username") String username);
 
     /**
      * 根据用户名查找带有角色信息的用户
@@ -75,6 +76,6 @@ public interface UserMapper {
      * @param username
      * @return
      */
-    UserDTO selectUserWithRolesByUsername(@Param("username") String username);
+    UserEntity selectUserWithRolesByUsername(@Param("username") String username);
 
 }

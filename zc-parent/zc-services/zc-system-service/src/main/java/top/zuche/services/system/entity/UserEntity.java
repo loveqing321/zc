@@ -1,20 +1,20 @@
-package top.zuche.services.api.dto;
+package top.zuche.services.system.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import top.zuche.common.base.BaseEntity;
+import top.zuche.services.api.dto.RoleDTO;
 
 import java.io.Serializable;
 import java.util.List;
 
 /**
- * 用户DTO
- *
  * @author lzx
- * @date 2019/5/9 下午8:20
+ * @date 2019/5/12 上午8:21
  */
 @Getter
 @Setter
-public class UserDTO implements Serializable {
+public class UserEntity extends BaseEntity implements Serializable {
 
     // 用户ID
     private Integer id;
@@ -48,9 +48,6 @@ public class UserDTO implements Serializable {
 
     // 密码是否过期 0 - 未过期， 1 / null - 过期
     private Integer credentialsExpired;
-
-    // 是否删除 0 - 未删除  1 / null - 删除
-    private Integer isDeleted;
 
     // 角色列表
     private List<RoleDTO> roles;
