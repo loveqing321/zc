@@ -36,6 +36,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             UserDetailsImpl userDetails = new UserDetailsImpl();
             userDetails.setUsername(userDTO.getUsername());
             userDetails.setPassword(userDTO.getPassword());
+            userDetails.setCname(userDTO.getCname());
             userDetails.setAccountNonExpired(!boolValue(userDTO.getAccountExpired()));
             userDetails.setAccountNonLocked(!boolValue(userDTO.getAccountLocked()));
             userDetails.setCredentialsNonExpired(!boolValue(userDTO.getCredentialsExpired()));

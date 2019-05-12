@@ -18,9 +18,9 @@ import top.zuche.cache.annotation.EnableCache;
         "top.zuche.services.report.mapper"})
 @EnableCache
 @EnableDubboConfiguration
-public class Application {
+public class ServiceApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(Application.class, args);
+        SpringApplication.run(ServiceApplication.class, args);
     }
 }

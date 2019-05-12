@@ -37,10 +37,12 @@ public class UserService extends BaseService<UserEntity, UserDTO> implements Use
         if (!StringUtils.hasText(user.getUsername())) {
             throw new ServiceException(Constants.ServiceMessage.EMPTY_USER_NAME);
         }
-        int count = userMapper.insertUser(dto2Entity(user));
+        UserEntity entity = dto2Entity(user);
+        int count = userMapper.insertUser(entity);
         if (count == 0) {
             throw new ServiceException(Constants.ServiceMessage.EXISTS_USER_NAME);
         }
+        user.setId(entity.getId());
     }
 
     @Override
@@ -72,7 +74,7 @@ public class UserService extends BaseService<UserEntity, UserDTO> implements Use
     @Transactional
     public void updateUserByUsername(UserDTO user) throws ServiceException {
         if (user.getUsername() == null) {
-            throw new ServiceException(Constants.ServiceMessage.LOSE_USE_NAME);
+            throw new ServiceException(Constants.ServiceMessage.LOSE_USER_NAME);
         }
         int len = userMapper.updateUserByUsername(dto2Entity(user));
         if (len != 1) {

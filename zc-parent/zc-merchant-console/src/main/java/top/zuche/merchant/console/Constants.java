@@ -12,6 +12,11 @@ public interface Constants {
     String LOGIN_URL = "/login";
 
     /**
+     * 退出地址
+     */
+    String LOGOUT_URL = "/logout";
+
+    /**
      * 验证码地址
      */
     String VERIFY_CODE_URL = "/verifyCode";

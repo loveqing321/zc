@@ -30,6 +30,7 @@ public class MerchantConfiguration {
         corsConfiguration.setAllowCredentials(true);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration(Constants.LOGIN_URL, corsConfiguration);
+        source.registerCorsConfiguration(Constants.LOGOUT_URL, corsConfiguration);
         source.registerCorsConfiguration("/api/**", corsConfiguration);
         return source;
     }

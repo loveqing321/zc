@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.zuche.services.system.mapper.PermissionMapper">
+
+    <resultMap id="permissionResultMap" type="top.zuche.services.system.entity.PermissionEntity">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="category" property="category" jdbcType="VARCHAR"/>
+        <result column="perm" property="perm" jdbcType="VARCHAR"/>
+        <result column="create_user" property="createUser" jdbcType="INTEGER"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="modify_user" property="modifyUser" jdbcType="INTEGER"/>
+        <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP"/>
+        <result column="is_deleted" property="isDeleted" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+      p.id as id, p.name as name, p.category as category, p.perm as perm, p.create_user as create_user, p.create_time as create_time,
+      p.modify_user as modify_user, p.modify_time as modify_time, p.is_deleted as is_deleted
+    </sql>
+
+    <insert id="insertPermission" useGeneratedKeys="true" keyProperty="id" parameterType="top.zuche.services.system.entity.PermissionEntity" >
+        insert ignore into t_sys_permission
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="name != null and name != ''" >
+                name,
+            </if>
+            <if test="category != null and category != ''" >
+                category,
+            </if>
+            <if test="perm != null and perm != ''" >
+                perm,
+            </if>
+            <if test="createUser != null" >
+                create_user,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="name != null and name != ''" >
+                #{name, jdbcType=VARCHAR},
+            </if>
+            <if test="category != null and category != ''" >
+                #{category, jdbcType=VARCHAR},
+            </if>
+            <if test="perm != null and perm != ''" >
+                #{perm, jdbcType=VARCHAR},
+            </if>
+            <if test="createUser != null" >
+                #{createUser, jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+
+    <insert id="batchInsertPermission" keyProperty="id" useGeneratedKeys="true" parameterType="java.util.List">
+        insert ignore into t_sys_permission
+        (name, category, perm, create_user)
+        values
+        <foreach collection="list" index="index" separator="," item="item">
+            (#{item.name, jdbcType=VARCHAR},
+            #{item.category, jdbcType=VARCHAR},
+            #{item.perm, jdbcType=VARCHAR},
+            #{item.createUser, jdbcType=INTEGER})
+        </foreach>
+    </insert>
+
+    <delete id="deleteByPrimaryKey" parameterType="int">
+        delete from t_sys_permission
+        where id = #{id, jdbcType=INTEGER}
+    </delete>
+
+    <delete id="deleteByName" parameterType="String">
+        delete from t_sys_permission
+        where name = #{name, jdbcType=VARCHAR}
+    </delete>
+
+    <update id="updatePermissionByPrimaryKey" parameterType="top.zuche.services.system.entity.PermissionEntity" >
+        update t_sys_permission
+        <set>
+            <if test="name != null and name != ''" >
+                name = #{name, jdbcType=VARCHAR},
+            </if>
+            <if test="category != null and category != ''" >
+                category = #{category, jdbcType=VARCHAR},
+            </if>
+            <if test="perm != null and perm != ''" >
+                perm = #{perm, jdbcType=VARCHAR},
+            </if>
+            <if test="modifyUser != null" >
+                modify_user = #{modifyUser, jdbcType=INTEGER},
+            </if>
+            <if test="isDeleted != null" >
+                is_deleted = #{isDeleted, jdbcType=INTEGER},
+            </if>
+            modify_time = now()
+        </set>
+        where id = #{id, jdbcType=INTEGER}
+    </update>
+
+    <update id="updatePermissionByName" parameterType="top.zuche.services.system.entity.PermissionEntity" >
+        update t_sys_permission
+        <set>
+            <if test="category != null and category != ''" >
+                category = #{category, jdbcType=VARCHAR},
+            </if>
+            <if test="perm != null and perm != ''" >
+                perm = #{perm, jdbcType=VARCHAR},
+            </if>
+            <if test="modifyUser != null" >
+                modify_user = #{modifyUser, jdbcType=INTEGER},
+            </if>
+            <if test="isDeleted != null" >
+                is_deleted = #{isDeleted, jdbcType=INTEGER},
+            </if>
+            modify_time = now()
+        </set>
+        where name = #{name, jdbcType=VARCHAR}
+    </update>
+
+    <select id="selectPermissionByName" resultMap="permissionResultMap" parameterType="String" >
+        select
+          <include refid="Base_Column_List" />
+        from t_sys_permission p
+        where p.is_deleted = 0
+        and p.name = #{name, jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectPermissionsByRoleName" resultMap="permissionResultMap" parameterType="String" >
+        select
+          <include refid="Base_Column_List" />
+        from t_sys_permission p
+        left join t_sys_role_permission rp
+        on p.id = rp.permission_id
+        left join t_sys_role r
+        on rp.role_id = r.id
+        and r.is_deleted = 0
+        where p.is_deleted = 0
+        and r.role_name = #{roleName, jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectPermissionsByUsername" resultMap="permissionResultMap" parameterType="String" >
+        select
+          <include refid="Base_Column_List" />
+        from t_sys_permission p
+        left join t_sys_role_permission rp
+        on p.id = rp.permission_id
+        left join t_sys_role r
+        on rp.role_id = r.id
+        and r.is_deleted = 0
+        left join t_sys_user_role ur
+        on r.id = ur.role_id
+        left join t_sys_user u
+        on ur.user_id = u.id
+        and u.is_deleted = 0
+        where p.is_deleted = 0
+        and u.username = #{username, jdbcType=VARCHAR}
+    </select>
+
+</mapper>

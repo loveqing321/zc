@@ -29,9 +29,7 @@
 <script>
 import env from '@/libs/env'
 import axios from 'axios'
-import { getCsrfToken, getToken } from '@/libs/util'
-import { mapMutations } from 'vuex'
-
+import { getCsrfToken, getToken, setToken, setUserInfo } from '@/libs/util'
 
 export default {
   data: () => {
@@ -39,16 +37,13 @@ export default {
       imgUrl: null,
       errorMsg: null,
       ruleForm: {
-        username: 'admin',
+        username: '13333201150',
         password: 'admin',
         verifyCode: null
       }
     }
   },
   methods: {
-    ...mapMutations('app', [
-      'setUserInfo'
-    ]),
     changeVerifyCode () {
       this.imgUrl = env.baseURL + '/verifyCode?d=' + new Date().getTime()
     },
@@ -87,8 +82,10 @@ export default {
             this.changeVerifyCode()
           }
         } else {
+          // 设置token
+          setToken(data.token)
           // 登录成功，保存用户信息
-          this.setUserInfo(data)
+          setUserInfo(data.principal)
           this.$router.push({
             name: 'Home'
           })
@@ -96,22 +93,22 @@ export default {
       }).catch((err) => {
         this.$message('error', err)
       })
-    },
-    getUserInfo () {
-
     }
   },
   created () {
+    // 没有token的话，初始化该页面的数据
+    this.changeVerifyCode()
+  },
+  mounted () {
     // 判断是否已经有token，如果有的话，则直接跳转到home
     const token = getToken()
     if (token) {
+      console.log('login', token)
       this.$router.push({
         name: 'Home'
       })
       return
     }
-    // 没有token的话，初始化该页面的数据
-    this.changeVerifyCode()
   }
 }
 </script>

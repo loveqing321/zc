@@ -30,6 +30,25 @@ export const clearCsrfToken = () => {
   return Cookies.remove(CSRF_TOKEN_KEY)
 }
 
+// 设置用户信息
+export const setUserInfo = (principal) => {
+  localStorage.setItem('principal', JSON.stringify(principal))
+}
+
+// 获取用户信息
+export const getUserInfo = () => {
+  const principal = localStorage.getItem('principal')
+  if (principal) {
+    return JSON.parse(principal)
+  }
+  return null
+}
+
+// 清除用户信息
+export const clearUserInfo = () => {
+  localStorage.removeItem('principal')
+}
+
 // forEach方法
 export const forEach = (arr, fn) => {
   if (!arr.length || !fn) return

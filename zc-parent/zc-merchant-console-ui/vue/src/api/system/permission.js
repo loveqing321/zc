@@ -1,8 +1,8 @@
 import axios from '@/libs/http'
 
-export const logout = () => {
+export const getUserDetail = () => {
   return axios.request({
-    url: '/logout',
+    url: '/user/getUserDetail',
     method: 'post'
   })
 }

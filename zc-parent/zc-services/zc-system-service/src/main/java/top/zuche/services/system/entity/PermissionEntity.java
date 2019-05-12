@@ -19,6 +19,9 @@ public class PermissionEntity extends BaseEntity implements Serializable {
     // 许可ID
     private Integer id;
 
+    // 许可名称
+    private String name;
+
     // 许可字符串
     private String perm;
 

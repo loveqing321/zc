@@ -7,7 +7,7 @@ import top.zuche.services.system.entity.RoleEntity;
 import java.util.List;
 
 /**
- * 用户Mapper
+ * 角色Mapper
  *
  * @author lzx
  * @date 2019/5/11 上午11:02
@@ -55,12 +55,28 @@ public interface RoleMapper {
     int updateRoleByPrimaryKey(RoleEntity entity);
 
     /**
-     * 根据id查找信息
+     * 按照角色名更新
      *
-     * @param id
+     * @param entity
      * @return
      */
-    RoleEntity selectRoleById(@Param("id") int id);
+    int updateRoleByRoleName(RoleEntity entity);
+
+    /**
+     * 根据角色名字查找信息
+     *
+     * @param roleName
+     * @return
+     */
+    RoleEntity selectRoleByRoleName(@Param("roleName") String roleName);
+
+    /**
+     * 根据角色名字查找信息，携带权限列表
+     *
+     * @param roleName
+     * @return
+     */
+    RoleEntity selectRoleWithPermissionsByRoleName(@Param("roleName") String roleName);
 
     /**
      * 根据用户名查找该用户的所有角色

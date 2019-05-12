@@ -9,6 +9,7 @@
 import Sidebar from './common/sidebar'
 import Navbar from './common/navbar'
 import AppMain from './common/app-main'
+import { getToken } from '@/libs/util'
 
 export default {
   name: 'Main',
@@ -30,6 +31,14 @@ export default {
 
   },
   mounted () {
+    // 判断是否已经有token，如果有的话，则直接跳转到home
+    const token = getToken()
+    if (!token) {
+      this.$router.push({
+        name: 'login'
+      })
+      return
+    }
   }
 }
 </script>

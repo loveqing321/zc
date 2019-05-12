@@ -70,6 +70,7 @@
 
         <collection property="permissions" ofType="top.zuche.services.system.entity.PermissionEntity">
             <id column="permission_id" property="id" jdbcType="INTEGER"/>
+            <result column="permission_name" property="name" jdbcType="VARCHAR"/>
             <result column="permission_perm" property="perm" jdbcType="VARCHAR"/>
             <result column="permission_category" property="category" jdbcType="VARCHAR"/>
             <result column="permission_create_user" property="createUser" jdbcType="INTEGER"/>
@@ -95,7 +96,8 @@
     <sql id="With_Permission_Column_List" >
       u.id, u.merchant_id, u.username, u.password, u.cname, u.telephone, u.department, u.post, u.account_expired,
       u.account_locked, u.credentials_expired, u.create_user, u.create_time, u.modify_user, u.modify_time, u.is_deleted,
-      p.id as permission_id, p.perm as permission_perm, p.create_user as permission_create_user, p.create_time as permission_create_time,
+      p.id as permission_id, p.name as permission_name, p.category as permission_category, p.perm as permission_perm,
+      p.create_user as permission_create_user, p.create_time as permission_create_time,
       p.modify_user as permission_modify_user, p.modify_time as permission_modify_time, p.is_deleted as permission_is_deleted
     </sql>
 

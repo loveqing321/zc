@@ -12,9 +12,9 @@ import top.zuche.cache.annotation.EnableCache;
 @SpringBootApplication
 @EnableCache
 @EnableDubboConfiguration
-public class Application {
+public class MerchantConsoleApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(Application.class, args);
+        SpringApplication.run(MerchantConsoleApplication.class, args);
     }
 }

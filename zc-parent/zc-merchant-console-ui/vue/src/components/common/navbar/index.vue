@@ -12,7 +12,7 @@
         span(class="btn-bell-badge" v-if="message")
       el-dropdown
         .avatar-wrapper
-          | {{ userName || '未登录'}}
+          | {{ userName}}
           i.el-icon-caret-bottom
         el-dropdown-menu.user-dropdown(slot='dropdown')
           el-dropdown-item
@@ -20,34 +20,48 @@
 </template>
 
 <script>
-import { clearToken } from '@/libs/util'
-import { mapMutations, mapState } from 'vuex'
+import { clearToken, clearCsrfToken, clearUserInfo, getUserInfo } from '@/libs/util'
+import { mapMutations } from 'vuex'
+import { logout } from '@/api/system/system'
 
 export default {
   name: 'Navbar',
   data () {
     return {
-      userName: null,
       fullscreen: false,
       message: 1
     }
   },
   computed: {
-    ...mapState('app', [
-      'userInfo'
-    ])
+    userName () {
+      const userInfo = getUserInfo()
+      if (userInfo && userInfo.cname) {
+        return userInfo.cname
+      }
+      return ''
+    }
   },
   methods: {
     ...mapMutations('app', [
-      'changeSidebarStatus',
-      'setUserInfo'
+      'changeSidebarStatus'
     ]),
-    logout () {
-      clearToken()
-      this.setUserInfo({})
-      this.$router.push({
-        name: 'login'
-      })
+    async logout () {
+      try {
+        await logout()
+      } catch (e) {
+        console.log(e)
+      } finally {
+        // 清除token
+        clearToken()
+        // 清除csrf token
+        clearCsrfToken()
+        // 清除用户信息
+        clearUserInfo()
+        // 跳转到登录页面
+        this.$router.push({
+          name: 'login'
+        })
+      }
     },
     handleClickMenu (item) {
       this.$router.push({
@@ -79,13 +93,6 @@ export default {
         }
       }
       this.fullscreen = !this.fullscreen
-    }
-  },
-  created () {
-    if (!this.userInfo) {
-      this.$router.push({
-        name: 'login'
-      })
     }
   },
   mounted () {

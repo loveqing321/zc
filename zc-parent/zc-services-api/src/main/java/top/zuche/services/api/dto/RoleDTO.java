@@ -21,4 +21,6 @@ public class RoleDTO implements Serializable {
     // 角色名称
     private String roleName;
 
+    // 是否删除 0 - 未删除  1 / null - 删除
+    private Integer isDeleted;
 }

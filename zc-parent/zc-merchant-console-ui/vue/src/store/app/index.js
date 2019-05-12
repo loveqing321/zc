@@ -5,8 +5,8 @@ export default {
     env: null,
     // sidebar状态
     sidebarStatus: true,
-    // 用户信息
-    userInfo: {}
+    // 许可列表
+    permissions: []
   },
   mutations: {
     setEnv (state, newEnv) {
@@ -15,8 +15,8 @@ export default {
     changeSidebarStatus (state, val) {
       state.sidebarStatus = val
     },
-    setUserInfo (state, val) {
-      state.userInfo = val
+    setPermissions (state, val) {
+      state.permissions = val
     }
   }
 }
