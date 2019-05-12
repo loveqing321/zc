@@ -26,10 +26,10 @@
     <!--<defaultCache maxElementsInMemory="10000" eternal="false"-->
                   <!--timeToIdleSeconds="600" timeToLiveSeconds="600" overflowToDisk="true" />-->
 
-    <cache name="zc_system_user" maxElementsInMemory="10000" eternal="true" timeToIdleSeconds="0" timeToLiveSeconds="0" overflowToDisk="true" />
+    <cache name="zc_system_user" maxElementsInMemory="10000" eternal="false" timeToIdleSeconds="600" timeToLiveSeconds="600" overflowToDisk="true" />
 
-    <cache name="zc_system_role" maxElementsInMemory="10000" eternal="true" timeToIdleSeconds="0" timeToLiveSeconds="0" overflowToDisk="true" />
+    <cache name="zc_system_role" maxElementsInMemory="10000" eternal="false" timeToIdleSeconds="600" timeToLiveSeconds="600" overflowToDisk="true" />
 
-    <cache name="zc_system_permission" maxElementsInMemory="10000" eternal="true" timeToIdleSeconds="0" timeToLiveSeconds="0" overflowToDisk="true" />
+    <cache name="zc_system_permission" maxElementsInMemory="10000" eternal="false" timeToIdleSeconds="600" timeToLiveSeconds="600" overflowToDisk="true" />
 
 </ehcache>

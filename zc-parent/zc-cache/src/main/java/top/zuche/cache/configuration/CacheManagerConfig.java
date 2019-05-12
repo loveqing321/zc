@@ -25,6 +25,7 @@ import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 import top.zuche.cache.CacheNames;
 
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -83,19 +84,22 @@ public class CacheManagerConfig {
     private Map<String, RedisCacheConfiguration> redisCacheConfigurations() {
         Map<String, RedisCacheConfiguration> cacheConfigurations = new HashMap<>();
 
-        // 用户缓存 - 不超时缓存
+        // 用户缓存 - 60m缓存
         cacheConfigurations.put(CacheNames.SYSTEM_USER_CACHE, RedisCacheConfiguration.defaultCacheConfig()
+                .entryTtl(Duration.ofMinutes(60))
 //                .disableCachingNullValues()  // 打开disableCachingNullValues的话，当需要缓存null值时，会报错，可以允许null值，通过unless来过滤
                 .serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(keySerializer))
                 .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(valueSerializer)));
 
-        // 角色缓存 - 不超时
+        // 角色缓存 - 60m缓存
         cacheConfigurations.put(CacheNames.SYSTEM_ROLE_CACHE, RedisCacheConfiguration.defaultCacheConfig()
+                .entryTtl(Duration.ofMinutes(60))
                 .serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(keySerializer))
                 .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(valueSerializer)));
 
-        // 许可缓存 - 不超时
+        // 许可缓存 - 60m缓存
         cacheConfigurations.put(CacheNames.SYSTEM_PERMISSION_CACHE, RedisCacheConfiguration.defaultCacheConfig()
+                .entryTtl(Duration.ofMinutes(60))
                 .serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(keySerializer))
                 .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(valueSerializer)));
 
