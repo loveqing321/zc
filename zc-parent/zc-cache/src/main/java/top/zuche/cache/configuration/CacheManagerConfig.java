@@ -23,9 +23,8 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.RedisSerializationContext;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
-import top.zuche.cache.RedisCacheNames;
+import top.zuche.cache.CacheNames;
 
-import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -84,45 +83,19 @@ public class CacheManagerConfig {
     private Map<String, RedisCacheConfiguration> redisCacheConfigurations() {
         Map<String, RedisCacheConfiguration> cacheConfigurations = new HashMap<>();
 
-        // 10分钟缓存
-        cacheConfigurations.put(RedisCacheNames.CACHE_10MIN, RedisCacheConfiguration.defaultCacheConfig()
-                .entryTtl(Duration.ofMinutes(10))
-                .disableCachingNullValues()
+        // 用户缓存 - 不超时缓存
+        cacheConfigurations.put(CacheNames.SYSTEM_USER_CACHE, RedisCacheConfiguration.defaultCacheConfig()
+//                .disableCachingNullValues()  // 打开disableCachingNullValues的话，当需要缓存null值时，会报错，可以允许null值，通过unless来过滤
                 .serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(keySerializer))
                 .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(valueSerializer)));
 
-        // 15分钟缓存
-        cacheConfigurations.put(RedisCacheNames.CACHE_15MIN, RedisCacheConfiguration.defaultCacheConfig()
-                .entryTtl(Duration.ofMinutes(15))
-                .disableCachingNullValues()
+        // 角色缓存 - 不超时
+        cacheConfigurations.put(CacheNames.SYSTEM_ROLE_CACHE, RedisCacheConfiguration.defaultCacheConfig()
                 .serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(keySerializer))
                 .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(valueSerializer)));
 
-        // 20分钟缓存
-        cacheConfigurations.put(RedisCacheNames.CACHE_20MIN, RedisCacheConfiguration.defaultCacheConfig()
-                .entryTtl(Duration.ofMinutes(20))
-                .disableCachingNullValues()
-                .serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(keySerializer))
-                .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(valueSerializer)));
-
-        // 30分钟缓存
-        cacheConfigurations.put(RedisCacheNames.CACHE_30MIN, RedisCacheConfiguration.defaultCacheConfig()
-                .entryTtl(Duration.ofMinutes(30))
-                .disableCachingNullValues()
-                .serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(keySerializer))
-                .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(valueSerializer)));
-
-        // 60分钟缓存
-        cacheConfigurations.put(RedisCacheNames.CACHE_60MIN, RedisCacheConfiguration.defaultCacheConfig()
-                .entryTtl(Duration.ofMinutes(60))
-                .disableCachingNullValues()
-                .serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(keySerializer))
-                .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(valueSerializer)));
-
-        // 180分钟缓存
-        cacheConfigurations.put(RedisCacheNames.CACHE_180MIN, RedisCacheConfiguration.defaultCacheConfig()
-                .entryTtl(Duration.ofMinutes(180))
-                .disableCachingNullValues()
+        // 许可缓存 - 不超时
+        cacheConfigurations.put(CacheNames.SYSTEM_PERMISSION_CACHE, RedisCacheConfiguration.defaultCacheConfig()
                 .serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(keySerializer))
                 .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(valueSerializer)));
 

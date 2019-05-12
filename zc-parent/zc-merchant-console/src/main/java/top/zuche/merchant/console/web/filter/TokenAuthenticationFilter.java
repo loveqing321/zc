@@ -12,9 +12,12 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.*;
 import org.springframework.security.web.util.matcher.RequestMatcher;
+import org.springframework.util.StringUtils;
 import org.springframework.web.filter.GenericFilterBean;
 import top.zuche.merchant.console.utils.TokenUtil;
 import top.zuche.merchant.console.web.security.TokenAuthenticationToken;
+import top.zuche.merchant.console.web.security.exception.TokenExpiredException;
+import top.zuche.merchant.console.web.security.exception.TokenNotFoundException;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -23,6 +26,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Token认证过滤器，在UsernamePasswordAuthenticationFilter之后。
@@ -36,6 +40,8 @@ import java.io.IOException;
 public class TokenAuthenticationFilter extends GenericFilterBean {
 
     private RequestMatcher loginRequestMatcher;
+
+    private List<RequestMatcher> ignoreRequestMatchers;
 
     private boolean continueChainBeforeSuccessfulAuthentication = false;
 
@@ -54,12 +60,43 @@ public class TokenAuthenticationFilter extends GenericFilterBean {
         HttpServletRequest request = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) res;
 
-        // 如果不需要认证，直接忽略
-        if (!requiresAuthentication(request, response)) {
+        // 过滤掉忽略token验证的请求
+        if (ignoreTokenAuthentication(request)) {
             chain.doFilter(request, response);
             return;
         }
 
+        // 该过滤器主要完成两个工作:
+        // 1. 执行登录操作的认证过程
+        // 2. 对其他地址进行token验证，如果请求不携带token，直接返回失败；携带token，但是SecurityContext中的认证对象为空，则返回token超时；
+        if (requiresAuthentication(request, response)) {
+            doTokenAuthentication(request, response, chain);
+        } else {
+            doTokenValidation(request, response, chain);
+        }
+    }
+
+    /**
+     * 是否是忽略认证的请求
+     *
+     * @param request
+     * @return
+     */
+    private boolean ignoreTokenAuthentication(HttpServletRequest request) {
+        if (ignoreRequestMatchers == null || ignoreRequestMatchers.isEmpty()) return false;
+        return ignoreRequestMatchers.stream().anyMatch(requestMatcher -> requestMatcher.matches(request));
+    }
+
+    /**
+     * 执行认证过程
+     *
+     * @param request
+     * @param response
+     * @param chain
+     * @throws IOException
+     * @throws ServletException
+     */
+    private void doTokenAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
         try {
             // 如果是登录请求，那么处理登录中的用户名，密码等；
             Authentication authResult = attemptAuthentication(request, response);
@@ -77,6 +114,28 @@ public class TokenAuthenticationFilter extends GenericFilterBean {
         } catch (AuthenticationException failed) {
             // Authentication failed
             unsuccessfulAuthentication(request, response, failed);
+        }
+    }
+
+    /**
+     * 执行token验证工作
+     *
+     * @param request
+     * @param response
+     * @param chain
+     * @throws IOException
+     * @throws ServletException
+     */
+    private void doTokenValidation(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String token = TokenUtil.getTokenFromRequest(request);
+        // 请求不存在token，直接返回token不存在
+        if (!StringUtils.hasText(token)) {
+            unsuccessfulAuthentication(request, response, new TokenNotFoundException());
+        } else if (authentication == null) { // 如果token存在，但认证对象不存在，说明token超时了
+            unsuccessfulAuthentication(request, response, new TokenExpiredException());
+        } else {  // 其他情况，正常通过
+            chain.doFilter(request, response);
         }
     }
 

@@ -12,6 +12,7 @@ import org.springframework.security.web.context.SaveContextOnUpdateOrErrorRespon
 import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.util.StringUtils;
 import org.springframework.web.util.WebUtils;
+import top.zuche.merchant.console.configuration.MerchantProperties;
 import top.zuche.merchant.console.utils.TokenUtil;
 
 import javax.servlet.http.HttpServletRequest;
@@ -28,17 +29,27 @@ import java.util.concurrent.TimeUnit;
 public class RedisSecurityContextRepository implements SecurityContextRepository {
 
     // 权限上下文key
-    private static final String SECURITY_CONTEXT_KEY = "security_context_%s";
+    private static final String SECURITY_CONTEXT_KEY = "zc_security_context_%s";
 
     // 权限超时 30分钟 IDLE
-    private static final int SECURITY_CONTEXT_TIMEOUT = 30;
+    private static final int DEFAULT_SECURITY_CONTEXT_TIMEOUT = 30;
+
+    private int securityContextTimeout = DEFAULT_SECURITY_CONTEXT_TIMEOUT;
 
     private AuthenticationTrustResolver trustResolver = new AuthenticationTrustResolverImpl();
 
     private RedisTemplate redisTemplate;
 
-    public RedisSecurityContextRepository(RedisTemplate redisTemplate) {
+    private MerchantProperties merchantProperties;
+
+    public RedisSecurityContextRepository(RedisTemplate redisTemplate, MerchantProperties merchantProperties) {
         this.redisTemplate = redisTemplate;
+        this.merchantProperties = merchantProperties;
+        // 设置token超时
+        Integer tokenTtl = merchantProperties.getTokenTtl();
+        if (tokenTtl != null && tokenTtl > 0) {
+            this.securityContextTimeout = tokenTtl;
+        }
     }
 
     @Override
@@ -112,7 +123,7 @@ public class RedisSecurityContextRepository implements SecurityContextRepository
         if (context == null) {
             redisTemplate.delete(securityContextKey(token));
         } else {
-            redisTemplate.opsForValue().set(securityContextKey(token), context, SECURITY_CONTEXT_TIMEOUT, TimeUnit.MINUTES);
+            redisTemplate.opsForValue().set(securityContextKey(token), context, securityContextTimeout, TimeUnit.MINUTES);
         }
     }
 

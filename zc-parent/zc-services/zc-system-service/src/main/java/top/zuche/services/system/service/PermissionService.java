@@ -2,9 +2,13 @@ package top.zuche.services.system.service;
 
 import com.alibaba.dubbo.config.annotation.Service;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
+import top.zuche.cache.CacheNames;
 import top.zuche.common.base.BaseService;
 import top.zuche.services.api.dto.PermissionDTO;
 import top.zuche.services.api.exception.ServiceException;
@@ -25,6 +29,7 @@ import java.util.stream.Collectors;
 @Service(interfaceClass = PermissionRpcService.class)
 @Component("permissionService")
 @Slf4j
+@CacheConfig(cacheNames = CacheNames.SYSTEM_PERMISSION_CACHE)
 public class PermissionService extends BaseService<PermissionEntity, PermissionDTO> implements PermissionRpcService {
 
     @Resource
@@ -32,6 +37,7 @@ public class PermissionService extends BaseService<PermissionEntity, PermissionD
 
     @Override
     @Transactional
+    @CacheEvict(allEntries = true)
     public void addPermission(PermissionDTO permission) throws ServiceException {
         if (!StringUtils.hasText(permission.getName())) {
             throw new ServiceException(Constants.ServiceMessage.EMPTY_PERMISSION_NAME);
@@ -46,6 +52,7 @@ public class PermissionService extends BaseService<PermissionEntity, PermissionD
 
     @Override
     @Transactional
+    @CacheEvict(allEntries = true)
     public void batchAddPermission(List<PermissionDTO> permissions) throws ServiceException {
         if (permissions == null || permissions.isEmpty()) return;
         int expected = permissions.size();
@@ -59,6 +66,7 @@ public class PermissionService extends BaseService<PermissionEntity, PermissionD
 
     @Override
     @Transactional
+    @CacheEvict(allEntries = true)
     public void updatePermissionByPrimaryKey(PermissionDTO permission) throws ServiceException {
         if (permission.getId() == null) {
             throw new ServiceException(Constants.ServiceMessage.LOSE_PERMISSION_ID);
@@ -71,6 +79,7 @@ public class PermissionService extends BaseService<PermissionEntity, PermissionD
 
     @Override
     @Transactional
+    @CacheEvict(allEntries = true)
     public void updatePermissionByName(PermissionDTO permission) throws ServiceException {
         if (permission.getName() == null) {
             throw new ServiceException(Constants.ServiceMessage.LOSE_PERMISSION_NAME);
@@ -92,6 +101,7 @@ public class PermissionService extends BaseService<PermissionEntity, PermissionD
 
     @Override
     @Transactional
+    @CacheEvict(allEntries = true)
     public void deleteByName(String name) throws ServiceException {
         if (!StringUtils.hasText(name)) {
             throw new ServiceException(Constants.ServiceMessage.EMPTY_PERMISSION_NAME);
@@ -103,7 +113,6 @@ public class PermissionService extends BaseService<PermissionEntity, PermissionD
     }
 
     @Override
-    @Transactional
     public PermissionDTO queryPermissionByName(String name) throws ServiceException {
         if (!StringUtils.hasText(name)) {
             throw new ServiceException(Constants.ServiceMessage.EMPTY_PERMISSION_NAME);
@@ -125,6 +134,7 @@ public class PermissionService extends BaseService<PermissionEntity, PermissionD
     }
 
     @Override
+    @Cacheable(key = "#root.targetClass + '.' + #root.methodName + '.' + #p0")
     public List<PermissionDTO> queryPermissionsByUsername(String username) throws ServiceException {
         if (!StringUtils.hasText(username)) {
             throw new ServiceException(Constants.ServiceMessage.EMPTY_USER_NAME);

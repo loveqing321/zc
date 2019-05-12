@@ -44,7 +44,7 @@ public class VerifyCodeGenerator {
         for (int i = 0; i < 4; i++) {
             String rand = String.valueOf(random.nextInt(10));
             sb.append(rand);
-            g.setColor(new Color(50 + random.nextInt(110), 50 + random.nextInt(110), 50 + random.nextInt(110)));
+            g.setColor(getRandColor(10, 120));
             g.drawString(rand, 13 * i + 6, 22);
         }
         g.dispose();

@@ -104,7 +104,7 @@ class HttpRequest {
           Message({ type: 'error', message: '请求出错，状态码：' + error.response.status })
         }
       }
-      return Promise.reject(error)
+      return Promise.reject({ message: error })
     })
     return instance.request(options)
   }

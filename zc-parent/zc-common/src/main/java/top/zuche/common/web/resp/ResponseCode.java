@@ -22,16 +22,15 @@ public enum ResponseCode {
     DISABLED_ACCOUNT(105, "账户被禁用"),
     INVALID_VERIFY_CODE(106, "验证码无效"),
     EXPIRED_VERIFY_CODE(107, "验证码过期"),
-    EXPIRED_TOKEN(108, "Token过期"),
-    TOKEN_NOT_FOUND(109, "Token不存在"),
+    EXPIRED_TOKEN(108, "Token过期，请重新登录"),
+    TOKEN_NOT_FOUND(109, "Token不存在，请先登录"),
     LOGIN_FAIL(199, "登录失败"),
 
     // 授权类响应码范围 200 - 300
     MISSING_CSRF_TOKEN(200, "缺少CSRF Token"),
     INVALID_CSRF_TOKEN(201, "CSRF Token无效"),
 
-    ACCESS_DENIED(299, "访问拒绝");
-
+    ACCESS_DENIED(299, "拒绝访问");
 
 
     // 业务类响应码范围 400 - 500

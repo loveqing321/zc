@@ -29,7 +29,7 @@ export default new Router({
           icon: 'fa fa-car',
           component: require(`@/components/modules/dashboard`),
           meta: {
-            desc: '租车'
+            desc: '租车',
           },
           children: [
             {
@@ -170,11 +170,11 @@ export default new Router({
               }
             },
             {
-              path: '/system/function',
-              name: 'function',
+              path: '/system/permission',
+              name: 'permission',
               component: require(`@/components/modules/dashboard`),
               meta: {
-                desc: '功能管理'
+                desc: '权限管理'
               }
             },
             {

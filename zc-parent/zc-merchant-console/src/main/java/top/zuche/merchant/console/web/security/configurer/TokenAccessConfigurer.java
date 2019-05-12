@@ -9,8 +9,13 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.util.matcher.RequestMatcher;
 import top.zuche.merchant.console.web.filter.TokenAuthenticationFilter;
 import top.zuche.merchant.console.web.security.TokenLogoutHandler;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Token访问配置，用于构建TokenAuthenticationFilter
@@ -22,6 +27,8 @@ public class TokenAccessConfigurer<H extends HttpSecurityBuilder<H>> extends Abs
 
     private String loginUrl;
 
+    private String[] ignoreUrls;
+
     private String usernameParameter;
 
     private String passwordParameter;
@@ -32,6 +39,11 @@ public class TokenAccessConfigurer<H extends HttpSecurityBuilder<H>> extends Abs
 
     public TokenAccessConfigurer<H> loginUrl(String loginUrl) {
         this.loginUrl = loginUrl;
+        return this;
+    }
+
+    public TokenAccessConfigurer<H> ignoreUrls(String... ignoreUrls) {
+        this.ignoreUrls = ignoreUrls;
         return this;
     }
 
@@ -55,6 +67,18 @@ public class TokenAccessConfigurer<H extends HttpSecurityBuilder<H>> extends Abs
         return this;
     }
 
+    @Override
+    @SuppressWarnings("unchecked")
+    public void init(H http) throws Exception {
+        super.init(http);
+        // 添加退出处理
+        SecurityContextRepository securityContextRepository = http.getSharedObject(SecurityContextRepository.class);
+        LogoutConfigurer<H> logoutConfigurer = http.getConfigurer(LogoutConfigurer.class);
+        if (logoutConfigurer != null) {
+            logoutConfigurer.addLogoutHandler(new TokenLogoutHandler(securityContextRepository));
+        }
+    }
+
     @SuppressWarnings("unchecked")
     @Override
     public void configure(H http) throws Exception {
@@ -63,6 +87,13 @@ public class TokenAccessConfigurer<H extends HttpSecurityBuilder<H>> extends Abs
             throw new Exception("Must special the login url.");
         }
         authFilter.setLoginRequestMatcher(new AntPathRequestMatcher(loginUrl, "POST"));
+        if (ignoreUrls != null && ignoreUrls.length > 0) {
+            List<RequestMatcher> ignoreRequestMatchers = new ArrayList<>(ignoreUrls.length);
+            Arrays.stream(ignoreUrls).forEach(ignoreUrl -> {
+                ignoreRequestMatchers.add(new AntPathRequestMatcher(ignoreUrl));
+            });
+            authFilter.setIgnoreRequestMatchers(ignoreRequestMatchers);
+        }
         if (usernameParameter != null) {
             authFilter.setUsernameParameter(usernameParameter);
         }
@@ -74,12 +105,6 @@ public class TokenAccessConfigurer<H extends HttpSecurityBuilder<H>> extends Abs
         }
         if (failureHandler != null) {
             authFilter.setFailureHandler(failureHandler);
-        }
-        // 添加退出处理
-        SecurityContextRepository securityContextRepository = http.getSharedObject(SecurityContextRepository.class);
-        LogoutConfigurer<H> logoutConfigurer = http.getConfigurer(LogoutConfigurer.class);
-        if (logoutConfigurer != null) {
-            logoutConfigurer.addLogoutHandler(new TokenLogoutHandler(securityContextRepository));
         }
 
         authFilter = postProcess(authFilter);

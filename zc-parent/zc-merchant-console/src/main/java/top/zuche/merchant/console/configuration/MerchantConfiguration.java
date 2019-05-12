@@ -1,11 +1,14 @@
 package top.zuche.merchant.console.configuration;
 
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.access.PermissionEvaluator;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import top.zuche.merchant.console.Constants;
+import top.zuche.merchant.console.web.security.evaluator.PermissionEvaluatorImpl;
 import top.zuche.merchant.console.web.security.verifycode.repository.CookieVerifyCodeRepository;
 import top.zuche.merchant.console.web.security.verifycode.repository.VerifyCodeRepository;
 
@@ -16,6 +19,7 @@ import top.zuche.merchant.console.web.security.verifycode.repository.VerifyCodeR
  * @date 2019/5/10 下午12:13
  */
 @Configuration
+@EnableConfigurationProperties(MerchantProperties.class)
 public class MerchantConfiguration {
 
     /**
@@ -38,5 +42,10 @@ public class MerchantConfiguration {
     @Bean
     public VerifyCodeRepository verifyCodeRepository() {
         return new CookieVerifyCodeRepository();
+    }
+
+    @Bean
+    public PermissionEvaluator permissionEvaluator() {
+        return new PermissionEvaluatorImpl();
     }
 }

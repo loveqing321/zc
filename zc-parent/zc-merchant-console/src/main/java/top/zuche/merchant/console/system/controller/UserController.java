@@ -25,33 +25,7 @@ import java.io.PrintWriter;
  */
 @Controller
 @Slf4j
-@RequestMapping("/user")
+@RequestMapping("/api/user")
 public class UserController {
 
-    /**
-     * Spring security 直接请求登录地址，屏蔽掉，提示通过首页跳转。
-     * @return
-     */
-    @RequestMapping(value = "/getUserDetail", method = RequestMethod.GET)
-    public void getUserDetail(HttpServletRequest request, HttpServletResponse response) {
-        String contextPath = "/" + request.getServletContext().getContextPath();
-        response.setContentType("text/html; charset=UTF-8");
-        StringBuilder sb = new StringBuilder();
-        sb.append("<html>");
-        sb.append("<body>");
-        sb.append("<p>请直接访问首页 ");
-        sb.append("<a href='").append(contextPath).append("'>");
-        sb.append("Home");
-        sb.append("</a></p>");
-        sb.append("</body>");
-        sb.append("</html>");
-        try {
-            PrintWriter writer = response.getWriter();
-            writer.write(sb.toString());
-            writer.flush();
-            writer.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 }

@@ -10,6 +10,8 @@ import Sidebar from './common/sidebar'
 import Navbar from './common/navbar'
 import AppMain from './common/app-main'
 import { getToken } from '@/libs/util'
+import { getUserPermissions } from '@/api/system/permission'
+import { mapMutations } from 'vuex'
 
 export default {
   name: 'Main',
@@ -23,15 +25,26 @@ export default {
     }
   },
   methods: {
+    ...mapMutations('app', [
+      'setPermissions'
+    ]),
+    async init () {
+      try {
+        // 1. 获取许可信息，用于过滤菜单
+        const perms = await getUserPermissions()
+        this.setPermissions(perms)
+        // 2.
+        console.log(perms)
+
+      } catch (e) {
+        this.$message.error(e.message)
+      }
+    }
   },
   created () {
-    // 获取用户信息
-
-    // 获取
-
   },
   mounted () {
-    // 判断是否已经有token，如果有的话，则直接跳转到home
+    // 1. 判断是否已经有token，如果有的话，则直接跳转到home
     const token = getToken()
     if (!token) {
       this.$router.push({
@@ -39,6 +52,9 @@ export default {
       })
       return
     }
+
+    // 2. 必要的数据初始化
+    this.init()
   }
 }
 </script>

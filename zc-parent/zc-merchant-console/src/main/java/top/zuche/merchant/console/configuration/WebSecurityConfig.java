@@ -33,6 +33,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Resource(name = "userDetailsServiceImpl")
     private UserDetailsService userDetailsService;
 
+    @Resource
+    private MerchantProperties merchantProperties;
+
     /**
      * 配置认证管理器Builder
      * @param auth
@@ -50,9 +53,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
      */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-
         // 基于Redis的token权限上下文存储
-        RedisSecurityContextRepository securityContextRepository = new RedisSecurityContextRepository(redisTemplate);
+        RedisSecurityContextRepository securityContextRepository = new RedisSecurityContextRepository(redisTemplate, merchantProperties);
 
         http.securityContext().securityContextRepository(securityContextRepository)
                 .and()
@@ -63,12 +65,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .apply(new VerifyCodeConfigurer<>()).loginUrl(Constants.LOGIN_URL).verifyCodeParameter("verifyCode")  // 验证码过滤器
                 .failureHandler(new AuthenticationFailureHandlerImpl())  // 指定验证码失败处理
                 .and()
-                .apply(new TokenAccessConfigurer<>()).loginUrl(Constants.LOGIN_URL)
+                .apply(new TokenAccessConfigurer<>()).loginUrl(Constants.LOGIN_URL).ignoreUrls(Constants.VERIFY_CODE_URL)
                 .usernameParameter("username").passwordParameter("password")  // 指定表单登录的用户名密码参数
                 .failureHandler(new AuthenticationFailureHandlerImpl())  // 指定登录失败处理
                 .successHandler(new AuthenticationSuccessHandlerImpl())  // 指定登录成功处理
                 .and()
-                .logout().logoutUrl("/logout").logoutSuccessHandler(new LogoutSuccessHandlerImpl()).permitAll()  // 退出不需要做权限控制
+                .logout().logoutUrl(Constants.LOGOUT_URL).logoutSuccessHandler(new LogoutSuccessHandlerImpl()).permitAll()  // 退出不需要做权限控制
                 .and()
                 .exceptionHandling().accessDeniedHandler(new AccessDeniedHandlerImpl()) // 异常处理
                 .and()

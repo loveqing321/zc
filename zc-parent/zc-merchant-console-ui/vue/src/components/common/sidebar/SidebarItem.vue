@@ -2,7 +2,7 @@
   div
     template(v-for='item in routes')
       el-submenu(
-        v-if='validParentRoute(item, actions)'
+        v-if='validParentRoute(item)'
         :index='item.name'
         :key='item.path'
       )
@@ -15,7 +15,7 @@
           :key='item.name'
         )
       router-link(
-        v-else-if='validRoute(item, actions)'
+        v-else-if='validRoute(item)'
         :to="item.path"
         :key='item.path'
       )
@@ -25,6 +25,8 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
   name: 'SidebarItem',
   props: {
@@ -34,22 +36,29 @@ export default {
     }
   },
   computed: {
-    actions () {
-      return ['ALL']
-    }
-  },
-  methods: {
-    validParentRoute (item, actions) {
-      if (!item.children || item.children.length === 0) {
-        return false
+    ...mapState('app', [
+      'permissions'
+    ]),
+    validParentRoute () {
+      return (item) => {
+        if (!item.children || item.children.length === 0) {
+          return false
+        }
+        if (item.hidden) return false
+        if (this.permissions.indexOf('*') >= 0) return true
+        if (!item.meta || !item.meta.perm) return true
+        return this.permissions.indexOf(item.meta.perm) >= 0
       }
-      return this.validRoute(item, actions)
     },
-    validRoute (item, actions) {
-      return !item.hidden && (actions.indexOf('ALL') >= 0 || actions.indexOf(item.meta && item.meta.actionId) >= 0)
+    validRoute (item) {
+      return (item) => {
+        if (item.hidden) return false
+        if (this.permissions.indexOf('*') >= 0) return true
+        if (!item.meta || !item.meta.perm) return true
+        return this.permissions.indexOf(item.meta.perm) >= 0
+      }
     }
   }
-
 }
 </script>
 

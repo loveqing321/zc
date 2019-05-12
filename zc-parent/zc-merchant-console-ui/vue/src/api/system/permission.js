@@ -1,8 +1,8 @@
 import axios from '@/libs/http'
 
-export const getUserDetail = () => {
+export const getUserPermissions = () => {
   return axios.request({
-    url: '/user/getUserDetail',
+    url: '/api/permission/getUserPermissions',
     method: 'post'
   })
 }
