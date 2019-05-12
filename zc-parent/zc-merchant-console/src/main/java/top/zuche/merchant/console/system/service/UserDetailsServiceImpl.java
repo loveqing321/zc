@@ -1,6 +1,8 @@
 package top.zuche.merchant.console.system.service;
 
 import com.alibaba.dubbo.config.annotation.Reference;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -9,6 +11,9 @@ import top.zuche.merchant.console.system.dto.UserDetailsImpl;
 import top.zuche.services.api.dto.UserDTO;
 import top.zuche.services.api.exception.ServiceException;
 import top.zuche.services.api.service.UserRpcService;
+
+import java.util.Collection;
+import java.util.stream.Collectors;
 
 /**
  * Spring Security UserDetailsService实现
@@ -39,6 +44,11 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             userDetails.setEnabled(!boolValue(userDTO.getIsDeleted()));
             userDetails.setTelephone(userDTO.getTelephone());
             userDetails.setPost(userDTO.getPost());
+
+            if (userDTO.getRoles() != null) {
+                Collection<GrantedAuthority> authorities = userDTO.getRoles().stream().map(role -> new SimpleGrantedAuthority(role.getRoleName())).collect(Collectors.toList());
+                userDetails.setAuthorities(authorities);
+            }
             return userDetails;
         } catch (ServiceException e) {
             throw new UsernameNotFoundException(null);
