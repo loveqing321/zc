@@ -9,8 +9,6 @@ import top.zuche.merchant.console.system.dto.UserDetailsImpl;
 import top.zuche.services.api.dto.UserDTO;
 import top.zuche.services.api.service.UserRpcService;
 
-import javax.annotation.Resource;
-
 /**
  * Spring Security UserDetailsService实现
  * @author lzx
@@ -25,6 +23,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         UserDTO userDTO = userRpcService.queryUserByUsername(username);
+        if (userDTO == null) {
+            return null;
+        }
         UserDetailsImpl userDetails = new UserDetailsImpl();
         userDetails.setUsername(userDTO.getUsername());
         userDetails.setPassword(userDTO.getPassword());
@@ -37,8 +38,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         userDetails.setTelephone(userDTO.getTelephone());
         userDetails.setPost(userDTO.getPost());
 
-
-        return null;
+        return userDetails;
     }
 
     /**

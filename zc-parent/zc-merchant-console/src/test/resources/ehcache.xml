@@ -26,22 +26,22 @@
     <defaultCache maxElementsInMemory="10000" eternal="false"
                   timeToIdleSeconds="600" timeToLiveSeconds="600" overflowToDisk="true" />
 
-    <cache name="cache:10m" maxElementsInMemory="10000" eternal="false"
+    <cache name="cache_10m" maxElementsInMemory="10000" eternal="false"
            timeToIdleSeconds="600" timeToLiveSeconds="600" overflowToDisk="true" />
 
-    <cache name="cache:15m" maxElementsInMemory="10000" eternal="false"
+    <cache name="cache_15m" maxElementsInMemory="10000" eternal="false"
            timeToIdleSeconds="900" timeToLiveSeconds="900" overflowToDisk="true" />
 
-    <cache name="cache:20m" maxElementsInMemory="10000" eternal="false"
+    <cache name="cache_20m" maxElementsInMemory="10000" eternal="false"
            timeToIdleSeconds="1200" timeToLiveSeconds="1200" overflowToDisk="true" />
 
-    <cache name="cache:30m" maxElementsInMemory="10000" eternal="false"
+    <cache name="cache_30m" maxElementsInMemory="10000" eternal="false"
            timeToIdleSeconds="1800" timeToLiveSeconds="1800" overflowToDisk="true" />
 
-    <cache name="cache:60m" maxElementsInMemory="10000" eternal="false"
+    <cache name="cache_60m" maxElementsInMemory="10000" eternal="false"
            timeToIdleSeconds="3600" timeToLiveSeconds="3600" overflowToDisk="true" />
 
-    <cache name="cache:180m" maxElementsInMemory="10000" eternal="false"
+    <cache name="cache_180m" maxElementsInMemory="10000" eternal="false"
            timeToIdleSeconds="10800" timeToLiveSeconds="10800" overflowToDisk="true" />
 
 </ehcache>

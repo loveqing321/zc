@@ -1,5 +1,6 @@
 package top.zuche.services;
 
+import com.alibaba.dubbo.spring.boot.annotation.EnableDubboConfiguration;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -16,6 +17,7 @@ import top.zuche.cache.annotation.EnableCache;
         "top.zuche.services.payment.mapper",
         "top.zuche.services.report.mapper"})
 @EnableCache
+@EnableDubboConfiguration
 public class Application {
 
     public static void main(String[] args) {

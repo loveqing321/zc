@@ -18,7 +18,7 @@ import java.util.List;
  */
 @SpringBootTest
 @RunWith(SpringRunner.class)
-//@Transactional
+@Transactional
 public class UserServiceTest {
 
     @Resource

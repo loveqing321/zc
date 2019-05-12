@@ -26,6 +26,7 @@ import java.util.List;
 @Service(interfaceClass = UserRpcService.class)
 @Component("userService")
 @Slf4j
+@Transactional
 public class UserService extends BaseService<UserEntity, UserDTO> implements UserRpcService {
 
     @Resource
@@ -109,6 +110,9 @@ public class UserService extends BaseService<UserEntity, UserDTO> implements Use
      */
     @Override
     public UserDTO queryUserByUsername(String username) {
+        if (log.isDebugEnabled()) {
+            log.debug("Query user by user name {}", username);
+        }
         UserEntity entity = userMapper.selectUserByUsername(username);
         return entity == null ? null : entity2Dto(entity);
     }
