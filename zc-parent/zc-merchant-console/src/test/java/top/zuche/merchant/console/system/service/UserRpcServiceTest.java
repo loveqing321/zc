@@ -7,6 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 import top.zuche.services.api.dto.UserDTO;
+import top.zuche.services.api.exception.ServiceException;
 import top.zuche.services.api.service.UserRpcService;
 
 import java.util.ArrayList;
@@ -25,7 +26,7 @@ public class UserRpcServiceTest {
     private UserRpcService userRpcService;
 
     @Test
-    public void batchAddUser() {
+    public void batchAddUser() throws ServiceException {
         List<UserDTO> users = new ArrayList<>();
         UserDTO user1 = new UserDTO();
         user1.setMerchantId(1);
