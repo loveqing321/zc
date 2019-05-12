@@ -26,7 +26,6 @@ import java.util.List;
 @Service(interfaceClass = UserRpcService.class)
 @Component("userService")
 @Slf4j
-@Transactional
 public class UserService extends BaseService<UserEntity, UserDTO> implements UserRpcService {
 
     @Resource
@@ -59,7 +58,7 @@ public class UserService extends BaseService<UserEntity, UserDTO> implements Use
 
     @Override
     @Transactional
-    public int updateUserByPrimaryKey(UserDTO user) throws ServiceException {
+    public void updateUserByPrimaryKey(UserDTO user) throws ServiceException {
         if (user.getId() == null) {
             throw new ServiceException(Constants.ServiceMessage.LOSE_USE_ID);
         }
@@ -67,12 +66,11 @@ public class UserService extends BaseService<UserEntity, UserDTO> implements Use
         if (len != 1) {
             throw new ServiceException(Constants.ServiceMessage.UPDATE_USER_FAIL);
         }
-        return len;
     }
 
     @Override
     @Transactional
-    public int updateUserByUsername(UserDTO user) throws ServiceException {
+    public void updateUserByUsername(UserDTO user) throws ServiceException {
         if (user.getUsername() == null) {
             throw new ServiceException(Constants.ServiceMessage.LOSE_USE_NAME);
         }
@@ -80,21 +78,19 @@ public class UserService extends BaseService<UserEntity, UserDTO> implements Use
         if (len != 1) {
             throw new ServiceException(Constants.ServiceMessage.UPDATE_USER_FAIL);
         }
-        return len;
     }
 
     @Override
     @Transactional
-    public int deleteByPrimaryKey(int id) throws ServiceException {
+    public void deleteByPrimaryKey(int id) throws ServiceException {
         int len = userMapper.deleteByPrimaryKey(id);
         if (len != 1) {
             throw new ServiceException(Constants.ServiceMessage.UN_EXISTS_USER_ID);
         }
-        return len;
     }
 
     @Override
-    public int deleteByUsername(String username) throws ServiceException {
+    public void deleteByUsername(String username) throws ServiceException {
         if (!StringUtils.hasText(username)) {
             throw new ServiceException(Constants.ServiceMessage.EMPTY_USER_NAME);
         }
@@ -102,7 +98,6 @@ public class UserService extends BaseService<UserEntity, UserDTO> implements Use
         if (len != 1) {
             throw new ServiceException(Constants.ServiceMessage.UN_EXISTS_USER_NAME);
         }
-        return len;
     }
 
     /**
@@ -132,6 +127,22 @@ public class UserService extends BaseService<UserEntity, UserDTO> implements Use
             throw new ServiceException(Constants.ServiceMessage.EMPTY_USER_NAME);
         }
         UserEntity entity = userMapper.selectUserWithRolesByUsername(username);
+        return entity == null ? null : entity2Dto(entity);
+    }
+
+    /**
+     * 查询用户信息，携带许可列表
+     *
+     * @param username
+     * @return
+     * @throws ServiceException
+     */
+    @Override
+    public UserDTO queryUserWithPermissionsByUsername(String username) throws ServiceException {
+        if (!StringUtils.hasText(username)) {
+            throw new ServiceException(Constants.ServiceMessage.EMPTY_USER_NAME);
+        }
+        UserEntity entity = userMapper.selectUserWithPermissionsByUsername(username);
         return entity == null ? null : entity2Dto(entity);
     }
 }

@@ -78,4 +78,12 @@ public interface UserMapper {
      */
     UserEntity selectUserWithRolesByUsername(@Param("username") String username);
 
+    /**
+     * 根据用户名查找带有许可信息的用户
+     *
+     * @param username
+     * @return
+     */
+    UserEntity selectUserWithPermissionsByUsername(@Param("username") String username);
+
 }

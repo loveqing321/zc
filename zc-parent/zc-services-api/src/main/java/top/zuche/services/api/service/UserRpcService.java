@@ -30,6 +30,14 @@ public interface UserRpcService {
     UserDTO queryUserWithRolesByUsername(String username) throws ServiceException;
 
     /**
+     * 通过用户名查找用户，携带许可列表
+     *
+     * @param username
+     * @return
+     */
+    UserDTO queryUserWithPermissionsByUsername(String username) throws ServiceException;
+
+    /**
      * 添加用户
      *
      * @param user
@@ -49,7 +57,7 @@ public interface UserRpcService {
      * @param user
      * @return
      */
-    int updateUserByPrimaryKey(UserDTO user) throws ServiceException;
+    void updateUserByPrimaryKey(UserDTO user) throws ServiceException;
 
     /**
      * 按照username更新
@@ -57,7 +65,7 @@ public interface UserRpcService {
      * @param user
      * @return
      */
-    int updateUserByUsername(UserDTO user) throws ServiceException;
+    void updateUserByUsername(UserDTO user) throws ServiceException;
 
     /**
      * 根据主键删除
@@ -65,7 +73,7 @@ public interface UserRpcService {
      * @param id
      * @return
      */
-    int deleteByPrimaryKey(int id) throws ServiceException;
+    void deleteByPrimaryKey(int id) throws ServiceException;
 
     /**
      * 根据username删除
@@ -73,6 +81,6 @@ public interface UserRpcService {
      * @param username
      * @return
      */
-    int deleteByUsername(String username) throws ServiceException;
+    void deleteByUsername(String username) throws ServiceException;
 
 }

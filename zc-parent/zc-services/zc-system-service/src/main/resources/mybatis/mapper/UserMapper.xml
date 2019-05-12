@@ -50,6 +50,36 @@
         </collection>
     </resultMap>
 
+    <resultMap id="userResultMapWithPermissions" type="top.zuche.services.system.entity.UserEntity">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="merchant_id" property="merchantId" jdbcType="INTEGER"/>
+        <result column="username" property="username" jdbcType="VARCHAR"/>
+        <result column="password" property="password" jdbcType="VARCHAR"/>
+        <result column="cname" property="cname" jdbcType="VARCHAR"/>
+        <result column="telephone" property="telephone" jdbcType="VARCHAR"/>
+        <result column="department" property="department" jdbcType="VARCHAR"/>
+        <result column="post" property="post" jdbcType="VARCHAR"/>
+        <result column="account_expired" property="accountExpired" jdbcType="INTEGER"/>
+        <result column="account_locked" property="accountLocked" jdbcType="INTEGER"/>
+        <result column="credentials_expired" property="credentialsExpired" jdbcType="INTEGER"/>
+        <result column="create_user" property="createUser" jdbcType="INTEGER"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="modify_user" property="modifyUser" jdbcType="INTEGER"/>
+        <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP"/>
+        <result column="is_deleted" property="isDeleted" jdbcType="INTEGER"/>
+
+        <collection property="permissions" ofType="top.zuche.services.system.entity.PermissionEntity">
+            <id column="permission_id" property="id" jdbcType="INTEGER"/>
+            <result column="permission_perm" property="perm" jdbcType="VARCHAR"/>
+            <result column="permission_category" property="category" jdbcType="VARCHAR"/>
+            <result column="permission_create_user" property="createUser" jdbcType="INTEGER"/>
+            <result column="permission_create_time" property="createTime" jdbcType="TIMESTAMP"/>
+            <result column="permission_modify_user" property="modifyUser" jdbcType="INTEGER"/>
+            <result column="permission_modify_time" property="modifyTime" jdbcType="TIMESTAMP"/>
+            <result column="permission_is_deleted" property="isDeleted" jdbcType="INTEGER"/>
+        </collection>
+    </resultMap>
+
     <sql id="Base_Column_List" >
       u.id, u.merchant_id, u.username, u.password, u.cname, u.telephone, u.department, u.post, u.account_expired,
       u.account_locked, u.credentials_expired, u.create_user, u.create_time, u.modify_user, u.modify_time, u.is_deleted
@@ -60,6 +90,13 @@
       u.account_locked, u.credentials_expired, u.create_user, u.create_time, u.modify_user, u.modify_time, u.is_deleted,
       r.id as role_id, r.role_name as role_name, r.create_user as role_create_user, r.create_time as role_create_time,
       r.modify_user as role_modify_user, r.modify_time as role_modify_time, r.is_deleted as role_is_deleted
+    </sql>
+
+    <sql id="With_Permission_Column_List" >
+      u.id, u.merchant_id, u.username, u.password, u.cname, u.telephone, u.department, u.post, u.account_expired,
+      u.account_locked, u.credentials_expired, u.create_user, u.create_time, u.modify_user, u.modify_time, u.is_deleted,
+      p.id as permission_id, p.perm as permission_perm, p.create_user as permission_create_user, p.create_time as permission_create_time,
+      p.modify_user as permission_modify_user, p.modify_time as permission_modify_time, p.is_deleted as permission_is_deleted
     </sql>
 
     <insert id="insertUser" useGeneratedKeys="true" keyProperty="id" parameterType="top.zuche.services.system.entity.UserEntity" >
@@ -255,7 +292,7 @@
 
     <select id="selectUserWithRolesByUsername" resultMap="userResultMapWithRoles" parameterType="String" >
         select
-        <include refid="With_Role_Column_List" />
+          <include refid="With_Role_Column_List" />
         from t_sys_user u
         left join t_sys_user_role ur
         on u.id = ur.user_id
@@ -266,9 +303,27 @@
         and u.username = #{username, jdbcType=VARCHAR}
     </select>
 
+    <select id="selectUserWithPermissionsByUsername" resultMap="userResultMapWithRoles" parameterType="String" >
+        select
+          <include refid="With_Permission_Column_List" />
+        from t_sys_user u
+        left join t_sys_user_role ur
+        on u.id = ur.user_id
+        left join t_sys_role r
+        on ur.role_id = r.id
+        and r.is_deleted = 0
+        left join t_sys_role_permission rp
+        on r.id = rp.role_id
+        left join t_sys_permission p
+        on rp.permission_id = p.id
+        and p.is_deleted = 0
+        where u.is_deleted = 0
+        and u.username = #{username, jdbcType=VARCHAR}
+    </select>
+
     <select id="selectUserByUsername" resultMap="userResultMap" parameterType="String" >
         select
-        <include refid="Base_Column_List" />
+          <include refid="Base_Column_List" />
         from t_sys_user u
         where u.is_deleted = 0
         and u.username = #{username, jdbcType=VARCHAR}

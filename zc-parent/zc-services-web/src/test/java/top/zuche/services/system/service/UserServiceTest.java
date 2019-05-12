@@ -77,6 +77,13 @@ public class UserServiceTest {
     }
 
     @Test
+    public void queryUserWithPermissionsByUsername() throws ServiceException {
+        UserDTO user = userService.queryUserWithPermissionsByUsername("13333201150");
+        Assert.assertNotNull(user);
+        Assert.assertEquals("13333201150", user.getUsername());
+    }
+
+    @Test
     public void updateUserByPrimaryKey() throws ServiceException {
         UserDTO user = new UserDTO();
         user.setId(13);
