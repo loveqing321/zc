@@ -30,11 +30,16 @@ public enum ResponseCode {
     MISSING_CSRF_TOKEN(200, "缺少CSRF Token"),
     INVALID_CSRF_TOKEN(201, "CSRF Token无效"),
 
-    ACCESS_DENIED(299, "拒绝访问");
-
+    ACCESS_DENIED(299, "拒绝访问"),
 
     // 业务类响应码范围 400 - 500
 
+    SERVICE_ERROR(499, "服务调用异常"),
+
+    // 网络等其他异常 500 - 600
+    NETWORK_ERROR(500, "网络异常，请重试"),
+    SERVICE_TIMEOUT(501, "服务调用超时，请重试"),
+    SERIALIZATION_ERROR(503, "序列化异常");
 
     public final int code;
 

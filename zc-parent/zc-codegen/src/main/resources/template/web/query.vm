@@ -1,6 +1,6 @@
 package ${basePackage}.${module}.dto;
 
-import com.dale.car.common.dto.PageQuery;
+import top.zuche.common.web.query.PageQuery;
 
 import lombok.Getter;
 import lombok.Setter;

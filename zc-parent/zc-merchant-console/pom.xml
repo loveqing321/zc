@@ -20,7 +20,7 @@
 
         <dependency>
             <groupId>top.zuche</groupId>
-            <artifactId>zc-cache</artifactId>
+            <artifactId>zc-web-toolkit</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
 

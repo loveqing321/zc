@@ -2,8 +2,6 @@ package top.zuche.merchant.console.system.controller;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.access.prepost.PreFilter;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -11,7 +9,6 @@ import top.zuche.common.web.resp.ResponseData;
 import top.zuche.merchant.console.system.dto.UserDetailsImpl;
 import top.zuche.merchant.console.utils.UserUtil;
 import top.zuche.services.api.dto.PermissionDTO;
-import top.zuche.services.api.dto.UserDTO;
 import top.zuche.services.api.service.PermissionRpcService;
 
 import java.util.ArrayList;

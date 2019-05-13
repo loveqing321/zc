@@ -8,7 +8,6 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
-import top.zuche.cache.CacheNames;
 import top.zuche.common.base.BaseService;
 import top.zuche.services.api.dto.PermissionDTO;
 import top.zuche.services.api.exception.ServiceException;
@@ -16,6 +15,7 @@ import top.zuche.services.api.service.PermissionRpcService;
 import top.zuche.services.system.Constants;
 import top.zuche.services.system.entity.PermissionEntity;
 import top.zuche.services.system.mapper.PermissionMapper;
+import top.zuche.toolkit.cache.CacheNames;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;

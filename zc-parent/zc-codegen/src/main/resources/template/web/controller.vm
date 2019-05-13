@@ -1,14 +1,13 @@
 package com.dale.car.admin.${module}.controller;
 
-import com.dale.car.admin.${module}.converter.ModelConverter;
-import com.dale.car.admin.${module}.dto.${DTO};
-import com.dale.car.admin.${module}.dto.${Query};
-import com.dale.car.admin.${module}.service.${subModule}Service;
-import com.dale.car.common.dto.PageDTO;
-import com.dale.car.common.dto.ResponseDTO;
-import com.dale.car.common.exception.InvalidObjectException;
+import ${basePackage}.api.dto.${DTO};
+import ${basePackage}.api.dto.${Query};
+import top.zuche.common.web.resp.Paging;
+import top.zuche.common.web.resp.ResponseData;
+import ${basePackage}.api.service.${subModule}RpcService;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.alibaba.dubbo.config.annotation.Reference;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,46 +16,43 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
-@RequestMapping("/api/v1/${module}/${subModuleLower}")
+@Slf4j
 @RestController
+@RequestMapping("/api/v1/${module}/${subModuleLower}")
 public class ${subModule}Controller {
 
-    @Autowired
-    private ${subModule}Service ${subModuleLower}Service;
+    @Reference
+    private ${subModule}RpcService ${subModuleLower}RpcService;
+
+    // 分页查询
+    @PostMapping("/queryPage")
+    public ResponseData<Paging<${DTO}>> queryPage(@RequestBody ${Query} query) {
+        Paging<${DTO}> pageResult = ${subModuleLower}Service.queryByPage(query);
+        return ResponseData.ok(pageResult);
+    }
+
+    // 根据主键查询指定对象
+    @GetMapping("/queryOne")
+    public ResponseData<${DTO}> queryOne(int id) {
+        ${DTO} dto = ${subModuleLower}RpcService.query${subModule}ByPrimaryKey(id);
+        return ResponseData.ok(dto);
+    }
 
     // 增加和更新记录
     @PostMapping("/save")
-    public ResponseDTO save(@RequestBody ${DTO} dto) {
-        try {
-            if (dto.getId() != null) {
-                ${subModuleLower}Service.updateById(dto);
-            } else {
-                ${subModuleLower}Service.add(dto);
-            }
-            return ResponseDTO.success();
-        } catch (InvalidObjectException e) {
-            return ResponseDTO.failure(e.getMessage());
+    public ResponseData save(@RequestBody ${DTO} dto) {
+        if (dto.getId() != null) {
+            ${subModuleLower}RpcService.update${subModule}ByPrimaryKey(dto);
+        } else {
+            ${subModuleLower}RpcService.add${subModule}(dto);
         }
+        return ResponseDTO.success();
     }
 
     // 删除记录
     @GetMapping("/del")
-    public ResponseDTO del(long id) {
-        ${subModuleLower}Service.deleteById(id);
+    public ResponseData del(int id) {
+        ${subModuleLower}RpcService.delete${subModule}ByPrimaryKey(id);
         return ResponseDTO.success();
-    }
-
-    // 根据Id查询指定对象
-    @GetMapping("/queryById")
-    public ResponseDTO queryById(long id) {
-        ${DTO} dto = ${subModuleLower}Service.queryById(id);
-        return ResponseDTO.success(dto);
-    }
-
-    // 分页查询
-    @PostMapping("/queryByPage")
-    public ResponseDTO queryByPage(@RequestBody ${Query} query) {
-        PageDTO<${DTO}> queryResult = ${subModuleLower}Service.queryByPage(query);
-        return ResponseDTO.success(queryResult);
     }
 }

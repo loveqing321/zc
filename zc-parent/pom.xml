@@ -9,7 +9,7 @@
     <version>1.0-SNAPSHOT</version>
     <modules>
         <module>zc-common</module>
-        <module>zc-cache</module>
+        <module>zc-web-toolkit</module>
         <module>zc-manager-console</module>
         <module>zc-merchant-console</module>
         <module>zc-tenant-service</module>
