@@ -1,59 +1,51 @@
 <template lang="pug">
-  el-container.${subModuleSpl}
-    el-header.search-form(height="60px")
+  main-content.zc-${subModuleSpl}
+    template(slot="toolbar")
+      ul.zc-toolbar-ul
+        li
+          i(class="fa fa-cloud-download")
+        li
+          i(class="fa fa-cloud-download")
+    template(slot="searchForm")
       el-form(ref="form" :inline="true" :model="searchForm")
-        el-form-item(label="数据源:" prop="startTime")
-          el-date-picker(
-            v-model="searchForm.startTime"
-            type="date"
-            placeholder="开始时间"
-            align="right"
-            style="width: 180px"
-          )
-        el-form-item(label=":" prop="endTime")
-          el-date-picker(
-          v-model="searchForm.endTime"
-          type="date"
-          placeholder="结束时间"
-          align="right"
-          style="width: 180px"
-        )
-        el-form-item(label="数据库:" prop="db")
-          el-input(v-model="searchForm.db" style="width: 160px")
-        el-button(type="primary" @click="search") 搜索
-        el-button.add(type="default" @click="add") 新建
-    el-main(style="display: flex; flex-direction: column")
-      grid-title(name="${subModuleListTitle}")
-      grid(ref="grid" :remote-method="getData")
-        el-table-column(
-          type="index"
-          width="40"
-        )
-        el-table-column(
-          prop="id"
-          label="ID"
-          show-overflow-tooltip
-        )
-        el-table-column(prop="operate", label="操作", show-overflow-tooltip, width="150")
-          template(slot-scope="{row}")
-            el-button(type="primary", @click="modify(row)") 修改
-            el-button(type="danger", @click="del(row)") 删除
+        el-form-item
+          el-input(v-model="searchForm.name" placeholder="接口编码 / 名称" style="width: 220px")
+        el-button(type="primary" @click="search" style="width: 70px") 搜索
+        el-button(type="default" @click="add") 添加接口
+    grid(ref="grid" :remote-method="getData")
+      el-table-column(
+        label="名称"
+        show-overflow-tooltip
+        width="250"
+      )
+        template(slot-scope="{row}")
+          a(style="color: #409EFF; cursor: pointer" @click.stop="openUpdateInterfaceForm(row)") {{row.name}}
+      el-table-column(
+        prop="code"
+        label="编码"
+        show-overflow-tooltip
+      )
+      el-table-column(label="操作", show-overflow-tooltip, width="150")
+        div.zc-operator-box(slot-scope="{row}")
+          a(@click="modify(row)") 修改
+          a(@click="del(row)") 删除
     ${subModuleSpl}-form(
-      :visible.sync="visible",
+      :visible.sync="visible"
       v-if="visible"
       :formData="formData"
     )
 </template>
-
 <script>
+import mainContent from '@/components/common/main-content'
 import grid from '@/components/common/grid'
 import gridTitle from '@/components/common/grid-title'
 import ${subModuleLower}Form from './${subModuleSpl}-form'
-import { queryByPage, queryById, del } from '@/api/${module}/${subModuleSpl}'
+import { queryPage, queryOne, del } from '@/api/${module}/${subModuleSpl}'
 
 export default {
   name: '${subModuleSpl}',
   components: {
+    mainContent,
     grid,
     gridTitle,
     ${subModuleLower}Form
@@ -73,7 +65,7 @@ export default {
       ${grid}.loadData(this.searchForm)
     },
     getData (postData) {
-      return queryByPage(postData)
+      return queryPage(postData)
     },
     add () {
       this.formData = {}
@@ -81,7 +73,7 @@ export default {
     },
     async modify (row) {
       try {
-        this.formData = await queryById({ id: row.id })
+        this.formData = await queryOne({ id: row.id })
         this.visible = true
       } catch (e) {
         // ignore
@@ -111,4 +103,38 @@ export default {
 </script>
 
 <style scoped lang="less">
+.zc-${subModuleSpl} {
+  height: 100%;
+  .zc-toolbar-ul {
+    li {
+      float: left;
+      list-style-type: none;
+      margin-left: 10px;
+      i {
+        color: #abc;
+        cursor: pointer;
+        font-size: 16px;
+      }
+    }
+  }
+  .zc-operator-box {
+    a {
+      cursor: pointer;
+      text-decoration-line: underline;
+      margin-right: 15px;
+    }
+    a:nth-child(4n+1) {
+      color: #409EFF;
+    }
+    a:nth-child(4n+2) {
+      color: #E6A23C;
+    }
+    a:nth-child(4n+3) {
+      color: #67C23A;
+    }
+    a:nth-child(4n) {
+      color: #F56C6C;
+    }
+  }
+}
 </style>

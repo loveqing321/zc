@@ -1,7 +1,8 @@
 package top.zuche.toolkit.web.security.configuration;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -13,6 +14,9 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import top.zuche.toolkit.web.Constants;
 import top.zuche.toolkit.web.security.SecurityProperties;
 import top.zuche.toolkit.web.security.configurer.TokenAccessConfigurer;
@@ -22,8 +26,8 @@ import top.zuche.toolkit.web.security.handler.AccessDeniedHandlerImpl;
 import top.zuche.toolkit.web.security.handler.AuthenticationFailureHandlerImpl;
 import top.zuche.toolkit.web.security.handler.AuthenticationSuccessHandlerImpl;
 import top.zuche.toolkit.web.security.handler.LogoutSuccessHandlerImpl;
-
-import javax.annotation.Resource;
+import top.zuche.toolkit.web.security.verifycode.repository.CookieVerifyCodeRepository;
+import top.zuche.toolkit.web.security.verifycode.repository.VerifyCodeRepository;
 
 /**
  * @author lzx
@@ -98,6 +102,35 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) throws Exception {
         web.ignoring().mvcMatchers("index.html", "/static/**", "/favicon.ico");
+    }
+
+    /**
+     * 跨域配置，会被Spring Security使用到
+     *
+     * @return
+     */
+    @Bean
+    @ConditionalOnMissingBean(CorsConfiguration.class)
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration corsConfiguration = new CorsConfiguration();
+        corsConfiguration.applyPermitDefaultValues();
+        corsConfiguration.setAllowCredentials(true);
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration(Constants.LOGIN_URL, corsConfiguration);
+        source.registerCorsConfiguration(Constants.LOGOUT_URL, corsConfiguration);
+        source.registerCorsConfiguration("/api/**", corsConfiguration);
+        return source;
+    }
+
+    /**
+     * 验证码存储
+     *
+     * @return
+     */
+    @Bean
+    @ConditionalOnMissingBean(VerifyCodeRepository.class)
+    public VerifyCodeRepository verifyCodeRepository() {
+        return new CookieVerifyCodeRepository();
     }
 
     public static void main(String[] args) {

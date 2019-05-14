@@ -1,10 +1,10 @@
-package com.dale.car.admin.${module}.controller;
+package top.zuche.manager.console.${module}.controller;
 
-import ${basePackage}.api.dto.${DTO};
-import ${basePackage}.api.dto.${Query};
-import top.zuche.common.web.resp.Paging;
+import top.zuche.services.api.dto.${DTO};
+import top.zuche.services.api.dto.Paging;
+import top.zuche.services.api.query.${Query};
 import top.zuche.common.web.resp.ResponseData;
-import ${basePackage}.api.service.${subModule}RpcService;
+import top.zuche.services.api.service.${subModule}RpcService;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import lombok.extern.slf4j.Slf4j;
@@ -13,8 +13,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestBody;
-
-import java.util.List;
 
 @Slf4j
 @RestController
@@ -27,7 +25,7 @@ public class ${subModule}Controller {
     // 分页查询
     @PostMapping("/queryPage")
     public ResponseData<Paging<${DTO}>> queryPage(@RequestBody ${Query} query) {
-        Paging<${DTO}> pageResult = ${subModuleLower}Service.queryByPage(query);
+        Paging<${DTO}> pageResult = ${subModuleLower}RpcService.queryPageByCondition(query);
         return ResponseData.ok(pageResult);
     }
 
@@ -46,13 +44,13 @@ public class ${subModule}Controller {
         } else {
             ${subModuleLower}RpcService.add${subModule}(dto);
         }
-        return ResponseDTO.success();
+        return ResponseData.ok();
     }
 
     // 删除记录
     @GetMapping("/del")
     public ResponseData del(int id) {
         ${subModuleLower}RpcService.delete${subModule}ByPrimaryKey(id);
-        return ResponseDTO.success();
+        return ResponseData.ok();
     }
 }

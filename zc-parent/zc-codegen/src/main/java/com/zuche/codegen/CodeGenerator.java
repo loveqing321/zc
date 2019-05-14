@@ -42,11 +42,11 @@ public class CodeGenerator {
         // 填充Context对象
         this.fillContext(meta);
         // 生成pojo代码
-        this.genPojo(meta);
+//        this.genPojo(meta);
         // 生成Service代码
-        this.genService(meta);
-        // 生成Controller代码
-        this.genController(meta);
+//        this.genService(meta);
+//        // 生成Controller代码
+//        this.genController(meta);
 
         // 生成UI相关代码
         this.genUI(meta);
@@ -95,19 +95,19 @@ public class CodeGenerator {
         Template template = Velocity.getTemplate(properties.getServiceVm());
 
         // 确保Service文件夹存在
-        String serviceDir = insureWebDirExists(meta.getModule() + "/service");
+        String serviceDir = insureDirExists(properties.getServiceOutputDir());
 
         // 写Service接口文件
-        writeToFile(template, serviceDir + "/" + meta.getSubModule() + "Service.java");
+        writeToFile(template, serviceDir + "/" + meta.getSubModule() + "RpcService.java");
 
-        // 获取ServiceImpl模版文件对象
-        template = Velocity.getTemplate(properties.getServiceImplVm());
-
-        // 确保ServiceImpl文件夹存在
-        String serviceImplDir = insureWebDirExists(meta.getModule() + "/service/impl");
-
-        // 写Service接口实现文件
-        writeToFile(template, serviceImplDir + "/" + meta.getSubModule() + "ServiceImpl.java");
+//        // 获取ServiceImpl模版文件对象
+//        template = Velocity.getTemplate(properties.getServiceImplVm());
+//
+//        // 确保ServiceImpl文件夹存在
+//        String serviceImplDir = insureDirExists(properties.getServiceImplOutputDir());
+//
+//        // 写Service接口实现文件
+//        writeToFile(template, serviceImplDir + "/" + meta.getSubModule() + "ServiceImpl.java");
     }
 
     /**
@@ -120,7 +120,7 @@ public class CodeGenerator {
         Template template = Velocity.getTemplate(properties.getControllerVm());
 
         // 确保Service文件夹存在
-        String controllerDir = insureWebDirExists(meta.getModule() + "/controller");
+        String controllerDir = insureDirExists(properties.getControllerOutputDir());
 
         // 写Service接口文件
         writeToFile(template, controllerDir + "/" + meta.getSubModule() + "Controller.java");
@@ -136,7 +136,7 @@ public class CodeGenerator {
         Template template = Velocity.getTemplate(properties.getApiVm());
 
         // 确保api文件夹存在
-        String apiDir = insureUIDirExists(meta.getModule() + "/api");
+        String apiDir = insureDirExists(properties.getUiApiOutputDir());
 
         // 写api接口文件
         writeToFile(template, apiDir + "/" + meta.getSubModuleLineSplitter() + ".js");
@@ -145,17 +145,16 @@ public class CodeGenerator {
         template = Velocity.getTemplate(properties.getApiMockVm());
 
         // 确保mock文件夹存在
-        String mockDir = insureUIDirExists(meta.getModule() + "/mock");
+        String mockDir = insureDirExists(properties.getUiApiMockOutputDir());
 
         // 写mock文件
         writeToFile(template, mockDir + "/" + meta.getSubModuleLineSplitter() + ".js");
-
 
         // 获取模版文件对象
         template = Velocity.getTemplate(properties.getListVm());
 
         // 确保子文件夹存在
-        String subDir = insureUIDirExists(meta.getModule() + "/" + meta.getSubModuleLineSplitter());
+        String subDir = insureDirExists(properties.getUiListOutputDir() + "/" + meta.getSubModuleLineSplitter());
 
         // 写index文件
         writeToFile(template, subDir + "/index.vue");
@@ -177,6 +176,18 @@ public class CodeGenerator {
         object.forEach((key, value) -> {
             context.put(key, value);
         });
+    }
+
+    /**
+     * 确保文件夹存在
+     *
+     * @param path
+     */
+    private String insureDirExists(String path) {
+        // 输出Service接口
+        File dir = new File(path);
+        if (!dir.exists()) dir.mkdirs();
+        return dir.getAbsolutePath();
     }
 
     /**

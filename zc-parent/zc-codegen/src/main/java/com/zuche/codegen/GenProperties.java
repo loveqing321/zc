@@ -26,6 +26,8 @@ public class GenProperties {
     private static final String LIST_VM_KEY = "list.vm.file";
     private static final String FORM_VM_KEY = "form.vm.file";
     private static final String OUTPUT_DIR_KEY = "output.dir";
+    private static final String SERVICE_OUTPUT_DIR_KEY = "service.output.dir";
+    private static final String SERVICE_IMPL_OUTPUT_DIR_KEY = "service.impl.output.dir";
 
     private String basePackage;
 
@@ -51,6 +53,20 @@ public class GenProperties {
 
     private String outputDir;
 
+    private String serviceOutputDir;
+
+    private String serviceImplOutputDir;
+
+    private String controllerOutputDir;
+
+    private String uiApiOutputDir;
+
+    private String uiApiMockOutputDir;
+
+    private String uiListOutputDir;
+
+    private String uiFormOutputDir;
+
     /**
      * 从配置文件加载
      *
@@ -75,7 +91,13 @@ public class GenProperties {
         genProps.setListVm(props.getProperty(LIST_VM_KEY));
         genProps.setFormVm(props.getProperty(FORM_VM_KEY));
         genProps.setOutputDir(props.getProperty(OUTPUT_DIR_KEY));
-
+        genProps.setServiceOutputDir(props.getProperty(OUTPUT_DIR_KEY));
+        genProps.setServiceImplOutputDir(props.getProperty("service.impl.output.dir"));
+        genProps.setControllerOutputDir(props.getProperty("controller.output.dir"));
+        genProps.setUiApiOutputDir(props.getProperty("ui.api.output.dir"));
+        genProps.setUiApiMockOutputDir(props.getProperty("ui.api.mock.output.dir"));
+        genProps.setUiListOutputDir(props.getProperty("ui.list.output.dir"));
+        genProps.setUiFormOutputDir(props.getProperty("ui.form.output.dir"));
         return genProps;
     }
 

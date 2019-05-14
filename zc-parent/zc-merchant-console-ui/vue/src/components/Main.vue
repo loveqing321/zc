@@ -35,7 +35,6 @@ export default {
         this.setPermissions(perms)
         // 2.
         console.log(perms)
-
       } catch (e) {
         this.$message.error(e.message)
       }

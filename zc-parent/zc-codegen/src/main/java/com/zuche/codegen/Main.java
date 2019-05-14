@@ -13,12 +13,12 @@ public class Main {
         CodeGenerator generator = new CodeGenerator(properties);
 
         GenerateMeta meta = null;
-        // assets 模块
-//        meta = new GenerateMeta("assets",
-//                "Arctic",
-//                "车型管理",
-//                "车型列表");
-//        generator.genCode(meta);
+        // system 模块
+        meta = new GenerateMeta("system",
+                "User",
+                "用户管理",
+                "用户列表");
+        generator.genCode(meta);
 
 //        meta = new GenerateMeta("assets",
 //                "Vehicle",
@@ -44,12 +44,11 @@ public class Main {
 //                "租赁记录",
 //                "租赁记录列表");
 //        generator.genCode(meta);
-
-        // mtnc模块
-        meta = new GenerateMeta("mtnc",
-                "CheckRecord",
-                "年检记录",
-                "年检列表");
-        generator.genCode(meta);
+//        // mtnc模块
+//        meta = new GenerateMeta("mtnc",
+//                "CheckRecord",
+//                "年检记录",
+//                "年检列表");
+//        generator.genCode(meta);
     }
 }

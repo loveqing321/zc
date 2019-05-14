@@ -1,13 +1,17 @@
 package top.zuche.services.system.service;
 
 import com.alibaba.dubbo.config.annotation.Service;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import top.zuche.common.base.BaseService;
+import top.zuche.services.api.dto.Paging;
 import top.zuche.services.api.dto.UserDTO;
 import top.zuche.services.api.exception.ServiceException;
+import top.zuche.services.api.query.UserQuery;
 import top.zuche.services.api.service.UserRpcService;
 import top.zuche.services.system.Constants;
 import top.zuche.services.system.entity.UserEntity;
@@ -16,6 +20,7 @@ import top.zuche.services.system.mapper.UserMapper;
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 用户服务
@@ -23,9 +28,9 @@ import java.util.List;
  * @author lzx
  * @date 2019/5/9 下午9:16
  */
-@Service(interfaceClass = UserRpcService.class)
-@Component("userService")
 @Slf4j
+@Component("userService")
+@Service(interfaceClass = UserRpcService.class)
 public class UserService extends BaseService<UserEntity, UserDTO> implements UserRpcService {
 
     @Resource
@@ -146,5 +151,17 @@ public class UserService extends BaseService<UserEntity, UserDTO> implements Use
         }
         UserEntity entity = userMapper.selectUserWithPermissionsByUsername(username);
         return entity == null ? null : entity2Dto(entity);
+    }
+
+    @Override
+    public Paging<UserDTO> queryPageByCondition(UserQuery query) throws ServiceException {
+        PageHelper.startPage(query.getPageNo(), query.getPageSize());
+        Page<UserEntity> page = userMapper.selectPageByCondition(query);
+        if (page.getTotal() == 0) {
+            return Paging.of(0, new ArrayList<>(0));
+        }
+        List<UserEntity> result = page.getResult();
+        List<UserDTO> dtos = result.stream().map(this::entity2Dto).collect(Collectors.toList());
+        return Paging.of(page.getTotal(), dtos);
     }
 }

@@ -7,6 +7,7 @@ export default new Router({
   routes: [
     {
       path: '/',
+      name: 'Home',
       redirect: '/dashboard'
     },
     {
@@ -36,7 +37,10 @@ export default new Router({
               name: 'order',
               component: require(`@/components/modules/dashboard`),
               meta: {
-                desc: '订单中心'
+                desc: '订单中心',
+                breadcrumb: [
+                  { name: 'rent' }
+                ]
               }
             },
             {
@@ -44,7 +48,10 @@ export default new Router({
               name: 'pay',
               component: require(`@/components/modules/dashboard`),
               meta: {
-                desc: '支付中心'
+                desc: '支付中心',
+                breadcrumb: [
+                  { name: 'rent' }
+                ]
               }
             },
             {
@@ -52,7 +59,10 @@ export default new Router({
               name: 'settlement',
               component: require(`@/components/modules/dashboard`),
               meta: {
-                desc: '结算中心'
+                desc: '结算中心',
+                breadcrumb: [
+                  { name: 'rent' }
+                ]
               }
             },
             {
@@ -79,7 +89,10 @@ export default new Router({
               name: 'orderAnalyze',
               component: require(`@/components/modules/dashboard`),
               meta: {
-                desc: '订单分析'
+                desc: '订单分析',
+                breadcrumb: [
+                  { name: 'data' }
+                ]
               }
             },
             {
@@ -87,7 +100,10 @@ export default new Router({
               name: 'incomeAnalyze',
               component: require(`@/components/modules/dashboard`),
               meta: {
-                desc: '收入分析'
+                desc: '收入分析',
+                breadcrumb: [
+                  { name: 'data' }
+                ]
               }
             },
             {
@@ -95,7 +111,10 @@ export default new Router({
               name: 'carAnalyze',
               component: require(`@/components/modules/dashboard`),
               meta: {
-                desc: '车辆分析'
+                desc: '车辆分析',
+                breadcrumb: [
+                  { name: 'data' }
+                ]
               }
             }
           ]
@@ -114,7 +133,10 @@ export default new Router({
               name: 'distribution',
               component: require(`@/components/modules/dashboard`),
               meta: {
-                desc: '收益分成'
+                desc: '收益分成',
+                breadcrumb: [
+                  { name: 'base' }
+                ]
               }
             },
             {
@@ -122,7 +144,10 @@ export default new Router({
               name: 'tenant',
               component: require(`@/components/modules/dashboard`),
               meta: {
-                desc: '租户管理'
+                desc: '租户管理',
+                breadcrumb: [
+                  { name: 'base' }
+                ]
               }
             },
             {
@@ -130,7 +155,10 @@ export default new Router({
               name: 'merchant',
               component: require(`@/components/modules/dashboard`),
               meta: {
-                desc: '商户管理'
+                desc: '商户管理',
+                breadcrumb: [
+                  { name: 'base' }
+                ]
               }
             },
             {
@@ -138,7 +166,10 @@ export default new Router({
               name: 'car',
               component: require(`@/components/modules/dashboard`),
               meta: {
-                desc: '车辆管理'
+                desc: '车辆管理',
+                breadcrumb: [
+                  { name: 'base' }
+                ]
               }
             }
           ]
@@ -147,7 +178,7 @@ export default new Router({
           path: '/system',
           name: 'system',
           icon: 'fa fa-cogs',
-          component: require(`@/components/modules/dashboard`),
+          component: require(`@/components/modules/system`),
           meta: {
             desc: '系统'
           },
@@ -155,9 +186,12 @@ export default new Router({
             {
               path: '/system/user',
               name: 'user',
-              component: require(`@/components/modules/dashboard`),
+              component: require(`@/components/modules/system/user`),
               meta: {
-                desc: '用户管理'
+                desc: '用户管理',
+                breadcrumb: [
+                  { name: 'system' }
+                ]
               }
             },
             {
@@ -165,15 +199,21 @@ export default new Router({
               name: 'role',
               component: require(`@/components/modules/dashboard`),
               meta: {
-                desc: '角色管理'
+                desc: '角色管理',
+                breadcrumb: [
+                  { name: 'system' }
+                ]
               }
             },
             {
-              path: '/system/function',
-              name: 'function',
+              path: '/system/permission',
+              name: 'permission',
               component: require(`@/components/modules/dashboard`),
               meta: {
-                desc: '功能管理'
+                desc: '权限管理',
+                breadcrumb: [
+                  { name: 'system' }
+                ]
               }
             },
             {
@@ -181,7 +221,10 @@ export default new Router({
               name: 'dict',
               component: require(`@/components/modules/dashboard`),
               meta: {
-                desc: '字典管理'
+                desc: '字典管理',
+                breadcrumb: [
+                  { name: 'system' }
+                ]
               }
             }
           ]
@@ -194,7 +237,7 @@ export default new Router({
           meta: {
             desc: '消息中心',
             breadcrumb: [
-              {name: 'dashboard'}
+              { name: 'dashboard' }
             ]
           }
         }
@@ -202,14 +245,17 @@ export default new Router({
     },
     {
       path: '/login',
+      name: 'login',
       component: require(`@/components/Login.vue`)
     },
     {
       path: '/403',
+      name: '403',
       component: require(`@/components/app/error/403.vue`)
     },
     {
       path: '/404',
+      name: '404',
       component: require(`@/components/app/error/404.vue`)
     },
     {

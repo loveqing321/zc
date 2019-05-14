@@ -1,7 +1,8 @@
 package top.zuche.services.system.mapper;
 
+import com.github.pagehelper.Page;
 import org.apache.ibatis.annotations.Param;
-import top.zuche.services.api.dto.UserDTO;
+import top.zuche.services.api.query.UserQuery;
 import top.zuche.services.system.entity.UserEntity;
 
 import java.util.List;
@@ -85,5 +86,13 @@ public interface UserMapper {
      * @return
      */
     UserEntity selectUserWithPermissionsByUsername(@Param("username") String username);
+
+    /**
+     * 分页查询
+     *
+     * @param query
+     * @return
+     */
+    Page<UserEntity> selectPageByCondition(UserQuery query);
 
 }

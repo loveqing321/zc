@@ -1,7 +1,7 @@
 <template lang="pug">
   .navbar(mode='horizontal')
     .app-title
-      | 51租车 - 共享中心
+      | 51租车 - 管理中心
     .avatar-container
       .btn-fullscreen(@click="handleFullScreen")
         i(class="el-icon-rank")
@@ -12,7 +12,7 @@
         span(class="btn-bell-badge" v-if="message")
       el-dropdown
         .avatar-wrapper
-          | {{ userName || '未登录'}}
+          | {{ userName}}
           i.el-icon-caret-bottom
         el-dropdown-menu.user-dropdown(slot='dropdown')
           el-dropdown-item
@@ -20,32 +20,53 @@
 </template>
 
 <script>
-import { clearToken } from '@/libs/util'
-import env from '@/libs/env'
+import { clearToken, clearCsrfToken, clearUserInfo, getUserInfo } from '@/libs/util'
+import { mapMutations } from 'vuex'
+import { logout } from '@/api/system/app'
 
 export default {
   name: 'Navbar',
   data () {
     return {
-      userName: null,
       fullscreen: false,
       message: 1
     }
   },
-  created () {
-    this.getUserInfo()
+  computed: {
+    userName () {
+      const userInfo = getUserInfo()
+      if (userInfo && userInfo.cname) {
+        return userInfo.cname
+      }
+      return ''
+    }
   },
   methods: {
-    logout () {
-      clearToken()
-      window.location.href = env.baseURL
+    ...mapMutations('app', [
+      'changeSidebarStatus'
+    ]),
+    async logout () {
+      try {
+        await logout()
+      } catch (e) {
+        console.log(e)
+      } finally {
+        // 清除token
+        clearToken()
+        // 清除csrf token
+        clearCsrfToken()
+        // 清除用户信息
+        clearUserInfo()
+        // 跳转到登录页面
+        this.$router.push({
+          name: 'login'
+        })
+      }
     },
     handleClickMenu (item) {
       this.$router.push({
         name: item.route
       })
-    },
-    async getUserInfo () {
     },
     handleFullScreen () {
       if (this.fullscreen) {

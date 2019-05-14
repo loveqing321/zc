@@ -3,8 +3,8 @@
     .sidebar-wrapper
       sidebar
     .router-wrapper
-      keep-alive
-        router-view
+      <!--keep-alive-->
+      router-view
 </template>
 
 <script>

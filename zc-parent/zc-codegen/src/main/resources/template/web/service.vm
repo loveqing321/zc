@@ -1,8 +1,8 @@
-package ${basePackage}.api.service;
+package top.zuche.services.api.service;
 
-import ${basePackage}.${module}.dto.${DTO};
-import ${basePackage}.${module}.dto.${Query};
-import top.zuche.common.web.resp.Paging;
+import top.zuche.services.api.dto.${DTO};
+import top.zuche.services.api.dto.${Query};
+import top.zuche.services.api.dto.Paging;
 import top.zuche.services.api.exception.ServiceException;
 
 import java.util.List;

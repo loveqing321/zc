@@ -32,7 +32,8 @@ const STATUS_CODE = {
 
   // Http状态码
   // 页面没找到
-  NOT_FOUND: 404
+  NOT_FOUND: 404,
+  SERVER_ERROR: 500
 }
 
 // axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
@@ -100,11 +101,13 @@ class HttpRequest {
           router.push({
             name: '404'
           })
+        } else if (error.response.status === STATUS_CODE.SERVER_ERROR) {
+          Message({ type: 'error', message: '系统错误，请联系管理员!' })
         } else {
           Message({ type: 'error', message: '请求出错，状态码：' + error.response.status })
         }
       }
-      return Promise.reject({ message: error })
+      return Promise.reject(new Error(error))
     })
     return instance.request(options)
   }

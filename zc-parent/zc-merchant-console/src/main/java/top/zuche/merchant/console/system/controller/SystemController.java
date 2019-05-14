@@ -4,7 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import top.zuche.merchant.console.Constants;
+import top.zuche.toolkit.web.Constants;
 import top.zuche.toolkit.web.security.verifycode.VerifyCode;
 import top.zuche.toolkit.web.security.verifycode.repository.VerifyCodeRepository;
 

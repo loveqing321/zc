@@ -22,7 +22,7 @@
 <script>
 import { clearToken, clearCsrfToken, clearUserInfo, getUserInfo } from '@/libs/util'
 import { mapMutations } from 'vuex'
-import { logout } from '@/api/system/system'
+import { logout } from '@/api/system/app'
 
 export default {
   name: 'Navbar',

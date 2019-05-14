@@ -29,7 +29,7 @@ export default new Router({
           icon: 'fa fa-car',
           component: require(`@/components/modules/dashboard`),
           meta: {
-            desc: '租车',
+            desc: '租车'
           },
           children: [
             {

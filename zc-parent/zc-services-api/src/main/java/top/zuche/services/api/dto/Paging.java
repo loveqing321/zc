@@ -1,4 +1,6 @@
-package top.zuche.common.web.resp;
+package top.zuche.services.api.dto;
+
+import lombok.Data;
 
 import java.io.Serializable;
 import java.util.List;
@@ -9,11 +11,14 @@ import java.util.List;
  * @author lzx
  * @date 2019/5/13 上午2:26
  */
+@Data
 public class Paging<T> implements Serializable {
 
-    private final long total;
+    private long total;
 
-    private final List<T> result;
+    private List<T> result;
+
+    public Paging() {}
 
     private Paging(long total, List<T> result) {
         this.total = total;

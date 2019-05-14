@@ -1,8 +1,11 @@
 <template lang="pug">
-  main-content
+  main-content.zc-message
     template(slot="toolbar")
-      i(class="fa fa-cloud-download" style="color: #abc; cursor: pointer;")
-      i(class="fa fa-cloud-download" style="color: #abc; cursor: pointer;")
+      ul.zc-toolbar-ul
+        li
+          i(class="fa fa-cloud-download")
+        li
+          i(class="fa fa-cloud-download")
     template(slot="searchForm")
       el-form(ref="form" :inline="true" :model="searchForm")
         el-form-item(prop="name")
@@ -23,7 +26,6 @@
             )
         el-button(type="primary" @click="search" style="width: 70px") 搜索
         el-button(type="default" @click="openAddInterfaceForm") 添加接口
-    grid-title(name="消息列表")
     grid(ref="grid" :remote-method="getData")
       el-table-column(
         label="名称"
@@ -75,11 +77,18 @@ export default {
 <style scoped lang="less">
 .zc-message {
   height: 100%;
-  .zc-toolbar {
-    background-color: #dadada;
-  }
-  .zc-search-form {
-    height: 70px;
+  .zc-toolbar-ul {
+    li {
+      float: left;
+      list-style-type: none;
+      margin-left: 10px;
+
+      i {
+        color: #abc;
+        cursor: pointer;
+        font-size: 16px;
+      }
+    }
   }
 }
 </style>

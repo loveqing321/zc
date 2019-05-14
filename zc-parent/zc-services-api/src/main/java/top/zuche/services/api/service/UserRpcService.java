@@ -1,7 +1,9 @@
 package top.zuche.services.api.service;
 
+import top.zuche.services.api.dto.Paging;
 import top.zuche.services.api.dto.UserDTO;
 import top.zuche.services.api.exception.ServiceException;
+import top.zuche.services.api.query.UserQuery;
 
 import java.util.List;
 
@@ -36,6 +38,15 @@ public interface UserRpcService {
      * @return
      */
     UserDTO queryUserWithPermissionsByUsername(String username) throws ServiceException;
+
+    /**
+     * 根据查询条件，执行分页查询
+     *
+     * @param query
+     * @return
+     * @throws ServiceException
+     */
+    Paging<UserDTO> queryPageByCondition(UserQuery query) throws ServiceException;
 
     /**
      * 添加用户

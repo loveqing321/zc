@@ -13,7 +13,7 @@ import top.zuche.toolkit.annotation.EnableGenericWebSecurity;
  */
 @SpringBootApplication
 @EnableDubboConfiguration
-@EnableCache
+//@EnableCache
 @EnableGenericAdvice
 @EnableGenericWebSecurity
 public class MerchantConsoleApplication {

@@ -21,9 +21,9 @@ export const del = ({ id }) => {
 }
 
 // 根据ID查询
-export const queryById = ({ id }) => {
+export const queryOne = ({ id }) => {
   return axios.request({
-    url: '/api/v1/${module}/${subModuleLower}/queryById',
+    url: '/api/v1/${module}/${subModuleLower}/queryOne',
     method: 'get',
     params: {
       id
@@ -32,12 +32,12 @@ export const queryById = ({ id }) => {
 }
 
 // 分页查询
-export const queryByPage = ({ pageNum, pageSize }) => {
+export const queryPage = ({ pageNo, pageSize }) => {
   return axios.request({
-    url: '/api/v1/${module}/${subModuleLower}/queryByPage',
+    url: '/api/v1/${module}/${subModuleLower}/queryPage',
     method: 'post',
     data: {
-      pageNum,
+      pageNo,
       pageSize
     }
   })

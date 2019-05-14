@@ -15,51 +15,51 @@
 </template>
 
 <script>
-export default {
-  name: 'main-content',
-  computed: {
-    breadcrumbList () {
-      let breadcrumbList = [].concat(this.$route.meta.breadcrumb || [])
-      breadcrumbList = breadcrumbList.map(item => {
-        // 找到指定名称的路由
-        const { route } = this.$router.resolve(item)
-        return route.meta.desc
-      })
-      if (this.$route.meta.desc) {
-        breadcrumbList.push(this.$route.meta.desc)
+  export default {
+    name: 'main-content',
+    computed: {
+      breadcrumbList () {
+        let breadcrumbList = [].concat(this.$route.meta.breadcrumb || [])
+        breadcrumbList = breadcrumbList.map(item => {
+          // 找到指定名称的路由
+          const { route } = this.$router.resolve(item)
+          return route.meta.desc
+        })
+        if (this.$route.meta.desc) {
+          breadcrumbList.push(this.$route.meta.desc)
+        }
+        return breadcrumbList
       }
-      return breadcrumbList
     }
   }
-}
 </script>
 
 <style scoped lang="less">
-.zc-main-content {
-  height: 100%;
-  .zc-content-header {
+  .zc-main-content {
     height: 100%;
-    border-bottom: 1px solid #eee;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    .zc-breadcrumb {
-      .zc-breadcrumb-text {
-        font-size: 13px;
-        font-weight: 700;
+    .zc-content-header {
+      height: 100%;
+      border-bottom: 1px solid #eee;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      .zc-breadcrumb {
+        .zc-breadcrumb-text {
+          font-size: 13px;
+          font-weight: 700;
+        }
+      }
+      .zc-toolbar {
+        height: 100%;
+        display: flex;
+        align-items: center;
       }
     }
-    .zc-toolbar {
-      height: 100%;
+    .zc-search-form {
       display: flex;
       align-items: center;
+      flex-wrap: wrap;
+      padding-top: 15px;
     }
   }
-  .zc-search-form {
-    height: 70px;
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-  }
-}
 </style>

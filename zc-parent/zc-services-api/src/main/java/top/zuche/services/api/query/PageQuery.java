@@ -1,4 +1,4 @@
-package top.zuche.common.web.query;
+package top.zuche.services.api.query;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -6,14 +6,12 @@ import lombok.Setter;
 import java.io.Serializable;
 
 /**
- * 分页查询对象
- *
  * @author lzx
- * @date 2019/5/13 上午9:05
+ * @date 2019/5/14 上午12:05
  */
-@Setter
 @Getter
-public class PageQuery implements Serializable {
+@Setter
+public abstract class PageQuery implements Serializable {
 
     // 当前分页
     private int pageNo;

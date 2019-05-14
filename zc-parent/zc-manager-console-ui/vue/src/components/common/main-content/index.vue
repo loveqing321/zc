@@ -56,10 +56,10 @@ export default {
     }
   }
   .zc-search-form {
-    height: 70px;
     display: flex;
     align-items: center;
     flex-wrap: wrap;
+    padding-top: 15px;
   }
 }
 </style>

@@ -1,0 +1,18 @@
+{
+  "hints": [],
+  "groups": [
+    {
+      "sourceType": "top.zuche.manager.console.configuration.ManagerProperties",
+      "name": "zc.manager",
+      "type": "top.zuche.merchant.console.configuration.ManagerProperties"
+    }
+  ],
+  "properties": [
+    {
+      "sourceType": "top.zuche.manager.console.configuration.ManagerProperties",
+      "name": "zc.manager.token-ttl",
+      "description": "token ttl.",
+      "type": "java.lang.Integer"
+    }
+  ]
+}

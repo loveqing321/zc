@@ -78,9 +78,7 @@ export default {
         const { code, data, message } = result.data
         if (code !== 0) {
           this.errorMsg = message
-          if (code === 106 || code === 107) {
-            this.changeVerifyCode()
-          }
+          this.changeVerifyCode()
         } else {
           // 设置token
           setToken(data.token)
@@ -107,7 +105,6 @@ export default {
       this.$router.push({
         name: 'Home'
       })
-      return
     }
   }
 }

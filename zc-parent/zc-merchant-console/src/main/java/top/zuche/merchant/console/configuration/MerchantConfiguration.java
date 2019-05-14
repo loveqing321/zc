@@ -1,17 +1,16 @@
 package top.zuche.merchant.console.configuration;
 
+import com.alibaba.fastjson.support.spring.GenericFastJsonRedisSerializer;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.serializer.RedisSerializer;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.security.access.PermissionEvaluator;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import top.zuche.merchant.console.Constants;
 import top.zuche.toolkit.web.security.SecurityProperties;
 import top.zuche.toolkit.web.security.evaluator.PermissionEvaluatorImpl;
-import top.zuche.toolkit.web.security.verifycode.repository.CookieVerifyCodeRepository;
-import top.zuche.toolkit.web.security.verifycode.repository.VerifyCodeRepository;
 
 /**
  * 配置对象，用于生成该应用需要的bean
@@ -23,26 +22,21 @@ import top.zuche.toolkit.web.security.verifycode.repository.VerifyCodeRepository
 @EnableConfigurationProperties(MerchantProperties.class)
 public class MerchantConfiguration {
 
-    /**
-     * 跨域配置，会被Spring Security使用到
-     *
-     * @return
-     */
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration corsConfiguration = new CorsConfiguration();
-        corsConfiguration.applyPermitDefaultValues();
-        corsConfiguration.setAllowCredentials(true);
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration(Constants.LOGIN_URL, corsConfiguration);
-        source.registerCorsConfiguration(Constants.LOGOUT_URL, corsConfiguration);
-        source.registerCorsConfiguration("/api/**", corsConfiguration);
-        return source;
-    }
+    private RedisSerializer<String> keySerializer = StringRedisSerializer.UTF_8;
+
+    private RedisSerializer<Object> valueSerializer = new GenericFastJsonRedisSerializer();
 
     @Bean
-    public VerifyCodeRepository verifyCodeRepository() {
-        return new CookieVerifyCodeRepository();
+    @SuppressWarnings("unchecked")
+    public RedisTemplate redisTemplate(RedisConnectionFactory redisConnectionFactory) {
+        RedisTemplate redisTemplate = new RedisTemplate();
+        redisTemplate.setConnectionFactory(redisConnectionFactory);
+        redisTemplate.setKeySerializer(keySerializer);
+        redisTemplate.setHashKeySerializer(keySerializer);
+        redisTemplate.setValueSerializer(valueSerializer);
+        redisTemplate.setHashValueSerializer(valueSerializer);
+        redisTemplate.afterPropertiesSet();
+        return redisTemplate;
     }
 
     @Bean
@@ -60,7 +54,7 @@ public class MerchantConfiguration {
 
             @Override
             public String getSecurityContextKeyFormat() {
-                return "zc_security_context_%s";
+                return "zc_security_context_merchant_%s";
             }
         };
     }

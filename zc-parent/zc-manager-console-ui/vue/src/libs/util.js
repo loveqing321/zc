@@ -6,6 +6,8 @@ export const TOKEN_KEY = 'token'
 // token超时
 const TOKEN_EXPIRES = 7
 
+export const CSRF_TOKEN_KEY = 'XSRF-TOKEN'
+
 // 设置token
 export const setToken = (token) => {
   Cookies.set(TOKEN_KEY, token, { expires: TOKEN_EXPIRES })
@@ -18,6 +20,33 @@ export const getToken = () => {
 
 export const clearToken = () => {
   Cookies.remove(TOKEN_KEY)
+}
+
+export const getCsrfToken = () => {
+  return Cookies.get(CSRF_TOKEN_KEY)
+}
+
+export const clearCsrfToken = () => {
+  return Cookies.remove(CSRF_TOKEN_KEY)
+}
+
+// 设置用户信息
+export const setUserInfo = (principal) => {
+  localStorage.setItem('principal', JSON.stringify(principal))
+}
+
+// 获取用户信息
+export const getUserInfo = () => {
+  const principal = localStorage.getItem('principal')
+  if (principal) {
+    return JSON.parse(principal)
+  }
+  return null
+}
+
+// 清除用户信息
+export const clearUserInfo = () => {
+  localStorage.removeItem('principal')
 }
 
 // forEach方法
