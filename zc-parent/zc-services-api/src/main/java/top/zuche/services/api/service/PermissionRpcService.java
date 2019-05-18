@@ -1,7 +1,9 @@
 package top.zuche.services.api.service;
 
+import top.zuche.services.api.dto.Paging;
 import top.zuche.services.api.dto.PermissionDTO;
 import top.zuche.services.api.exception.ServiceException;
+import top.zuche.services.api.query.PermissionQuery;
 
 import java.util.List;
 
@@ -49,7 +51,7 @@ public interface PermissionRpcService {
      * @param id
      * @return
      */
-    void deleteByPrimaryKey(int id) throws ServiceException;
+    void deletePermissionByPrimaryKey(int id) throws ServiceException;
 
     /**
      * 根据许可名删除
@@ -57,7 +59,15 @@ public interface PermissionRpcService {
      * @param name
      * @return
      */
-    void deleteByName(String name) throws ServiceException;
+    void deletePermissionByName(String name) throws ServiceException;
+
+    /**
+     * 通过许可ID查找许可
+     *
+     * @param id
+     * @return
+     */
+    PermissionDTO queryPermissionByPrimaryKey(int id) throws ServiceException;
 
     /**
      * 通过许可名查找许可
@@ -83,5 +93,14 @@ public interface PermissionRpcService {
      * @throws ServiceException
      */
     List<PermissionDTO> queryPermissionsByUsername(String username) throws ServiceException;
+
+    /**
+     * 通过条件分页查找许可列表
+     *
+     * @param query
+     * @return
+     * @throws ServiceException
+     */
+    Paging<PermissionDTO> queryPageByCondition(PermissionQuery query) throws ServiceException;
 
 }

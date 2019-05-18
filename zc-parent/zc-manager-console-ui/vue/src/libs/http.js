@@ -76,7 +76,7 @@ class HttpRequest {
     // 响应拦截
     instance.interceptors.response.use(resp => {
       const body = resp.data
-      const { code, data } = body
+      const { code, data, message } = body
 
       // 分析响应的数据做通用处理
       if (code === STATUS_CODE.SUCCESS) {
@@ -93,6 +93,8 @@ class HttpRequest {
         router.push({
           name: '403'
         })
+      } else if (code >= STATUS_CODE.ERROR[0] && code < STATUS_CODE.ERROR[1]) {
+        Message({ type: 'error', message: message || '服务异常' })
       }
       return Promise.reject(body)
     }, error => {

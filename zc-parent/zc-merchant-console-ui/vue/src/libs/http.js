@@ -92,6 +92,8 @@ class HttpRequest {
         router.push({
           name: '403'
         })
+      } else if (code >= STATUS_CODE.ERROR[0] && code < STATUS_CODE.ERROR[1]) {
+        Message({ type: 'error', message: message || '服务异常' })
       }
       return Promise.reject(body)
     }, error => {

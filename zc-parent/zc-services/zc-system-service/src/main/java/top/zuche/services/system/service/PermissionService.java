@@ -1,6 +1,8 @@
 package top.zuche.services.system.service;
 
 import com.alibaba.dubbo.config.annotation.Service;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
@@ -9,8 +11,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import top.zuche.common.base.BaseService;
+import top.zuche.services.api.dto.Paging;
 import top.zuche.services.api.dto.PermissionDTO;
 import top.zuche.services.api.exception.ServiceException;
+import top.zuche.services.api.query.PermissionQuery;
 import top.zuche.services.api.service.PermissionRpcService;
 import top.zuche.services.system.Constants;
 import top.zuche.services.system.entity.PermissionEntity;
@@ -92,8 +96,9 @@ public class PermissionService extends BaseService<PermissionEntity, PermissionD
 
     @Override
     @Transactional
-    public void deleteByPrimaryKey(int id) throws ServiceException {
-        int len = permissionMapper.deleteByPrimaryKey(id);
+    @CacheEvict(allEntries = true)
+    public void deletePermissionByPrimaryKey(int id) throws ServiceException {
+        int len = permissionMapper.deletePermissionByPrimaryKey(id);
         if (len != 1) {
             throw new ServiceException(Constants.ServiceMessage.UN_EXISTS_PERMISSION_ID);
         }
@@ -102,14 +107,20 @@ public class PermissionService extends BaseService<PermissionEntity, PermissionD
     @Override
     @Transactional
     @CacheEvict(allEntries = true)
-    public void deleteByName(String name) throws ServiceException {
+    public void deletePermissionByName(String name) throws ServiceException {
         if (!StringUtils.hasText(name)) {
             throw new ServiceException(Constants.ServiceMessage.EMPTY_PERMISSION_NAME);
         }
-        int len = permissionMapper.deleteByName(name);
+        int len = permissionMapper.deletePermissionByName(name);
         if (len != 1) {
             throw new ServiceException(Constants.ServiceMessage.UN_EXISTS_PERMISSION_NAME);
         }
+    }
+
+    @Override
+    public PermissionDTO queryPermissionByPrimaryKey(int id) throws ServiceException {
+        PermissionEntity entity = permissionMapper.selectPermissionByPrimaryKey(id);
+        return entity == null ? null : entity2Dto(entity);
     }
 
     @Override
@@ -144,5 +155,17 @@ public class PermissionService extends BaseService<PermissionEntity, PermissionD
             return null;
         }
         return entities.stream().map(this::entity2Dto).collect(Collectors.toList());
+    }
+
+    @Override
+    public Paging<PermissionDTO> queryPageByCondition(PermissionQuery query) throws ServiceException {
+        PageHelper.startPage(query.getPageNo(), query.getPageSize());
+        Page<PermissionEntity> page = permissionMapper.selectPageByCondition(query);
+        if (page.getTotal() == 0) {
+            return Paging.of(0, new ArrayList<>(0));
+        }
+        List<PermissionEntity> result = page.getResult();
+        List<PermissionDTO> dtos = result.stream().map(this::entity2Dto).collect(Collectors.toList());
+        return Paging.of(page.getTotal(), dtos);
     }
 }

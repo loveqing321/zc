@@ -91,7 +91,7 @@ public class GenProperties {
         genProps.setListVm(props.getProperty(LIST_VM_KEY));
         genProps.setFormVm(props.getProperty(FORM_VM_KEY));
         genProps.setOutputDir(props.getProperty(OUTPUT_DIR_KEY));
-        genProps.setServiceOutputDir(props.getProperty(OUTPUT_DIR_KEY));
+        genProps.setServiceOutputDir(props.getProperty("service.output.dir"));
         genProps.setServiceImplOutputDir(props.getProperty("service.impl.output.dir"));
         genProps.setControllerOutputDir(props.getProperty("controller.output.dir"));
         genProps.setUiApiOutputDir(props.getProperty("ui.api.output.dir"));

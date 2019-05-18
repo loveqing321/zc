@@ -44,12 +44,12 @@ public class CodeGenerator {
         // 生成pojo代码
 //        this.genPojo(meta);
         // 生成Service代码
-//        this.genService(meta);
+        this.genService(meta);
 //        // 生成Controller代码
 //        this.genController(meta);
 
         // 生成UI相关代码
-        this.genUI(meta);
+//        this.genUI(meta);
     }
 
     /**

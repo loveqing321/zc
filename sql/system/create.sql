@@ -82,3 +82,23 @@ CREATE TABLE `t_sys_role_permission` (
   `permission_id` int(11) NOT NULL COMMENT '权限ID',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+/*
+  字典表
+*/
+DROP TABLE IF EXISTS `t_sys_dict`;
+CREATE TABLE `t_sys_dict` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '字典ID，主键',
+  `dict_type` varchar(50) NOT NULL COMMENT '字典类型，用于标示该字典值的用途',
+  `dict_code` varchar(50) NOT NULL COMMENT '字典编码',
+  `dict_value` varchar(255) NOT NULL COMMENT '字典值',
+  `dict_desc` varchar(255) COMMENT '字典值描述',
+  `create_user` int(11) DEFAULT NULL COMMENT '创建用户',
+  `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `modify_user` int(11) DEFAULT NULL COMMENT '修改用户',
+  `modify_time` datetime DEFAULT CURRENT_TIMESTAMP  COMMENT '修改时间',
+  `is_deleted` int(1) DEFAULT NULL COMMENT '是否删除',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `key_t_sys_dict_type_code` (`dict_type`, `dict_code`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+

@@ -1,7 +1,7 @@
 package top.zuche.services.api.service;
 
 import top.zuche.services.api.dto.${DTO};
-import top.zuche.services.api.dto.${Query};
+import top.zuche.services.api.query.${Query};
 import top.zuche.services.api.dto.Paging;
 import top.zuche.services.api.exception.ServiceException;
 

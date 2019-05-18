@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.zuche.services.system.mapper.DictMapper">
+
+    <resultMap id="dictResultMap" type="top.zuche.services.system.entity.DictEntity">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="dict_type" property="dictType" jdbcType="VARCHAR"/>
+        <result column="dict_code" property="dictCode" jdbcType="VARCHAR"/>
+        <result column="dict_value" property="dictValue" jdbcType="VARCHAR"/>
+        <result column="dict_desc" property="dictDesc" jdbcType="VARCHAR"/>
+        <result column="create_user" property="createUser" jdbcType="INTEGER"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="modify_user" property="modifyUser" jdbcType="INTEGER"/>
+        <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP"/>
+        <result column="is_deleted" property="isDeleted" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+      id, dict_type, dict_code, dict_value, dict_desc, create_user, create_time, modify_user, modify_time, is_deleted
+    </sql>
+
+    <insert id="insertDict" useGeneratedKeys="true" keyProperty="id" parameterType="top.zuche.services.system.entity.DictEntity" >
+        insert ignore into t_sys_dict
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="dictType != null" >
+                dict_type,
+            </if>
+            <if test="dictCode != null" >
+                dict_code,
+            </if>
+            <if test="dictValue != null" >
+                dict_value,
+            </if>
+            <if test="dictDesc != null" >
+                dict_desc,
+            </if>
+            <if test="createUser != null" >
+                create_user,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="dictType != null" >
+                #{dictType, jdbcType=VARCHAR},
+            </if>
+            <if test="dictCode != null" >
+                #{dictCode, jdbcType=VARCHAR},
+            </if>
+            <if test="dictValue != null" >
+                #{dictValue, jdbcType=VARCHAR},
+            </if>
+            <if test="dictDesc != null" >
+                #{dictDesc, jdbcType=VARCHAR},
+            </if>
+            <if test="createUser != null" >
+                #{createUser, jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateDictByPrimaryKey" parameterType="top.zuche.services.system.entity.DictEntity" >
+        update t_sys_dict
+        <set>
+            <if test="dictType != null" >
+                dict_type = #{dictType, jdbcType=VARCHAR},
+            </if>
+            <if test="dictCode != null" >
+                dict_code = #{dictCode, jdbcType=VARCHAR},
+            </if>
+            <if test="dictValue != null" >
+                dict_value = #{dictValue, jdbcType=VARCHAR},
+            </if>
+            <if test="dictDesc != null" >
+                dict_desc = #{dictDesc, jdbcType=VARCHAR},
+            </if>
+            <if test="modifyUser != null" >
+                modify_user = #{modifyUser, jdbcType=INTEGER},
+            </if>
+            <if test="isDeleted != null" >
+                is_deleted = #{isDeleted, jdbcType=INTEGER},
+            </if>
+            modify_time = now()
+        </set>
+        where id = #{id, jdbcType=INTEGER}
+    </update>
+
+    <delete id="deleteDictByPrimaryKey" parameterType="int">
+        delete from t_sys_dict
+        where id = #{id, jdbcType=INTEGER}
+    </delete>
+
+
+    <select id="selectDictByPrimaryKey" resultMap="dictResultMap" parameterType="int" >
+        select
+          <include refid="Base_Column_List" />
+        from t_sys_dict
+        where id = #{id, jdbcType=INTEGER}
+    </select>
+
+    <select id="selectDictsByCondition" resultMap="dictResultMap" parameterType="top.zuche.services.api.query.DictQuery" >
+        select
+          <include refid="Base_Column_List" />
+        from t_sys_dict
+        where 1 = 1
+        <if test="dictType != null and dictType != ''">
+            and dict_type like CONCAT('%', '${dictType}', '%')
+        </if>
+        <if test="dictCode != null and dictCode != ''">
+            and dict_code like CONCAT('%', '${dictCode}', '%')
+        </if>
+        <if test="dictValue != null and dictValue != ''">
+            and dict_value like CONCAT('%', '${dictValue}', '%')
+        </if>
+        <if test="isDeleted != null">
+            and is_deleted = #{isDeleted}
+        </if>
+    </select>
+
+    <select id="selectPageByCondition" resultMap="dictResultMap" parameterType="top.zuche.services.api.query.UserQuery">
+        select
+          <include refid="Base_Column_List" />
+        from t_sys_dict
+        where 1 = 1
+        <if test="dictType != null and dictType != ''">
+            and dict_type like CONCAT('%', '${dictType}', '%')
+        </if>
+        <if test="dictCode != null and dictCode != ''">
+            and dict_code like CONCAT('%', '${dictCode}', '%')
+        </if>
+        <if test="dictValue != null and dictValue != ''">
+            and dict_value like CONCAT('%', '${dictValue}', '%')
+        </if>
+        <if test="isDeleted != null">
+            and is_deleted = #{isDeleted}
+        </if>
+    </select>
+</mapper>

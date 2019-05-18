@@ -1,4 +1,4 @@
-package top.zuche.toolkit.web.advice;
+package top.zuche.merchant.console.advice;
 
 import com.alibaba.dubbo.rpc.RpcException;
 import org.springframework.web.bind.WebDataBinder;
@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ResponseBody;
 import top.zuche.common.web.resp.ResponseCode;
 import top.zuche.common.web.resp.ResponseData;
+import top.zuche.services.api.exception.ServiceException;
 
 /**
  * @author lzx
@@ -41,5 +42,13 @@ public class GenericControllerAdvice {
             return ResponseData.error(ResponseCode.SERIALIZATION_ERROR);
         }
         return ResponseData.error(ResponseCode.SERVICE_ERROR);
+    }
+
+    @ResponseBody
+    @ExceptionHandler(value = ServiceException.class)
+    public ResponseData errHandler(ServiceException serviceErr) {
+        ResponseData responseData = ResponseData.error(ResponseCode.SERVICE_ERROR);
+        responseData.setMessage(serviceErr.getMessage());
+        return responseData;
     }
 }

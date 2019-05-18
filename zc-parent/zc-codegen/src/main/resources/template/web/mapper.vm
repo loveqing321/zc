@@ -1,0 +1,66 @@
+package top.zuche.services.api.service;
+
+import com.github.pagehelper.Page;
+import org.apache.ibatis.annotations.Param;
+import top.zuche.services.api.query.${subModule}Query;
+import top.zuche.services.system.entity.${subModule}Entity;
+
+import java.util.List;
+
+/**
+* ${subModule} Mapper
+*
+* @author lzx
+* @date 2018/12/16 5:11 PM
+*/
+public interface ${subModule}Mapper {
+
+    /**
+     * 插入信息
+     *
+     * @param entity
+     * @return
+     */
+    int insert${subModule}(${subModule}Entity entity);
+
+    /**
+     * 按照主键更新
+     *
+     * @param entity
+     * @return
+     */
+    int update${subModule}ByPrimaryKey(${subModule}Entity entity);
+
+    /**
+     * 根据主键删除
+     *
+     * @param id
+     * @return
+     */
+    int delete${subModule}ByPrimaryKey(int id);
+
+    /**
+     * 根据ID查找信息
+     *
+     * @param id
+     * @return
+     */
+    ${subModule}Entity select${subModule}ByPrimaryKey(@Param("id") int id);
+
+    /**
+     * 根据查询条件查找信息
+     *
+     * @param query
+     * @return
+     */
+    List<${subModule}Entity> select${subModule}sByCondition(${subModule}Query query);
+
+    /**
+     * 分页查询
+     *
+     * @param query
+     * @return
+     */
+    Page<${subModule}Entity> selectPageByCondition(${subModule}Query query);
+
+}

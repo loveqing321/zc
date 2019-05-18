@@ -197,7 +197,7 @@ export default new Router({
             {
               path: '/system/role',
               name: 'role',
-              component: require(`@/components/modules/dashboard`),
+              component: require(`@/components/modules/system/role`),
               meta: {
                 desc: '角色管理',
                 breadcrumb: [
@@ -208,7 +208,7 @@ export default new Router({
             {
               path: '/system/permission',
               name: 'permission',
-              component: require(`@/components/modules/dashboard`),
+              component: require(`@/components/modules/system/permission`),
               meta: {
                 desc: '权限管理',
                 breadcrumb: [
@@ -219,7 +219,7 @@ export default new Router({
             {
               path: '/system/dict',
               name: 'dict',
-              component: require(`@/components/modules/dashboard`),
+              component: require(`@/components/modules/system/dict`),
               meta: {
                 desc: '字典管理',
                 breadcrumb: [

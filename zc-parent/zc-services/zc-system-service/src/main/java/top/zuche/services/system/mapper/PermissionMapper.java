@@ -1,6 +1,8 @@
 package top.zuche.services.system.mapper;
 
+import com.github.pagehelper.Page;
 import org.apache.ibatis.annotations.Param;
+import top.zuche.services.api.query.PermissionQuery;
 import top.zuche.services.system.entity.PermissionEntity;
 
 import java.util.List;
@@ -35,7 +37,7 @@ public interface PermissionMapper {
      * @param id
      * @return
      */
-    int deleteByPrimaryKey(int id);
+    int deletePermissionByPrimaryKey(int id);
 
     /**
      * 根据角色名删除
@@ -43,7 +45,7 @@ public interface PermissionMapper {
      * @param name
      * @return
      */
-    int deleteByName(String name);
+    int deletePermissionByName(String name);
 
     /**
      * 按照主键更新
@@ -60,6 +62,14 @@ public interface PermissionMapper {
      * @return
      */
     int updatePermissionByName(PermissionEntity entity);
+
+    /**
+     * 根据主键查询
+     *
+     * @param id
+     * @return
+     */
+    PermissionEntity selectPermissionByPrimaryKey(@Param("id") int id);
 
     /**
      * 根据许可名字查找信息
@@ -84,5 +94,13 @@ public interface PermissionMapper {
      * @return
      */
     List<PermissionEntity> selectPermissionsByUsername(@Param("username") String username);
+
+    /**
+     * 根据条件分页查询
+     *
+     * @param query
+     * @return
+     */
+    Page<PermissionEntity> selectPageByCondition(PermissionQuery query);
 
 }

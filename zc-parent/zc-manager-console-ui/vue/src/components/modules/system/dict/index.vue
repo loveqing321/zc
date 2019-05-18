@@ -1,5 +1,5 @@
 <template lang="pug">
-  main-content.zc-${subModuleSpl}
+  main-content.zc-dict
     template(slot="toolbar")
       ul.zc-toolbar-ul
         li
@@ -30,7 +30,7 @@
         div.zc-operator-box(slot-scope="{row}")
           a(@click="modify(row)") 修改
           a(@click="del(row)") 删除
-    ${subModuleSpl}-form(
+    dict-form(
       :visible.sync="visible"
       v-if="visible"
       :formData="formData"
@@ -40,16 +40,16 @@
 import mainContent from '@/components/common/main-content'
 import grid from '@/components/common/grid'
 import gridTitle from '@/components/common/grid-title'
-import ${subModuleLower}Form from './${subModuleSpl}-form'
-import { queryPage, queryOne, del } from '@/api/${module}/${subModuleSpl}'
+import dictForm from './dict-form'
+import { queryPage, queryOne, del } from '@/api/system/dict'
 
 export default {
-  name: '${subModuleSpl}',
+  name: 'dict',
   components: {
     mainContent,
     grid,
     gridTitle,
-    ${subModuleLower}Form
+    dictForm
   },
   data () {
     return {
@@ -62,8 +62,7 @@ export default {
   },
   methods: {
     search () {
-#set($grid="this.$refs.grid")
-      ${grid}.loadData(this.searchForm)
+      this.$refs.grid.loadData(this.searchForm)
     },
     getData (postData) {
       return queryPage(postData)
@@ -104,7 +103,7 @@ export default {
 </script>
 
 <style scoped lang="less">
-.zc-${subModuleSpl} {
+.zc-dict {
   height: 100%;
   .zc-toolbar-ul {
     li {

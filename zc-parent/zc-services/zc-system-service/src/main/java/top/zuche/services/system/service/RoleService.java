@@ -1,13 +1,17 @@
 package top.zuche.services.system.service;
 
 import com.alibaba.dubbo.config.annotation.Service;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import top.zuche.common.base.BaseService;
+import top.zuche.services.api.dto.Paging;
 import top.zuche.services.api.dto.RoleDTO;
 import top.zuche.services.api.exception.ServiceException;
+import top.zuche.services.api.query.RoleQuery;
 import top.zuche.services.api.service.RoleRpcService;
 import top.zuche.services.system.Constants;
 import top.zuche.services.system.entity.RoleEntity;
@@ -22,9 +26,9 @@ import java.util.stream.Collectors;
  * @author lzx
  * @date 2019/5/12 下午3:26
  */
-@Service(interfaceClass = RoleRpcService.class)
-@Component("roleService")
 @Slf4j
+@Component("roleService")
+@Service(interfaceClass = RoleRpcService.class)
 public class RoleService extends BaseService<RoleEntity, RoleDTO> implements RoleRpcService {
 
     @Resource
@@ -82,7 +86,8 @@ public class RoleService extends BaseService<RoleEntity, RoleDTO> implements Rol
     }
 
     @Override
-    public void deleteByPrimaryKey(int id) throws ServiceException {
+    @Transactional
+    public void deleteRoleByPrimaryKey(int id) throws ServiceException {
         int len = roleMapper.deleteByPrimaryKey(id);
         if (len != 1) {
             throw new ServiceException(Constants.ServiceMessage.UN_EXISTS_ROLE_ID);
@@ -90,7 +95,8 @@ public class RoleService extends BaseService<RoleEntity, RoleDTO> implements Rol
     }
 
     @Override
-    public void deleteByRoleName(String roleName) throws ServiceException {
+    @Transactional
+    public void deleteRoleByRoleName(String roleName) throws ServiceException {
         if (!StringUtils.hasText(roleName)) {
             throw new ServiceException(Constants.ServiceMessage.EMPTY_ROLE_NAME);
         }
@@ -98,6 +104,12 @@ public class RoleService extends BaseService<RoleEntity, RoleDTO> implements Rol
         if (len != 1) {
             throw new ServiceException(Constants.ServiceMessage.UN_EXISTS_ROLE_NAME);
         }
+    }
+
+    @Override
+    public RoleDTO queryRoleByPrimaryKey(int id) throws ServiceException {
+        RoleEntity entity = roleMapper.selectByPrimaryKey(id);
+        return entity == null ? null : entity2Dto(entity);
     }
 
     @Override
@@ -128,5 +140,17 @@ public class RoleService extends BaseService<RoleEntity, RoleDTO> implements Rol
             return null;
         }
         return entities.stream().map(this::entity2Dto).collect(Collectors.toList());
+    }
+
+    @Override
+    public Paging<RoleDTO> queryPageByCondition(RoleQuery query) throws ServiceException {
+        PageHelper.startPage(query.getPageNo(), query.getPageSize());
+        Page<RoleEntity> page = roleMapper.selectPageByCondition(query);
+        if (page.getTotal() == 0) {
+            return Paging.of(0, new ArrayList<>(0));
+        }
+        List<RoleEntity> result = page.getResult();
+        List<RoleDTO> dtos = result.stream().map(this::entity2Dto).collect(Collectors.toList());
+        return Paging.of(page.getTotal(), dtos);
     }
 }

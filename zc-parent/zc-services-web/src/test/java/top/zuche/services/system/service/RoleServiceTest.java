@@ -83,11 +83,11 @@ public class RoleServiceTest {
 
     @Test
     public void deleteByPrimaryKey() throws ServiceException {
-        roleService.deleteByPrimaryKey(1);
+        roleService.deleteRoleByPrimaryKey(1);
     }
 
     @Test
     public void deleteByRoleName() throws ServiceException {
-        roleService.deleteByRoleName("mm");
+        roleService.deleteRoleByRoleName("mm");
     }
 }

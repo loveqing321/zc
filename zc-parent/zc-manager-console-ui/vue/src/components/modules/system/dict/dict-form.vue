@@ -1,0 +1,84 @@
+<template lang="pug">
+  el-dialog(
+    :visible="visible",
+    :title="title",
+    width="650px",
+    @close="cancel"
+    top="5vh"
+    :close-on-click-modal="false"
+  )
+    el-container
+      el-form(
+        ref="form",
+        :rules="rules",
+        :model="formData",
+        label-position="right",
+        label-width="100px",
+        :style={flex:1}
+        label-suffix=":"
+      )
+        el-form-item(label="ID", prop="id")
+          el-input(v-model="formData.id")
+    template(slot="footer")
+      el-button(@click="cancel") 取消
+      el-button(type="primary" @click="confirm") 确定
+</template>
+
+<script>
+import emitter from '@/mixins/emitter'
+import { save } from '@/api/system/dict'
+
+export default {
+  name: 'dict-form',
+  mixins: [
+    emitter
+  ],
+  props: {
+    visible: {
+      type: Boolean,
+      default: false
+    },
+    formData: {
+      type: Object,
+      default () {
+        return {}
+      }
+    }
+  },
+  data () {
+    return {
+      rules: {
+      }
+    }
+  },
+  computed: {
+    title () {
+      if (this.formData.id) {
+        return '修改配置'
+      } else {
+        return '新增配置'
+      }
+    }
+  },
+  methods: {
+    cancel () {
+      this.$emit('update:visible', false)
+    },
+    async confirm () {
+      try {
+        const val = await this.$refs.form.validate()
+        if (val) {
+          await save(this.formData)
+          this.$emit('update:visible', false)
+          this.dispatch('dict', 'form-search')
+        }
+      } catch (e) {
+        // ignore
+      }
+    }
+  }
+}
+</script>
+
+<style scoped lang="less">
+</style>

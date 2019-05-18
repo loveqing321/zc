@@ -194,10 +194,10 @@
         </foreach>
     </insert>
 
-    <update id="deleteByPrimaryKey" parameterType="int">
-        update t_sys_user set is_deleted = 1, modify_time = now()
+    <delete id="deleteByPrimaryKey" parameterType="int">
+        delete from t_sys_user
         where id = #{id, jdbcType=INTEGER}
-    </update>
+    </delete>
 
     <delete id="deleteByUsername" parameterType="String">
         delete from t_sys_user
@@ -327,8 +327,7 @@
         select
           <include refid="Base_Column_List" />
         from t_sys_user u
-        where u.is_deleted = 0
-        and u.username = #{username, jdbcType=VARCHAR}
+        where u.username = #{username, jdbcType=VARCHAR}
     </select>
 
     <select id="selectPageByCondition" resultMap="userResultMap" parameterType="top.zuche.services.api.query.UserQuery">

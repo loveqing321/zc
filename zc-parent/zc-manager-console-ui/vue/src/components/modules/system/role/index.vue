@@ -1,5 +1,5 @@
 <template lang="pug">
-  main-content.zc-${subModuleSpl}
+  main-content.zc-role
     template(slot="toolbar")
       ul.zc-toolbar-ul
         li
@@ -9,28 +9,42 @@
     template(slot="searchForm")
       el-form(ref="form" :inline="true" :model="searchForm")
         el-form-item
-          el-input(v-model="searchForm.name" placeholder="接口编码 / 名称" style="width: 220px")
+          el-input(v-model="searchForm.roleName" placeholder="角色名" style="width: 200px")
+        el-form-item
+          el-select(
+            placeholder="状态"
+            v-model="searchForm.isDeleted"
+            :style="{display:'block', width: '120px'}"
+            clearable
+          )
+            el-option(value="0" label="启用")
+            el-option(value="1" label="停用")
         el-button(type="primary" @click="search" style="width: 70px") 搜索
-        el-button(type="default" @click="add") 增加接口
+        el-button(type="default" @click="add") 增加角色
     grid(ref="grid" :remote-method="getData")
       el-table-column(type="index" width="40")
       el-table-column(
-        label="名称"
+        prop="roleName"
+        label="角色名"
         show-overflow-tooltip
-        width="250"
       )
-        template(slot-scope="{row}")
-          span(style="color: #409EFF;") {{row.name}}
       el-table-column(
-        prop="code"
-        label="编码"
+        label="状态"
+        width="100"
         show-overflow-tooltip
       )
-      el-table-column(label="操作", show-overflow-tooltip, width="120")
+        template(slot-scope="scope")
+          el-tag(v-if="scope.row.isDeleted === 0" type="success" disable-transitions)
+            | 启用
+          el-tag(v-if="scope.row.isDeleted === 1" type="warning" disable-transitions)
+            | 停用
+      el-table-column(label="操作", show-overflow-tooltip, width="140")
         div.zc-operator-box(slot-scope="{row}")
           a(@click="modify(row)") 修改
+          a(v-if="row.isDeleted === 0" @click="disableRole(row)") 停用
+          a(v-else @click="enableRole(row)") 启用
           a(@click="del(row)") 删除
-    ${subModuleSpl}-form(
+    role-form(
       :visible.sync="visible"
       v-if="visible"
       :formData="formData"
@@ -40,30 +54,27 @@
 import mainContent from '@/components/common/main-content'
 import grid from '@/components/common/grid'
 import gridTitle from '@/components/common/grid-title'
-import ${subModuleLower}Form from './${subModuleSpl}-form'
-import { queryPage, queryOne, del } from '@/api/${module}/${subModuleSpl}'
+import roleForm from './role-form'
+import { queryPage, queryOne, save, del } from '@/api/system/role'
 
 export default {
-  name: '${subModuleSpl}',
+  name: 'role',
   components: {
     mainContent,
     grid,
     gridTitle,
-    ${subModuleLower}Form
+    roleForm
   },
   data () {
     return {
-      searchForm: {
-
-      },
+      searchForm: {},
       visible: false,
       formData: null
     }
   },
   methods: {
     search () {
-#set($grid="this.$refs.grid")
-      ${grid}.loadData(this.searchForm)
+      this.$refs.grid.loadData(this.searchForm)
     },
     getData (postData) {
       return queryPage(postData)
@@ -80,9 +91,39 @@ export default {
         // ignore
       }
     },
+    async disableRole (row) {
+      try {
+        await this.$confirm('此操作将停用该角色, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning',
+          center: true
+        })
+        await save({ id: row.id, isDeleted: 1 })
+        this.$message.info('删除成功')
+        this.search()
+      } catch (e) {
+        // ignore
+      }
+    },
+    async enableRole (row) {
+      try {
+        await this.$confirm('此操作将启用该角色, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning',
+          center: true
+        })
+        await save({ id: row.id, isDeleted: 0 })
+        this.$message.info('删除成功')
+        this.search()
+      } catch (e) {
+        // ignore
+      }
+    },
     async del (row) {
       try {
-        await this.$confirm('此操作将删除该条目, 是否继续?', '提示', {
+        await this.$confirm('此操作将删除该角色, 是否继续?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning',
@@ -104,7 +145,7 @@ export default {
 </script>
 
 <style scoped lang="less">
-.zc-${subModuleSpl} {
+.zc-role {
   height: 100%;
   .zc-toolbar-ul {
     li {

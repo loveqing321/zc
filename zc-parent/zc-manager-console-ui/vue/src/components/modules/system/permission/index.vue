@@ -1,5 +1,5 @@
 <template lang="pug">
-  main-content.zc-user
+  main-content.zc-permission
     template(slot="toolbar")
       ul.zc-toolbar-ul
         li
@@ -9,7 +9,16 @@
     template(slot="searchForm")
       el-form(ref="form" :inline="true" :model="searchForm")
         el-form-item
-          el-input(v-model="searchForm.searchText" placeholder="用户名 / 账号 / 电话" style="width: 220px" clearable)
+          el-input(v-model="searchForm.nameOrPerm" placeholder="权限名称 / 标签" style="width: 220px" clearable)
+        el-form-item
+          el-select(
+            placeholder="权限分类"
+            v-model="searchForm.category"
+            :style="{display:'block', width: '150px'}"
+            clearable
+          )
+            el-option(value="merchant_console_menu" label="菜单权限")
+            el-option(value="merchant_console_data" label="数据权限")
         el-form-item
           el-select(
             placeholder="状态"
@@ -20,36 +29,25 @@
             el-option(value="0" label="启用")
             el-option(value="1" label="停用")
         el-button(type="primary" @click="search" style="width: 70px") 搜索
-        el-button(type="default" @click="add") 增加用户
+        el-button(type="default" @click="add") 增加权限
     grid(ref="grid" :remote-method="getData")
       el-table-column(type="index" width="40")
       el-table-column(
-        prop="cname"
-        label="姓名"
-        width="120"
+        label="权限名称"
         show-overflow-tooltip
+        width="140"
+      )
+        template(slot-scope="{row}")
+          span(style="color: #409EFF;") {{row.name}}
+      el-table-column(
+        prop="category"
+        label="权限分类"
+        show-overflow-tooltip
+        width="200"
       )
       el-table-column(
-        prop="username"
-        label="账号"
-        width="150"
-        show-overflow-tooltip
-      )
-      el-table-column(
-        prop="telephone"
-        label="电话号码"
-        width="150"
-        show-overflow-tooltip
-      )
-      el-table-column(
-        prop="post"
-        label="职位"
-        width="100"
-        show-overflow-tooltip
-      )
-      el-table-column(
-        prop="department"
-        label="部门"
+        prop="perm"
+        label="权限标签"
         show-overflow-tooltip
       )
       el-table-column(
@@ -62,13 +60,13 @@
             | 启用
           el-tag(v-if="scope.row.isDeleted === 1" type="warning" disable-transitions)
             | 停用
-      el-table-column(prop="operate", label="操作", show-overflow-tooltip, width="140")
+      el-table-column(label="操作", show-overflow-tooltip, width="150")
         div.zc-operator-box(slot-scope="{row}")
           a(@click="modify(row)") 修改
-          a(v-if="row.isDeleted === 0" @click="disableUser(row)") 停用
-          a(v-else @click="enableUser(row)") 启用
+          a(v-if="row.isDeleted === 0" @click="disablePermission(row)") 停用
+          a(v-else @click="enablePermission(row)") 启用
           a(@click="del(row)") 删除
-    user-form(
+    permission-form(
       :visible.sync="visible"
       v-if="visible"
       :formData="formData"
@@ -78,22 +76,20 @@
 import mainContent from '@/components/common/main-content'
 import grid from '@/components/common/grid'
 import gridTitle from '@/components/common/grid-title'
-import userForm from './user-form'
-import { queryPage, queryOne, del, save } from '@/api/system/user'
+import permissionForm from './permission-form'
+import { queryPage, queryOne, del, save } from '@/api/system/permission'
 
 export default {
-  name: 'user',
+  name: 'permission',
   components: {
     mainContent,
     grid,
     gridTitle,
-    userForm
+    permissionForm
   },
   data () {
     return {
-      searchForm: {
-
-      },
+      searchForm: {},
       visible: false,
       formData: null
     }
@@ -111,30 +107,29 @@ export default {
     },
     async modify (row) {
       try {
-        this.formData = await queryOne({ username: row.username })
+        this.formData = await queryOne({ id: row.id })
         this.visible = true
       } catch (e) {
         // ignore
       }
     },
-    async disableUser (row) {
+    async disablePermission (row) {
       try {
-        await this.$confirm('此操作将停用该用户, 是否继续?', '提示', {
+        await this.$confirm('此操作将停用该权限, 是否继续?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning',
           center: true
         })
         await save({ id: row.id, isDeleted: 1 })
-        this.$message.info('删除成功')
         this.search()
       } catch (e) {
         // ignore
       }
     },
-    async enableUser (row) {
+    async enablePermission (row) {
       try {
-        await this.$confirm('此操作将启用该用户, 是否继续?', '提示', {
+        await this.$confirm('此操作将启用该权限, 是否继续?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning',
@@ -148,7 +143,7 @@ export default {
     },
     async del (row) {
       try {
-        await this.$confirm('此操作将停用该用户, 是否继续?', '提示', {
+        await this.$confirm('此操作将删除该条目, 是否继续?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning',
@@ -170,7 +165,7 @@ export default {
 </script>
 
 <style scoped lang="less">
-.zc-user {
+.zc-permission {
   height: 100%;
   .zc-toolbar-ul {
     li {

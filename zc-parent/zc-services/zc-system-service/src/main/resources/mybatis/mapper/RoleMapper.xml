@@ -35,8 +35,8 @@
     </resultMap>
 
     <sql id="Base_Column_List" >
-      r.id as role_id, r.role_name as role_name, r.create_user as role_create_user, r.create_time as role_create_time,
-      r.modify_user as role_modify_user, r.modify_time as role_modify_time, r.is_deleted as role_is_deleted
+      r.id as id, r.role_name as role_name, r.create_user as create_user, r.create_time as create_time,
+      r.modify_user as modify_user, r.modify_time as modify_time, r.is_deleted as is_deleted
     </sql>
 
     <sql id="With_Permission_Column_List" >
@@ -131,12 +131,18 @@
         and r.role_name = #{roleName, jdbcType=VARCHAR}
     </select>
 
+    <select id="selectByPrimaryKey" resultMap="roleResultMap" parameterType="int" >
+        select
+          <include refid="Base_Column_List" />
+        from t_sys_role r
+        where r.id = #{id, jdbcType=INTEGER}
+    </select>
+
     <select id="selectRoleByRoleName" resultMap="roleResultMap" parameterType="String" >
         select
           <include refid="Base_Column_List" />
         from t_sys_role r
-        where r.is_deleted = 0
-        and r.role_name = #{roleName, jdbcType=VARCHAR}
+        where r.role_name = #{roleName, jdbcType=VARCHAR}
     </select>
 
     <select id="selectRolesByUsername" resultMap="roleResultMap" parameterType="String" >
@@ -147,9 +153,20 @@
         on r.id = ur.role_id
         left join t_sys_user u
         on u.id = ur.user_id
-        and u.is_deleted = 0
-        where r.is_deleted = 0
-        and u.username = #{username, jdbcType=VARCHAR}
+        where u.username = #{username, jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectPageByCondition" resultMap="roleResultMap" parameterType="top.zuche.services.api.query.RoleQuery">
+        select
+          <include refid="Base_Column_List" />
+        from t_sys_role r
+        where 1 = 1
+        <if test="roleName != null and roleName != ''">
+            and r.role_name like CONCAT('%', '${roleName}', '%')
+        </if>
+        <if test="isDeleted != null">
+            and r.is_deleted = #{isDeleted}
+        </if>
     </select>
 
 </mapper>

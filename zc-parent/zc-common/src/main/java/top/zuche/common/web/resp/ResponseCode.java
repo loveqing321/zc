@@ -33,7 +33,6 @@ public enum ResponseCode {
     ACCESS_DENIED(299, "拒绝访问"),
 
     // 业务类响应码范围 400 - 500
-
     SERVICE_ERROR(499, "服务调用异常"),
 
     // 网络等其他异常 500 - 600

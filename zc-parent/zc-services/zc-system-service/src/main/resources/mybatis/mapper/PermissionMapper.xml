@@ -63,12 +63,12 @@
         </foreach>
     </insert>
 
-    <delete id="deleteByPrimaryKey" parameterType="int">
+    <delete id="deletePermissionByPrimaryKey" parameterType="int">
         delete from t_sys_permission
         where id = #{id, jdbcType=INTEGER}
     </delete>
 
-    <delete id="deleteByName" parameterType="String">
+    <delete id="deletePermissionByName" parameterType="String">
         delete from t_sys_permission
         where name = #{name, jdbcType=VARCHAR}
     </delete>
@@ -116,6 +116,13 @@
         where name = #{name, jdbcType=VARCHAR}
     </update>
 
+    <select id="selectPermissionByPrimaryKey" resultMap="permissionResultMap" parameterType="int" >
+        select
+        <include refid="Base_Column_List" />
+        from t_sys_permission p
+        where p.id = #{id, jdbcType=INTEGER}
+    </select>
+
     <select id="selectPermissionByName" resultMap="permissionResultMap" parameterType="String" >
         select
           <include refid="Base_Column_List" />
@@ -153,6 +160,23 @@
         and u.is_deleted = 0
         where p.is_deleted = 0
         and u.username = #{username, jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectPageByCondition" resultMap="permissionResultMap" parameterType="top.zuche.services.api.query.PermissionQuery" >
+        select
+          <include refid="Base_Column_List" />
+        from t_sys_permission p
+        where 1 = 1
+        <if test="nameOrPerm != null and nameOrPerm != ''">
+            and (p.name like CONCAT('%', '${nameOrPerm}', '%')
+            or p.perm like CONCAT('%', '${nameOrPerm}', '%'))
+        </if>
+        <if test="category != null and category != ''">
+            and p.category like CONCAT('%', '${category}', '%')
+        </if>
+        <if test="isDeleted != null">
+            and p.is_deleted = #{isDeleted}
+        </if>
     </select>
 
 </mapper>

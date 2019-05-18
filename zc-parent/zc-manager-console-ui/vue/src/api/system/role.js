@@ -1,17 +1,9 @@
 import axios from '@/libs/http'
 
-// 获取用户许可
-export const getUserPermissions = (obj) => {
-  return axios.request({
-    url: '/api/v1/system/permission/getUserPermissions',
-    method: 'post'
-  })
-}
-
 // 保存
 export const save = (obj) => {
   return axios.request({
-    url: '/api/v1/system/permission/save',
+    url: '/api/v1/system/role/save',
     method: 'post',
     data: obj
   })
@@ -20,7 +12,7 @@ export const save = (obj) => {
 // 删除
 export const del = ({ id }) => {
   return axios.request({
-    url: '/api/v1/system/permission/del',
+    url: '/api/v1/system/role/del',
     method: 'get',
     params: {
       id
@@ -31,7 +23,7 @@ export const del = ({ id }) => {
 // 根据ID查询
 export const queryOne = ({ id }) => {
   return axios.request({
-    url: '/api/v1/system/permission/queryOne',
+    url: '/api/v1/system/role/queryOne',
     method: 'get',
     params: {
       id
@@ -40,15 +32,14 @@ export const queryOne = ({ id }) => {
 }
 
 // 分页查询
-export const queryPage = ({ pageNo, pageSize, nameOrPerm, category, isDeleted }) => {
+export const queryPage = ({ pageNo, pageSize, roleName, isDeleted }) => {
   return axios.request({
-    url: '/api/v1/system/permission/queryPage',
+    url: '/api/v1/system/role/queryPage',
     method: 'post',
     data: {
       pageNo,
       pageSize,
-      nameOrPerm,
-      category,
+      roleName,
       isDeleted
     }
   })

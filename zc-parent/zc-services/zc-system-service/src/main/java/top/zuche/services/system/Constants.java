@@ -46,7 +46,7 @@ public interface Constants {
         // 许可服务
         String EMPTY_PERMISSION_NAME = "许可名不能为空";
 
-        String EXISTS_PERMISSION_NAME = "许可名已经存在";
+        String EXISTS_PERMISSION_NAME = "许可名/标签已经存在";
 
         String LOSE_PERMISSION_ID = "缺少许可ID";
 
@@ -57,6 +57,21 @@ public interface Constants {
         String UN_EXISTS_PERMISSION_ID = "不存在该许可ID";
 
         String UN_EXISTS_PERMISSION_NAME = "不存在该许可";
+
+        // 字典服务
+        String EMPTY_DICT_TYPE = "字典类型不能为空";
+
+        String EMPTY_DICT_CODE = "字典编码不能为空";
+
+        String EMPTY_DICT_VALUE = "字典值不能为空";
+
+        String EXISTS_DICT_TYPE_CODE = "字典类型和字典编码已经存在";
+
+        String LOSE_DICT_ID = "缺少字典ID";
+
+        String UPDATE_DICT_FAIL = "更新字典值失败";
+
+        String UN_EXISTS_DICT_ID = "不存在该字典ID";
 
     }
 

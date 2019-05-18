@@ -1,7 +1,9 @@
 package top.zuche.services.system.mapper;
 
+import com.github.pagehelper.Page;
 import org.apache.ibatis.annotations.Param;
 import top.zuche.services.api.dto.UserDTO;
+import top.zuche.services.api.query.RoleQuery;
 import top.zuche.services.system.entity.RoleEntity;
 
 import java.util.List;
@@ -63,6 +65,14 @@ public interface RoleMapper {
     int updateRoleByRoleName(RoleEntity entity);
 
     /**
+     * 根据角色ID查找信息
+     *
+     * @param id
+     * @return
+     */
+    RoleEntity selectByPrimaryKey(@Param("id") int id);
+
+    /**
      * 根据角色名字查找信息
      *
      * @param roleName
@@ -85,5 +95,13 @@ public interface RoleMapper {
      * @return
      */
     List<RoleEntity> selectRolesByUsername(@Param("username") String username);
+
+    /**
+     * 根据条件分页查询
+     *
+     * @param query
+     * @return
+     */
+    Page<RoleEntity> selectPageByCondition(RoleQuery query);
 
 }

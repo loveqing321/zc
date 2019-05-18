@@ -14,29 +14,29 @@ public class Main {
 
         GenerateMeta meta = null;
         // system 模块
-        meta = new GenerateMeta("system",
-                "User",
-                "用户管理",
-                "用户列表");
-        generator.genCode(meta);
+//        meta = new GenerateMeta("system",
+//                "User",
+//                "用户管理",
+//                "用户列表");
+//        generator.genCode(meta);
 
-//        meta = new GenerateMeta("assets",
-//                "Vehicle",
-//                "车辆管理",
-//                "车辆列表");
+//        meta = new GenerateMeta("system",
+//                "Role",
+//                "角色管理",
+//                "角色列表");
 //        generator.genCode(meta);
 //
-//        meta = new GenerateMeta("assets",
-//                "Customer",
-//                "客户管理",
-//                "客户列表");
+//        meta = new GenerateMeta("system",
+//                "Permission",
+//                "权限管理",
+//                "权限列表");
 //        generator.genCode(meta);
 //
-//        meta = new GenerateMeta("assets",
-//                "Equip",
-//                "装备管理",
-//                "装备列表");
-//        generator.genCode(meta);
+        meta = new GenerateMeta("system",
+                "Dict",
+                "字典管理",
+                "字典列表");
+        generator.genCode(meta);
 //
 //        // biss 模块
 //        meta = new GenerateMeta("biss",

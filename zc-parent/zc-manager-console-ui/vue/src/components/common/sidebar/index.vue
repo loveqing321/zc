@@ -9,17 +9,18 @@
           | 所有功能
         span.close-menu
           i(class="fa fa-chevron-left" style="cursor: pointer;" @click="closeSidebar")
-    el-menu(
-      ref="menu"
-      :default-active='$route.name'
-      mode='vertical'
-      unique-opened=''
-      :default-openeds='openedSubs'
-      background-color='#2f323f'
-      text-color='#fff'
-      active-text-color='#ffd04b'
-    )
-      sidebar-item(:routes='routes')
+    .menu-box
+      el-menu(
+        ref="menu"
+        :default-active='$route.name'
+        mode='vertical'
+        unique-opened=''
+        :default-openeds='openedSubs'
+        background-color='#2f323f'
+        text-color='#fff'
+        active-text-color='#ffd04b'
+      )
+        sidebar-item(:routes='routes')
 </template>
 
 <script>
@@ -69,6 +70,8 @@ export default {
   bottom: 0;
   left: 0;
   right: 0;
+  display: flex;
+  flex-direction: column;
   .sidebar-header {
     margin-right: 1px;
     padding: 4px 0;
@@ -102,9 +105,13 @@ export default {
       }
     }
   }
-  .el-menu {
-    padding-top: 5px;
-    min-height: 100%;
+  .menu-box {
+    flex: 1;
+    background-color: #2f323f;
+    overflow-y: scroll;
+    .el-menu {
+      padding-top: 5px;
+    }
   }
 }
 </style>

@@ -26,6 +26,7 @@ public abstract class BaseService<E, D> {
      * @return
      */
     public E dto2Entity(D dto) {
+        if (dto == null) return null;
         Constructor<E> con = genEntityConstructorIfNecessary();
         try {
             E entity = con.newInstance();
@@ -43,6 +44,7 @@ public abstract class BaseService<E, D> {
      * @return
      */
     public D entity2Dto(E entity) {
+        if (entity == null) return null;
         Constructor<D> con = genDtoConstructorIfNecessary();
         try {
             D dto = con.newInstance();

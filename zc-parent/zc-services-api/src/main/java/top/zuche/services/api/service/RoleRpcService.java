@@ -1,7 +1,9 @@
 package top.zuche.services.api.service;
 
+import top.zuche.services.api.dto.Paging;
 import top.zuche.services.api.dto.RoleDTO;
 import top.zuche.services.api.exception.ServiceException;
+import top.zuche.services.api.query.RoleQuery;
 
 import java.util.List;
 
@@ -49,7 +51,7 @@ public interface RoleRpcService {
      * @param id
      * @return
      */
-    void deleteByPrimaryKey(int id) throws ServiceException;
+    void deleteRoleByPrimaryKey(int id) throws ServiceException;
 
     /**
      * 根据角色名删除
@@ -57,7 +59,15 @@ public interface RoleRpcService {
      * @param roleName
      * @return
      */
-    void deleteByRoleName(String roleName) throws ServiceException;
+    void deleteRoleByRoleName(String roleName) throws ServiceException;
+
+    /**
+     * 通过ID查找角色
+     *
+     * @param id
+     * @return
+     */
+    RoleDTO queryRoleByPrimaryKey(int id) throws ServiceException;
 
     /**
      * 通过角色名查找角色
@@ -83,5 +93,14 @@ public interface RoleRpcService {
      * @throws ServiceException
      */
     List<RoleDTO> queryRolesByUsername(String username) throws ServiceException;
+
+    /**
+     * 通过条件查找角色列表
+     *
+     * @param query
+     * @return
+     * @throws ServiceException
+     */
+    Paging<RoleDTO> queryPageByCondition(RoleQuery query) throws ServiceException;
 
 }
