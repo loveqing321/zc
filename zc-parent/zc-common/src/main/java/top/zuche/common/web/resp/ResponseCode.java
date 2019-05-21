@@ -33,7 +33,9 @@ public enum ResponseCode {
     ACCESS_DENIED(299, "拒绝访问"),
 
     // 业务类响应码范围 400 - 500
-    SERVICE_ERROR(499, "服务调用异常"),
+    SERVICE_ERROR(400, "服务调用异常"),
+
+    BUSINESS_ERROR(499, "用户自定义业务异常"),   // 自定义业务异常一般会重写响应消息内容
 
     // 网络等其他异常 500 - 600
     NETWORK_ERROR(500, "网络异常，请重试"),

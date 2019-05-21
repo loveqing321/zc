@@ -64,6 +64,20 @@ public class ResponseData<T> implements Serializable {
     }
 
     /**
+     * 自定义 - 业务异常
+     *
+     * @param message
+     * @param <T>
+     * @return
+     */
+    public static <T> ResponseData error(String message) {
+        ResponseData<T> responseData = new ResponseData<>();
+        responseData.setCode(ResponseCode.BUSINESS_ERROR.code);
+        responseData.setMessage(message);
+        return responseData;
+    }
+
+    /**
      * 状态码填充
      * @param rc
      * @param <T>

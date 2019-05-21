@@ -19,6 +19,7 @@
         <module>zc-services</module>
         <module>zc-services-web</module>
         <module>zc-codegen</module>
+        <module>zc-ocr</module>
     </modules>
 
     <packaging>pom</packaging>

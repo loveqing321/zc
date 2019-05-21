@@ -17,8 +17,14 @@
         :style={flex:1}
         label-suffix=":"
       )
-        el-form-item(label="ID", prop="id")
-          el-input(v-model="formData.id")
+        el-form-item(label="字典编码", prop="dictCode")
+          el-input(v-model="formData.dictCode")
+        el-form-item(label="字典值", prop="dictValue")
+          el-input(v-model="formData.dictValue")
+        el-form-item(label="字典类型", prop="dictType")
+          el-input(v-model="formData.dictType")
+        el-form-item(label="字典描述", prop="dictDesc")
+          el-input(v-model="formData.dictDesc")
     template(slot="footer")
       el-button(@click="cancel") 取消
       el-button(type="primary" @click="confirm") 确定
@@ -48,15 +54,24 @@ export default {
   data () {
     return {
       rules: {
+        dictType: [
+          { required: true, message: '请填写字典类型', trigger: 'blur' }
+        ],
+        dictCode: [
+          { required: true, message: '请填写字典编码', trigger: 'blur' }
+        ],
+        dictValue: [
+          { required: true, message: '请填写字典值', trigger: 'blur' }
+        ]
       }
     }
   },
   computed: {
     title () {
       if (this.formData.id) {
-        return '修改配置'
+        return '修改字典信息'
       } else {
-        return '新增配置'
+        return '新增字典信息'
       }
     }
   },

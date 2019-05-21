@@ -94,4 +94,21 @@ public interface UserRpcService {
      */
     void deleteByUsername(String username) throws ServiceException;
 
+    /**
+     * 查询用户分配的角色ID
+     *
+     * @param userId
+     * @return
+     * @throws ServiceException
+     */
+    List<Integer> queryAssignedRoleIdsByUserId(int userId) throws ServiceException;
+
+    /**
+     * 为用户分配指定角色
+     *
+     * @param userId
+     * @param roleIds
+     * @throws ServiceException
+     */
+    void assignRolesForUser(int userId, List<Integer> roleIds) throws ServiceException;
 }

@@ -53,3 +53,11 @@ export const queryPage = ({ pageNo, pageSize, nameOrPerm, category, isDeleted })
     }
   })
 }
+
+// 查询所有
+export const queryAll = () => {
+  return axios.request({
+    url: '/api/v1/system/permission/queryAll',
+    method: 'post'
+  })
+}

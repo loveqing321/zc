@@ -22,7 +22,13 @@ public interface Constants {
     String VERIFY_CODE_URL = "/verifyCode";
 
     /**
+     * 异常接口
+     */
+    String ERROR_URL = "/error";
+
+    /**
      * token名称
      */
     String TOKEN_NAME = "token";
+
 }

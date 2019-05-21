@@ -9,7 +9,7 @@
     template(slot="searchForm")
       el-form(ref="form" :inline="true" :model="searchForm")
         el-form-item
-          el-input(v-model="searchForm.searchText" placeholder="用户名 / 账号 / 电话" style="width: 220px" clearable)
+          el-input(v-model="searchForm.searchText" placeholder="用户名 / 账号 / 电话" style="width: 180px" clearable)
         el-form-item
           el-select(
             placeholder="状态"
@@ -21,14 +21,16 @@
             el-option(value="1" label="停用")
         el-button(type="primary" @click="search" style="width: 70px") 搜索
         el-button(type="default" @click="add") 增加用户
-    grid(ref="grid" :remote-method="getData")
-      el-table-column(type="index" width="40")
+        el-button(type="default" @click="assignRole") 分配角色
+    grid(ref="grid" :remote-method="getData" @selection="handleSelectionChange")
+      el-table-column(type="selection" width="55")
       el-table-column(
-        prop="cname"
         label="姓名"
         width="120"
         show-overflow-tooltip
       )
+        template(slot-scope="{row}")
+          span(style="color: #409EFF;") {{row.cname}}
       el-table-column(
         prop="username"
         label="账号"
@@ -73,12 +75,18 @@
       v-if="visible"
       :formData="formData"
     )
+    assign-role(
+      :visible.sync="assignRoleVisible"
+      v-if="assignRoleVisible"
+      :userId="selectedUserId"
+    )
 </template>
 <script>
 import mainContent from '@/components/common/main-content'
 import grid from '@/components/common/grid'
 import gridTitle from '@/components/common/grid-title'
 import userForm from './user-form'
+import assignRole from './assign-role'
 import { queryPage, queryOne, del, save } from '@/api/system/user'
 
 export default {
@@ -87,15 +95,25 @@ export default {
     mainContent,
     grid,
     gridTitle,
-    userForm
+    userForm,
+    assignRole
   },
   data () {
     return {
-      searchForm: {
-
-      },
+      searchForm: {},
       visible: false,
-      formData: null
+      formData: null,
+      selectedRows: [],
+      assignRoleVisible: false
+    }
+  },
+  computed: {
+    selectedUserId () {
+      if (this.selectedRows && this.selectedRows.length > 0) {
+        return this.selectedRows[0].id
+      } else {
+        return -1
+      }
     }
   },
   methods: {
@@ -126,7 +144,6 @@ export default {
           center: true
         })
         await save({ id: row.id, isDeleted: 1 })
-        this.$message.info('删除成功')
         this.search()
       } catch (e) {
         // ignore
@@ -160,6 +177,19 @@ export default {
       } catch (e) {
         // ignore
       }
+    },
+    handleSelectionChange (val) {
+      this.selectedRows = val
+    },
+    assignRole () {
+      if (!this.selectedRows || this.selectedRows.length === 0) {
+        this.$message.warning('请选择要操作的用户')
+        return
+      } else if (this.selectedRows.length > 1) {
+        this.$message.warning('请选择一个用户进行分配角色')
+        return
+      }
+      this.assignRoleVisible = true
     }
   },
   mounted () {

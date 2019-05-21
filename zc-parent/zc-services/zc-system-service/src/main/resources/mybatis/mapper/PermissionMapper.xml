@@ -179,4 +179,12 @@
         </if>
     </select>
 
+    <select id="selectAllActivePermissions" resultMap="permissionResultMap" >
+        select
+        <include refid="Base_Column_List" />
+        from t_sys_permission p
+        where p.is_deleted = 0
+        order by p.category
+    </select>
+
 </mapper>

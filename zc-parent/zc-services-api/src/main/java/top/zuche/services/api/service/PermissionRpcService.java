@@ -103,4 +103,11 @@ public interface PermissionRpcService {
      */
     Paging<PermissionDTO> queryPageByCondition(PermissionQuery query) throws ServiceException;
 
+    /**
+     * 查询所有启用的权限
+     *
+     * @return
+     * @throws ServiceException
+     */
+    List<PermissionDTO> queryAllActivePermissions() throws ServiceException;
 }

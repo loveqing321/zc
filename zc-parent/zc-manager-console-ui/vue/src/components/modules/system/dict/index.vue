@@ -9,26 +9,63 @@
     template(slot="searchForm")
       el-form(ref="form" :inline="true" :model="searchForm")
         el-form-item
-          el-input(v-model="searchForm.name" placeholder="接口编码 / 名称" style="width: 220px")
+          el-input(v-model="searchForm.dictType" placeholder="字典类型" style="width: 180px" clearable)
+        el-form-item
+          el-input(v-model="searchForm.dictCode" placeholder="字典编码" style="width: 180px" clearable)
+        el-form-item
+          el-input(v-model="searchForm.dictValue" placeholder="字典值" style="width: 180px" clearable)
+        el-form-item
+          el-select(
+            placeholder="状态"
+            v-model="searchForm.isDeleted"
+            :style="{display:'block', width: '120px'}"
+            clearable
+          )
+            el-option(value="0" label="启用")
+            el-option(value="1" label="停用")
         el-button(type="primary" @click="search" style="width: 70px") 搜索
         el-button(type="default" @click="add") 增加接口
     grid(ref="grid" :remote-method="getData")
       el-table-column(type="index" width="40")
       el-table-column(
-        label="名称"
+        label="字典编码"
         show-overflow-tooltip
-        width="250"
+        width="120"
       )
         template(slot-scope="{row}")
-          span(style="color: #409EFF;") {{row.name}}
+          span(style="color: #409EFF;") {{row.dictCode}}
       el-table-column(
-        prop="code"
-        label="编码"
+        prop="dictValue"
+        label="字典值"
+        width="150"
         show-overflow-tooltip
       )
-      el-table-column(label="操作", show-overflow-tooltip, width="120")
+      el-table-column(
+        prop="dictType"
+        label="字典类型"
+        width="120"
+        show-overflow-tooltip
+      )
+      el-table-column(
+        prop="dictDesc"
+        label="字典描述"
+        show-overflow-tooltip
+      )
+      el-table-column(
+        label="状态"
+        width="100"
+        show-overflow-tooltip
+      )
+        template(slot-scope="scope")
+          el-tag(v-if="scope.row.isDeleted === 0" type="success" disable-transitions)
+            | 启用
+          el-tag(v-if="scope.row.isDeleted === 1" type="warning" disable-transitions)
+            | 停用
+      el-table-column(label="操作", show-overflow-tooltip, width="140")
         div.zc-operator-box(slot-scope="{row}")
           a(@click="modify(row)") 修改
+          a(v-if="row.isDeleted === 0" @click="disableDict(row)") 停用
+          a(v-else @click="enableDict(row)") 启用
           a(@click="del(row)") 删除
     dict-form(
       :visible.sync="visible"
@@ -41,7 +78,7 @@ import mainContent from '@/components/common/main-content'
 import grid from '@/components/common/grid'
 import gridTitle from '@/components/common/grid-title'
 import dictForm from './dict-form'
-import { queryPage, queryOne, del } from '@/api/system/dict'
+import { queryPage, queryOne, del, save } from '@/api/system/dict'
 
 export default {
   name: 'dict',
@@ -75,6 +112,34 @@ export default {
       try {
         this.formData = await queryOne({ id: row.id })
         this.visible = true
+      } catch (e) {
+        // ignore
+      }
+    },
+    async disableDict (row) {
+      try {
+        await this.$confirm('此操作将停用该字典值, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning',
+          center: true
+        })
+        await save({ id: row.id, isDeleted: 1 })
+        this.search()
+      } catch (e) {
+        // ignore
+      }
+    },
+    async enableDict (row) {
+      try {
+        await this.$confirm('此操作将启用该字典值, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning',
+          center: true
+        })
+        await save({ id: row.id, isDeleted: 0 })
+        this.search()
       } catch (e) {
         // ignore
       }

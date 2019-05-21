@@ -44,3 +44,34 @@ export const queryPage = ({ pageNo, pageSize, roleName, isDeleted }) => {
     }
   })
 }
+
+// 查询所有
+export const queryAll = () => {
+  return axios.request({
+    url: '/api/v1/system/role/queryAll',
+    method: 'post'
+  })
+}
+
+// 查询已经分配的权限ID
+export const queryAssignedPermissionIds = ({ roleId }) => {
+  return axios.request({
+    url: '/api/v1/system/role/queryAssignedPermissionIds',
+    method: 'get',
+    params: {
+      roleId
+    }
+  })
+}
+
+// 为角色分配权限
+export const assignPermissions = ({ roleId, permissionIds }) => {
+  return axios.request({
+    url: '/api/v1/system/role/assignPermissions',
+    method: 'post',
+    data: {
+      roleId,
+      permissionIds
+    }
+  })
+}

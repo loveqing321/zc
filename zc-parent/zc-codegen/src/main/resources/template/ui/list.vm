@@ -9,7 +9,7 @@
     template(slot="searchForm")
       el-form(ref="form" :inline="true" :model="searchForm")
         el-form-item
-          el-input(v-model="searchForm.name" placeholder="接口编码 / 名称" style="width: 220px")
+          el-input(v-model="searchForm.name" placeholder="接口编码 / 名称" style="width: 180px" clearable)
         el-button(type="primary" @click="search" style="width: 70px") 搜索
         el-button(type="default" @click="add") 增加接口
     grid(ref="grid" :remote-method="getData")

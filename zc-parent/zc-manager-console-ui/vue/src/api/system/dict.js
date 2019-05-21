@@ -32,13 +32,17 @@ export const queryOne = ({ id }) => {
 }
 
 // 分页查询
-export const queryPage = ({ pageNo, pageSize }) => {
+export const queryPage = ({ pageNo, pageSize, dictType, dictCode, dictValue, isDeleted }) => {
   return axios.request({
     url: '/api/v1/system/dict/queryPage',
     method: 'post',
     data: {
       pageNo,
-      pageSize
+      pageSize,
+      dictType,
+      dictCode,
+      dictValue,
+      isDeleted
     }
   })
 }

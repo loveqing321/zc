@@ -97,6 +97,7 @@ public class UserService extends BaseService<UserEntity, UserDTO> implements Use
     }
 
     @Override
+    @Transactional
     public void deleteByUsername(String username) throws ServiceException {
         if (!StringUtils.hasText(username)) {
             throw new ServiceException(Constants.ServiceMessage.EMPTY_USER_NAME);
@@ -104,6 +105,20 @@ public class UserService extends BaseService<UserEntity, UserDTO> implements Use
         int len = userMapper.deleteByUsername(username);
         if (len != 1) {
             throw new ServiceException(Constants.ServiceMessage.UN_EXISTS_USER_NAME);
+        }
+    }
+
+    @Override
+    public List<Integer> queryAssignedRoleIdsByUserId(int userId) throws ServiceException {
+        return userMapper.selectAssignedRoleIdsByUserId(userId);
+    }
+
+    @Override
+    @Transactional
+    public void assignRolesForUser(int userId, List<Integer> roleIds) throws ServiceException {
+        userMapper.deleteAllUserRoleMappingsByUserId(userId);
+        if (roleIds != null && !roleIds.isEmpty()) {
+            userMapper.insertUserRoleMappings(userId, roleIds);
         }
     }
 

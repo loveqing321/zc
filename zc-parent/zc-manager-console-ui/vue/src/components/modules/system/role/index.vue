@@ -9,7 +9,7 @@
     template(slot="searchForm")
       el-form(ref="form" :inline="true" :model="searchForm")
         el-form-item
-          el-input(v-model="searchForm.roleName" placeholder="角色名" style="width: 200px")
+          el-input(v-model="searchForm.roleName" placeholder="角色名" style="width: 180px" clearable)
         el-form-item
           el-select(
             placeholder="状态"
@@ -21,13 +21,15 @@
             el-option(value="1" label="停用")
         el-button(type="primary" @click="search" style="width: 70px") 搜索
         el-button(type="default" @click="add") 增加角色
-    grid(ref="grid" :remote-method="getData")
-      el-table-column(type="index" width="40")
+        el-button(type="default" @click="assignPermission") 分配权限
+    grid(ref="grid" :remote-method="getData" @selection="handleSelectionChange")
+      el-table-column(type="selection" width="55")
       el-table-column(
-        prop="roleName"
         label="角色名"
         show-overflow-tooltip
       )
+        template(slot-scope="{row}")
+          span(style="color: #409EFF;") {{row.roleName}}
       el-table-column(
         label="状态"
         width="100"
@@ -49,12 +51,18 @@
       v-if="visible"
       :formData="formData"
     )
+    assign-permission(
+      :visible.sync="assignPermissionVisible"
+      v-if="assignPermissionVisible"
+      :roleId="selectedRoleId"
+    )
 </template>
 <script>
 import mainContent from '@/components/common/main-content'
 import grid from '@/components/common/grid'
 import gridTitle from '@/components/common/grid-title'
 import roleForm from './role-form'
+import assignPermission from './assign-permission'
 import { queryPage, queryOne, save, del } from '@/api/system/role'
 
 export default {
@@ -63,13 +71,25 @@ export default {
     mainContent,
     grid,
     gridTitle,
-    roleForm
+    roleForm,
+    assignPermission
   },
   data () {
     return {
       searchForm: {},
       visible: false,
-      formData: null
+      formData: null,
+      selectedRows: [],
+      assignPermissionVisible: false
+    }
+  },
+  computed: {
+    selectedRoleId () {
+      if (this.selectedRows && this.selectedRows.length > 0) {
+        return this.selectedRows[0].id
+      } else {
+        return -1
+      }
     }
   },
   methods: {
@@ -135,6 +155,19 @@ export default {
       } catch (e) {
         // ignore
       }
+    },
+    handleSelectionChange (val) {
+      this.selectedRows = val
+    },
+    assignPermission () {
+      if (!this.selectedRows || this.selectedRows.length === 0) {
+        this.$message.warning('请选择要操作的角色')
+        return
+      } else if (this.selectedRows.length > 1) {
+        this.$message.warning('请选择一个角色进行分配权限')
+        return
+      }
+      this.assignPermissionVisible = true
     }
   },
   mounted () {

@@ -95,4 +95,28 @@ public interface UserMapper {
      */
     Page<UserEntity> selectPageByCondition(UserQuery query);
 
+    /**
+     * 根据用户ID，查找关联的角色ID
+     *
+     * @param userId
+     * @return
+     */
+    List<Integer> selectAssignedRoleIdsByUserId(@Param("userId") int userId);
+
+    /**
+     * 删除指定用户的所有用户与角色的关联关系
+     *
+     * @param userId
+     * @return
+     */
+    void deleteAllUserRoleMappingsByUserId(@Param("userId") int userId);
+
+    /**
+     * 添加用户与角色映射关系
+     *
+     * @param userId
+     * @param roleIds
+     * @return
+     */
+    int insertUserRoleMappings(@Param("userId") int userId, @Param("roleIds") List<Integer> roleIds);
 }

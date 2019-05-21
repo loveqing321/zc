@@ -1,6 +1,7 @@
 package top.zuche.services.system.entity;
 
 import lombok.Data;
+import top.zuche.common.base.BaseEntity;
 
 import java.io.Serializable;
 
@@ -11,7 +12,7 @@ import java.io.Serializable;
  * @date 2019/5/16 上午5:13
  */
 @Data
-public class DictEntity implements Serializable {
+public class DictEntity extends BaseEntity implements Serializable {
 
     // 字典ID
     private Integer id;

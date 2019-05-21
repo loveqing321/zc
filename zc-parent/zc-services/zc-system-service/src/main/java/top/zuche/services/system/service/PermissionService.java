@@ -168,4 +168,10 @@ public class PermissionService extends BaseService<PermissionEntity, PermissionD
         List<PermissionDTO> dtos = result.stream().map(this::entity2Dto).collect(Collectors.toList());
         return Paging.of(page.getTotal(), dtos);
     }
+
+    @Override
+    public List<PermissionDTO> queryAllActivePermissions() throws ServiceException {
+        List<PermissionEntity> permissions = permissionMapper.selectAllActivePermissions();
+        return permissions.stream().map(this::entity2Dto).collect(Collectors.toList());
+    }
 }

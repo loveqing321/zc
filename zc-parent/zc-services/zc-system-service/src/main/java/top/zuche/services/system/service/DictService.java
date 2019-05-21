@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
  * @author lzx
  * @date 2019/5/16 上午5:08
  */
-@Service
+@Service(interfaceClass = DictRpcService.class)
 @Component("dictService")
 public class DictService extends BaseService<DictEntity, DictDTO> implements DictRpcService {
 

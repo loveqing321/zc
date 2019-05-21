@@ -103,4 +103,10 @@ public interface PermissionMapper {
      */
     Page<PermissionEntity> selectPageByCondition(PermissionQuery query);
 
+    /**
+     * 查询所有激活的权限
+     *
+     * @return
+     */
+    List<PermissionEntity> selectAllActivePermissions();
 }

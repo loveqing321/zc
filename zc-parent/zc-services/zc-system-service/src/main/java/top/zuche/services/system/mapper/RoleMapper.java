@@ -104,4 +104,35 @@ public interface RoleMapper {
      */
     Page<RoleEntity> selectPageByCondition(RoleQuery query);
 
+    /**
+     * 查询所有角色
+     *
+     * @return
+     */
+    List<RoleEntity> selectAllActiveRoles();
+
+    /**
+     * 根据角色ID，查找关联的权限ID
+     *
+     * @param roleId
+     * @return
+     */
+    List<Integer> selectAssignedPermissionIdsByRoleId(@Param("roleId") int roleId);
+
+    /**
+     * 删除指定角色的所有角色与权限的关联关系
+     *
+     * @param roleId
+     * @return
+     */
+    void deleteAllRolePermissionMappingsByRoleId(@Param("roleId") int roleId);
+
+    /**
+     * 添加角色与权限映射关系
+     *
+     * @param roleId
+     * @param permissionIds
+     * @return
+     */
+    int insertRolePermissionMappings(@Param("roleId") int roleId, @Param("permissionIds") List<Integer> permissionIds);
 }

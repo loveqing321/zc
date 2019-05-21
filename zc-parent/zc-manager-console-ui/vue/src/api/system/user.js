@@ -44,3 +44,26 @@ export const queryPage = ({ pageNo, pageSize, searchText, isDeleted }) => {
     }
   })
 }
+
+// 查询已经分配的角色ID
+export const queryAssignedRoleIds = ({ userId }) => {
+  return axios.request({
+    url: '/api/v1/system/user/queryAssignedRoleIds',
+    method: 'get',
+    params: {
+      userId
+    }
+  })
+}
+
+// 为用户分配角色
+export const assignRoles = ({ userId, roleIds }) => {
+  return axios.request({
+    url: '/api/v1/system/user/assignRoles',
+    method: 'post',
+    data: {
+      userId,
+      roleIds
+    }
+  })
+}

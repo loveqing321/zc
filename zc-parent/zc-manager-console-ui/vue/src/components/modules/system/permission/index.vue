@@ -9,12 +9,12 @@
     template(slot="searchForm")
       el-form(ref="form" :inline="true" :model="searchForm")
         el-form-item
-          el-input(v-model="searchForm.nameOrPerm" placeholder="权限名称 / 标签" style="width: 220px" clearable)
+          el-input(v-model="searchForm.nameOrPerm" placeholder="权限名称 / 标签" style="width: 180px" clearable)
         el-form-item
           el-select(
             placeholder="权限分类"
             v-model="searchForm.category"
-            :style="{display:'block', width: '150px'}"
+            :style="{display:'block', width: '120px'}"
             clearable
           )
             el-option(value="merchant_console_menu" label="菜单权限")

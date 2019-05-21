@@ -103,4 +103,29 @@ public interface RoleRpcService {
      */
     Paging<RoleDTO> queryPageByCondition(RoleQuery query) throws ServiceException;
 
+    /**
+     * 查询所有角色
+     *
+     * @return
+     * @throws ServiceException
+     */
+    List<RoleDTO> queryAllActiveRoles() throws ServiceException;
+
+    /**
+     * 查询角色分配的权限ID
+     *
+     * @param roleId
+     * @return
+     * @throws ServiceException
+     */
+    List<Integer> queryAssignedPermissionIdsByRoleId(int roleId) throws ServiceException;
+
+    /**
+     * 为角色分配指定权限
+     *
+     * @param roleId
+     * @param permissionIds
+     * @throws ServiceException
+     */
+    void assignPermissionsForRole(int roleId, List<Integer> permissionIds) throws ServiceException;
 }

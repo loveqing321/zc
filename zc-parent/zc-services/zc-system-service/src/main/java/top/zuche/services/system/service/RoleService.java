@@ -153,4 +153,23 @@ public class RoleService extends BaseService<RoleEntity, RoleDTO> implements Rol
         List<RoleDTO> dtos = result.stream().map(this::entity2Dto).collect(Collectors.toList());
         return Paging.of(page.getTotal(), dtos);
     }
+
+    @Override
+    public List<RoleDTO> queryAllActiveRoles() throws ServiceException {
+        List<RoleEntity> roles = roleMapper.selectAllActiveRoles();
+        return roles.stream().map(this::entity2Dto).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Integer> queryAssignedPermissionIdsByRoleId(int roleId) throws ServiceException {
+        return roleMapper.selectAssignedPermissionIdsByRoleId(roleId);
+    }
+
+    @Override
+    public void assignPermissionsForRole(int roleId, List<Integer> permissionIds) throws ServiceException {
+        roleMapper.deleteAllRolePermissionMappingsByRoleId(roleId);
+        if (permissionIds != null && !permissionIds.isEmpty()) {
+            roleMapper.insertRolePermissionMappings(roleId, permissionIds);
+        }
+    }
 }

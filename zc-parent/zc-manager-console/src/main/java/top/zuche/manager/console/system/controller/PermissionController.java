@@ -58,4 +58,11 @@ public class PermissionController {
         permissionRpcService.deletePermissionByPrimaryKey(id);
         return ResponseData.ok();
     }
+
+    // 查询用户分配的角色ID
+    @PostMapping("/queryAll")
+    public ResponseData<List<PermissionDTO>> queryAllActivePermissions() {
+        List<PermissionDTO> roles = permissionRpcService.queryAllActivePermissions();
+        return ResponseData.ok(roles);
+    }
 }

@@ -2,8 +2,12 @@ package top.zuche.manager.console.system.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import top.zuche.common.web.resp.ResponseCode;
+import top.zuche.common.web.resp.ResponseData;
 import top.zuche.toolkit.web.Constants;
 import top.zuche.toolkit.web.security.verifycode.VerifyCode;
 import top.zuche.toolkit.web.security.verifycode.repository.VerifyCodeRepository;
@@ -83,5 +87,16 @@ public class SystemController {
         } catch (IOException e) {
             log.error("生成验证码失败！", e);
         }
+    }
+
+    /**
+     * 请求验证码图片接口
+     *
+     * @return
+     */
+    @PostMapping(value = Constants.ERROR_URL)
+    @ResponseBody
+    public ResponseData error(HttpServletRequest request, HttpServletResponse response) {
+        return ResponseData.error(ResponseCode.SERVICE_ERROR);
     }
 }
