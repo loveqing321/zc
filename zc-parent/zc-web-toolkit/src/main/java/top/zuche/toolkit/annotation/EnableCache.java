@@ -1,6 +1,7 @@
 package top.zuche.toolkit.annotation;
 
 import org.springframework.context.annotation.Import;
+import top.zuche.toolkit.cache.configuration.CacheManagerConfig;
 import top.zuche.toolkit.cache.configuration.CacheManagerSelector;
 
 import java.lang.annotation.*;
@@ -12,7 +13,7 @@ import java.lang.annotation.*;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-@Import(CacheManagerSelector.class)
+@Import(CacheManagerConfig.class)
 public @interface EnableCache {
 
 }

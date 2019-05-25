@@ -2,6 +2,7 @@ package top.zuche.toolkit.annotation;
 
 import org.springframework.context.annotation.Import;
 import top.zuche.toolkit.web.security.configuration.GenericWebSecuritySelector;
+import top.zuche.toolkit.web.security.configuration.WebSecurityConfiguration;
 
 import java.lang.annotation.*;
 
@@ -12,7 +13,7 @@ import java.lang.annotation.*;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-@Import(GenericWebSecuritySelector.class)
+@Import(WebSecurityConfiguration.class)
 public @interface EnableGenericWebSecurity {
 
 }

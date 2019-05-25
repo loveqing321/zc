@@ -1,7 +1,9 @@
 <template lang="pug">
   .navbar(mode='horizontal')
     .app-title
-      | 51租车 - 管理中心
+      .logo
+      span(style="margin-left: 10px;")
+        | - 管理中心
     .avatar-container
       .btn-fullscreen(@click="handleFullScreen")
         i(class="el-icon-rank")
@@ -107,13 +109,25 @@ export default {
   border-radius: 0 !important;
   background-color: #2f323f;
   .app-title {
+    height: 100%;
     display: inline-block;
     font-size: 18px;
     font-weight: 700;
     line-height: 50px;
-    margin: 0 30px;
+    margin: 0 20px;
     color: #ffffff;
     float: left;
+    .logo {
+      float: left;
+      display: inline-block;
+      height: 50px;
+      width: 120px;
+      background: transparent url("../../../../static/image/logo-right.png") no-repeat;
+      -webkit-background-size: 100%, 100%;
+      background-size: 100%, 100%;
+      -ms-background-position-y: 13px;
+      background-position-y: 13px;
+    }
   }
   .header-menu {
     display: inline-block;

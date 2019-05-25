@@ -1,5 +1,14 @@
 server:
   port: 8383
+#  ssl:
+#    enabled: true
+#    key-alias: meepai
+#    key-store: classpath:meepai.keystore
+#    key-store-type: JKS
+#    key-store-password: meepai123
+#  port: 8443
+#  http:
+#    port: 8080
 
 spring:
   redis:

@@ -3,7 +3,9 @@ package top.zuche.manager.console;
 import com.alibaba.dubbo.spring.boot.annotation.EnableDubboConfiguration;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import top.zuche.toolkit.annotation.EnableGenericWebSecurity;
+import org.springframework.context.annotation.Import;
+import top.zuche.toolkit.web.https.HttpsWebServerConfiguration;
+import top.zuche.toolkit.web.security.configuration.WebSecurityConfiguration;
 
 /**
  * @author lzx
@@ -11,8 +13,13 @@ import top.zuche.toolkit.annotation.EnableGenericWebSecurity;
  */
 @SpringBootApplication
 @EnableDubboConfiguration
-//@EnableCache
-@EnableGenericWebSecurity
+@Import({
+        WebSecurityConfiguration.class,
+        // 缓存管理
+//        CacheManagerConfig.class,
+        // https支持
+//        HttpsWebServerConfiguration.class
+})
 public class ManagerConsoleApplication {
 
     public static void main(String[] args) {
