@@ -1,0 +1,124 @@
+// 颜色
+@primaryColor: #409EFF;
+@successColor: #67C23A;
+@warningColor: #E6A23C;
+@dangerColor: #F56C6C;
+@infoColor: #909399;
+
+// 禁用的颜色
+@disabledDefaultColor: #C0C4CC;
+@disabledPrimaryColor: #A0CFFF;
+@disabledSuccessColor: #B3E19d;
+@disabledWarningColor: #F3D19E;
+@disabledDangerColor: #FAB6B6;
+@disabledInfoColor: #C8C9CC;
+
+
+// 字体颜色
+@primaryFontColor: #303133; // 主要字体
+@regularFontColor: #606266;  // 常规字体
+@secondaryFontColor: #909399;   // 次要字体
+@additionalFontColor: #C0C4CC;   // 占位字体
+// 边框颜色
+@primaryBorderColor: #DCDFE6;   // 主要边框  一级边框
+@regularBorderColor: #E4E7ED;  // 常规边框  二级边框
+@secondaryBorderColor: #EBEEF5;   // 次要边框  三级边框
+@additionalBorderColor: #F2F6FC;   // 附加边框  四季边框
+
+// 字号
+@extraLargeFontSize: 20px;    // 主标题字体
+@largeFontSize: 18px;    // 常规标题
+@mediumFontSize: 16px;   // 小标题
+@baseFontSize: 14px;    // 正文
+@smallFontSize: 13px;   // 正文（小）
+@extraSmallFontSize: 12px;  // 辅助文字
+
+// 边框
+.mp-border {
+  border: 1px solid @primaryBorderColor;
+  border-radius: 0;
+  &.round {
+    border-radius: 4px;
+  }
+  &.small-round {
+    border-radius: 2px;
+  }
+  &.large-round {
+    border-radius: 30px;
+  }
+  &.shadow {
+    -webkit-box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
+    -moz-box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
+  }
+  &.secondary-shadow {
+    -webkit-box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+    -moz-box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+  }
+}
+
+// 栅格
+@grid1: 4.16667%;
+@grid2: 8.33333%;
+@grid3: 12.5%;
+@grid4: 16.66667%;
+@grid5: 20.83333%;
+@grid6: 25%;
+@grid7: 29.16667%;
+@grid8: 33.33333%;
+@grid9: 37.5%;
+@grid10: 41.66667%;
+@grid11: 45.83333%;
+@grid12: 50%;
+@grid13: 54.16667%;
+@grid14: 58.33333%;
+@grid15: 62.5%;
+@grid16: 66.66667%;
+@grid17: 70.83333%;
+@grid18: 75%;
+@grid19: 79.16667%;
+@grid20: 83.33333%;
+@grid21: 87.5%;
+@grid22: 91.66667%;
+@grid23: 95.83333%;
+@grid24: 100%;
+
+// 容器
+@headerHeight: 62px;
+@headerColor: #fff;
+@headerBackground: #2f323f;
+@footerHeight: 40px;
+@footerColor: #fff;
+@footerBackground: #909399;
+@asideWidth: 200px;
+@asideMiniWidth: 50px;
+@mainBackground: #FFFFFF;
+
+// menu
+@defaultMenuItemHeight: 56px;
+@defaultActiveColor: #ECF5FF;
+
+// scroll
+@scrollBarWidth: 17px;
+
+// input
+@inputPadding: 0 10px;
+@inputHeight: 30px;
+@inputHoverColor: #c0c4cc;
+@inputAppendColor: #c0c4cc;
+
+// 动画
+.collapse-transition {
+  -webkit-transition: .3s height ease-in-out, .3s padding-top ease-in-out,.3s padding-bottom ease-in-out;
+  transition:.3s height ease-in-out,.3s padding-top ease-in-out,.3s padding-bottom ease-in-out
+}
+.horizontal-collapse-transition {
+  -webkit-transition:.3s width ease-in-out,.3s padding-left ease-in-out,.3s padding-right ease-in-out;
+  transition:.3s width ease-in-out,.3s padding-left ease-in-out,.3s padding-right ease-in-out
+}
+
+// 字体
+body {
+  font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
+}
