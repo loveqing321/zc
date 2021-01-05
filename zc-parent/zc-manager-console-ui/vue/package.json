@@ -15,7 +15,7 @@
     "buildPro": "cross-env BUILD_ENV=pro node build/build.js"
   },
   "dependencies": {
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "highcharts": "^7.0.3",
     "js-cookie": "^2.2.0",
     "normalize.css": "^8.0.0",
